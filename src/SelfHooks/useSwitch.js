@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { FixContainer } from '../Components/Container';
 
 /* 
    Date   : 2020-06-04 14:45:08
