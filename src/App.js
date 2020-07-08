@@ -1,7 +1,8 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import { Context } from './Store/store'
 import themes from './Components/Themes/Themes';
 import { ContextContainer } from './Components/ContextContainer';
+import { useSwitch } from './SelfHooks/useSwitch';
 
 const reducer = (state, action) => {
 
@@ -20,10 +21,12 @@ const reducer = (state, action) => {
 function App() {
 
   const [Theme, setTheme] = useReducer(reducer, themes.defaultTheme);
+  const [APIUrl, setAPIUrl] = useState("http://aso.1966.org.tw:20020/");
+  const [Value, Switch, Open, Close] = useSwitch();//控制重新渲染路由
 
   return (
     <>
-      < Context.Provider value={{ Theme, setTheme }}>
+      < Context.Provider value={{ APIUrl, Theme, setTheme, Switch }}>
         <ContextContainer />
       </Context.Provider>
     </>

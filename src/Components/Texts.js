@@ -83,6 +83,7 @@ font-family: ${props => props?.theme?.fontFamily ?? '"Arial", Microsoft JhengHei
 font-weight: ${props => props?.theme?.fontWeight ?? '500'};
 letter-spacing: ${ props => props?.theme?.letterSpacing ?? '0.0075em'};
 text-decoration: ${ props => props?.theme?.textDecoration ?? 'initial'};
+user-select: ${ props => props?.theme?.userSelect ?? 'initial'};
 
 @media ${ mediaQuery.tablet} {
     box-sizing: border-box;
@@ -157,13 +158,13 @@ text-decoration: ${ props => props?.theme?.textDecoration ?? 'initial'};
     //動畫
 
     //字體
-    white-space : ${ props => props?.theme?.tablet?.tablet?.whiteSpace ? props.theme.tablet.whiteSpace : (props?.theme?.whiteSpace ?? 'initial')};
-    text-align: ${ props => props?.theme?.tablet?.tablet?.textAlign ? props.theme.tablet.textAlign : (props?.theme?.textAlign ?? 'initial')};
-    font-size: ${ props => props?.theme?.tablet?.tablet?.fontSize ? props.theme.tablet.fontSize : (props?.theme?.fontSize ?? 'initial')};
-    color: ${ props => props?.theme?.tablet?.tablet?.color ? props.theme.tablet.color : (props?.theme?.color ?? 'initial')};
+    white-space : ${ props => props?.theme?.tablet?.whiteSpace ? props.theme.tablet.whiteSpace : (props?.theme?.whiteSpace ?? 'initial')};
+    text-align: ${ props => props?.theme?.tablet?.textAlign ? props.theme.tablet.textAlign : (props?.theme?.textAlign ?? 'initial')};
+    font-size: ${ props => props?.theme?.tablet?.fontSize ? props.theme.tablet.fontSize : (props?.theme?.fontSize ?? 'initial')};
+    color: ${ props => props?.theme?.tablet?.color ? props.theme.tablet.color : (props?.theme?.color ?? 'initial')};
     font-family: ${ props => props?.theme?.tablet?.fontFamily ? props.theme.tablet.fontFamily : (props?.theme?.fontFamily ?? '"Arial", Microsoft JhengHei, "微軟正黑體", Helvetica, sans-serif')};
     font-weight: ${ props => props?.theme?.tablet?.fontWeight ? props.theme.tablet.fontWeight : (props?.theme?.fontWeight ?? '500')};
     letter-spacing: ${ props => props?.theme?.tablet?.letterSpacing ? props.theme.tablet.letterSpacing : (props?.theme?.letterSpacing ?? '0.0075em')};
-
+    user-select: ${ props => props?.theme?.tablet?.userSelect ? props.theme.tablet.userSelect : (props?.theme?.userSelect ?? 'initial')};
 }
 `
