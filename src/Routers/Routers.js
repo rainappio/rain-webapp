@@ -1,9 +1,24 @@
 import React from 'react';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import { urlMapping } from '../Mappings/Mappings';
 
-export const Routers = React.memo((props) => {
+export const Routers = (props) => {
     return (
-        <>
-            Routers
-        </>
+        <Switch>
+            <Route exact path={"/"}
+                render={({ location }) => {
+                    // return (getItemlocalStorage("Auth") !== null) ? (
+                    return urlMapping["/"]
+                    // ) : (
+                    //         <Redirect
+                    //             to={{
+                    //                 pathname: "/Login",
+                    //             }}
+                    //         />
+                    //     );
+                }
+                }>
+            </Route>
+        </Switch>
     )
-})
+}
