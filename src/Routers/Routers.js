@@ -216,6 +216,25 @@ export const Routers = (props) => {
                 {/* 
                    Date   : 2020-07-08 19:00:47
                    Author : Arhua Ho
+                   Content: 測試組件頁面
+                */}
+                <Route exact path={"/Test"}
+                    render={({ location }) => {
+                        return (getItemlocalStorage("Auth") !== null) ? (
+                            urlMapping["/Test"]
+                        ) : (
+                                <Redirect
+                                    to={{
+                                        pathname: "/Login",
+                                    }}
+                                />
+                            );
+                    }
+                    }>
+                </Route>
+                {/* 
+                   Date   : 2020-07-08 19:00:47
+                   Author : Arhua Ho
                    Content: 登入
                 */}
                 <Route path={"/Login"}

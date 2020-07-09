@@ -10,6 +10,7 @@ import { setItemlocalStorage, getItemlocalStorage, clearlocalStorage } from '../
 import { useHistory } from 'react-router-dom';
 import { useAsync } from '../../SelfHooks/useAsync';
 import { useForm } from '../../SelfHooks/useForm'
+import { useWindowSize } from '../../SelfHooks/useWindowSize'
 import { Text } from '../../Components/Texts'
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
@@ -22,6 +23,7 @@ export const Administrators = (props) => {
     const [TableData, setTableData] = useState([]);
 
     const [SearchWord, SearchWordhandler, SearchWordregExpResult] = useForm("", [""], [""]);
+    const [width] = useWindowSize();
 
     //#region 查詢列表API
     const getRoleByPageOrkey = useCallback(async (page = 1, key) => {
@@ -71,7 +73,8 @@ export const Administrators = (props) => {
 
     return (
         <>
-            <BasicContainer theme={administrators.basicContainer}>
+            {/* 寬度大於等於768時渲染的組件 */}
+            {width >= 768 && <BasicContainer theme={administrators.basicContainer}>
                 <PageTitle>管理員名單</PageTitle>
                 <FormControl theme={{}}>
                     <FormRow theme={administrators.addAndSearchFormRow}>
@@ -107,34 +110,52 @@ export const Administrators = (props) => {
                             // width:"", //外層容器寬度
                             minWidth: "0", //外層容器最小寬度
                             rowHeight: "4rem",
+                            titleRowHeight: "4rem",
                             // padding:"", //外層容器內距
                             // checkColWidth: "6rem", //勾選欄寬度
                             // checkIconSize: "2rem", //勾選框大小
                             // checkIconColor: "red", //勾選框顏色
                             // checkIconHoverBackgroundColor: "black", //勾選框大小Hover背景顏色
                             // rowHoverBackgroundColor: "black", // hover資料列背景色
-                            // tableBorder: "2px solid black", // 列表的整體邊框樣式
+                            // tableBorder: "2px solid #e5e5e5", // 列表的整體邊框樣式
                             // borderwidth: "2px",
                             "uRealName": {
                                 // width: "40rem", // 調整個別欄寬度
                                 // 提供客製化渲染內容，可使用預設參數 item 與 id，item 為 對應列表資料、id 為對應列表資料的id
                                 // render: (item, id) => (`${item} ${id} sdf`)
                                 width: "20%",
-                                order: true // 是否開啟排序，預設為不開啟
+                                order: true,// 是否開啟排序，預設為不開啟
+                                render: (item, id) => ((item &&
+                                    <Text theme={{
+                                        color: "#444",
+                                        fontWeight: "550",
+                                        cursor: "default",
+                                        fontSize: "1rem"
+                                    }}>{item}</Text>))
                             },
                             "phone": {
                                 // width: "45rem",
                                 width: "20%",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id) => ((item &&
-                                    <Text>{item}</Text>))
+                                    <Text theme={{
+                                        color: "#444",
+                                        fontWeight: "550",
+                                        cursor: "default",
+                                        fontSize: "1rem"
+                                    }}>{item}</Text>))
                             },
                             "uCreateTime": {
                                 // width: "20rem",
                                 width: "20%",
                                 order: true,
                                 render: (item, id) => ((item &&
-                                    <Text>{item.split("T")[0]}</Text>))
+                                    <Text theme={{
+                                        color: "#444",
+                                        fontWeight: "550",
+                                        cursor: "default",
+                                        fontSize: "1rem"
+                                    }}>{item.split("T")[0]}</Text>))
                             },
                             "controll": {
                                 // width: "20rem",
@@ -144,8 +165,8 @@ export const Administrators = (props) => {
                                     return (
                                         <BasicContainer theme={{ textAlign: "right" }}>
                                             {[
-                                                <CreateIcon style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }} />,
-                                                <DeleteForeverIcon style={{ cursor: "pointer", color: "#d25959", margin: "0 1rem 0 0" }} />
+                                                <CreateIcon key={`${item}1`} style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }} />,
+                                                <DeleteForeverIcon key={`${item}2`} style={{ cursor: "pointer", color: "#d25959", margin: "0 1rem 0 0" }} />
                                             ]}
                                         </BasicContainer>
                                     )
@@ -156,6 +177,112 @@ export const Administrators = (props) => {
                         }} />
                 </BasicContainer>
             </BasicContainer>
+            }
+            {/* 寬度小於768時渲染的組件 */}
+            {width < 768 && <BasicContainer theme={administrators.basicContainer}>
+                <FormControl theme={{}}>
+                    <FormRow theme={administrators.addAndSearchFormRowLessThan768}>
+                        <SearchTextInput
+                            value={SearchWord}
+                            onChange={SearchWordhandler}
+                            regExpResult={SearchWordregExpResult}
+                            placeholder={"搜尋姓名、電話、Email"}
+                            theme={administrators.searchInput}
+                        />
+                        <SubContainer theme={administrators.addButtonSubContainerLessThan768}>
+                            <EasyButton
+                                onClick={() => { console.log("sadf") }}
+                                theme={administrators.addButtonLessThan768}
+                                text={"新增帳號"} icon={<AddIcon style={{
+                                    position: "relative",
+                                    top: "0.3rem",
+                                    height: "1.28rem"
+                                }} />}
+                            />
+                        </SubContainer>
+                    </FormRow>
+                </FormControl>
+                <BasicContainer theme={administrators.tableBasicContainerLessThan768}>
+                   asd
+                    {/* <TableBasic
+                        data={TableData} //原始資料
+                        title={["姓名", "連絡電話", "建立日期", ""]} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
+                        colKeys={["uRealName", "phone", "uCreateTime", "controll"]} //必傳
+                        //haveCheck={true} //是否開啟勾選欄，預設不開啟
+                        showHowManyRows={10 * 1.143} //顯示列數 * 3.5rem
+                        turnPageExecute={(executePages) => { execute(executePages, SearchWord) }}//發查翻頁，必傳否則不能翻頁
+                        theme={{
+                            // width:"", //外層容器寬度
+                            minWidth: "0", //外層容器最小寬度
+                            rowHeight: "4rem",
+                            titleRowHeight: "4rem",
+                            // padding:"", //外層容器內距
+                            // checkColWidth: "6rem", //勾選欄寬度
+                            // checkIconSize: "2rem", //勾選框大小
+                            // checkIconColor: "red", //勾選框顏色
+                            // checkIconHoverBackgroundColor: "black", //勾選框大小Hover背景顏色
+                            // rowHoverBackgroundColor: "black", // hover資料列背景色
+                            // tableBorder: "2px solid #e5e5e5", // 列表的整體邊框樣式
+                            // borderwidth: "2px",
+                            "uRealName": {
+                                // width: "40rem", // 調整個別欄寬度
+                                // 提供客製化渲染內容，可使用預設參數 item 與 id，item 為 對應列表資料、id 為對應列表資料的id
+                                // render: (item, id) => (`${item} ${id} sdf`)
+                                width: "20%",
+                                order: true,// 是否開啟排序，預設為不開啟
+                                render: (item, id) => ((item &&
+                                    <Text theme={{
+                                        color: "#444",
+                                        fontWeight: "550",
+                                        cursor: "default",
+                                        fontSize: "1rem"
+                                    }}>{item}</Text>))
+                            },
+                            "phone": {
+                                // width: "45rem",
+                                width: "20%",
+                                order: true,// 是否開啟排序，預設為不開啟
+                                render: (item, id) => ((item &&
+                                    <Text theme={{
+                                        color: "#444",
+                                        fontWeight: "550",
+                                        cursor: "default",
+                                        fontSize: "1rem"
+                                    }}>{item}</Text>))
+                            },
+                            "uCreateTime": {
+                                // width: "20rem",
+                                width: "20%",
+                                order: true,
+                                render: (item, id) => ((item &&
+                                    <Text theme={{
+                                        color: "#444",
+                                        fontWeight: "550",
+                                        cursor: "default",
+                                        fontSize: "1rem"
+                                    }}>{item.split("T")[0]}</Text>))
+                            },
+                            "controll": {
+                                // width: "20rem",
+                                width: "40%",
+                                //order: true,
+                                render: (item, id, rowItem) => {
+                                    return (
+                                        <BasicContainer theme={{ textAlign: "right" }}>
+                                            {[
+                                                <CreateIcon key={`${item}1`} style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }} />,
+                                                <DeleteForeverIcon key={`${item}2`} style={{ cursor: "pointer", color: "#d25959", margin: "0 1rem 0 0" }} />
+                                            ]}
+                                        </BasicContainer>
+                                    )
+
+
+                                }
+                            },
+                        }} /> */}
+                </BasicContainer>
+            </BasicContainer>
+            }
         </>
     )
 }

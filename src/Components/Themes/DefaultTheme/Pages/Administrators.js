@@ -1,4 +1,7 @@
 export default {
+
+    //#region 大於等於768px
+    //#region 最外層容器
     basicContainer: {
         height: "calc( 100% - 4.5rem )",
         //backgroundColor: "#f7f1ed",
@@ -14,6 +17,7 @@ export default {
             right: "0rem"
         }
     },
+    //#endregion
     //#region 新增帳號與搜尋框
     addAndSearchFormRow: {
         direction: "row",
@@ -70,4 +74,33 @@ export default {
         padding: "2rem 2.5rem 2.5rem 2.5rem"
     },
     //#endregion
+    //#endregion 
+    //#region 小於768px
+    addAndSearchFormRowLessThan768: {
+        direction: "row",
+        justify: "space-between",
+        padding: "0 1rem 0",
+        margin: "0.75rem 0 0"
+    },
+    addButtonLessThan768: {
+        backgroundColor: "#fff",
+        display: "inline-block",
+        width: "6.75rem",
+        height: "2.25rem",
+        lineHeight: "2.25rem",
+        color: "#964f19",
+        border: "1px solid #964f19",
+        borderRadius: "1.25rem",
+        textAlign: "center",
+        hoverBackgroundColor: "#964f19",
+        hoverColor: "#fff",
+        fontSize: "0.875rem"
+    },
+    tableBasicContainerLessThan768: {
+        padding: "0.75rem 1rem 0"
+    },
+    addButtonSubContainerLessThan768: {
+
+    },
+    //#endregion 
 }

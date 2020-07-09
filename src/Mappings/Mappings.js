@@ -23,6 +23,7 @@ import { Dispatch } from "../Pages/MainPages/Dispatch";
 import { DispatchBoard } from "../Pages/MainPages/DispatchBoard";
 import { ReservationList } from "../Pages/MainPages/ReservationList";
 import { Percentage } from "../Pages/MainPages/Percentage";
+import { Test } from "../Pages/MainPages/Test";
 // import { UserRoles } from '../Pages/MainPages/UserRoles';
 // import { UserUsers } from '../Pages/MainPages/UserUsers';
 // import { UserAuthority } from '../Pages/MainPages/UserAuthority';
@@ -69,6 +70,7 @@ export const navbarTitleMapping = {
    "/ReservationList": "預約清單",// 預約清單
    "/Percentage": "預約率總覽",// 預約率總覽
    "/": "預約件數",// 預約件數
+   "/Test": "測試組件頁面",// 測試組件頁面
    "/404": "錯誤頁面",
    "/Login": "登入頁面",
 };
@@ -98,6 +100,7 @@ export const urlMapping = {
    "/ReservationList": <ReservationList />,// 預約清單
    "/Percentage": <Percentage />,// 預約率總覽
    "/": <Home />,// 預約件數
+   "/Test": <Test />,// 測試組件頁面
    "/404": < Error404 />,
    "/Login": <Login />,
 };

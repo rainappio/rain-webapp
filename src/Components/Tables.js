@@ -148,18 +148,20 @@ const TableBase = (props) => {
                     <BasicContainer
                         style={{ userSelect: "none" }}
                         theme={{
-                            borderTop: props?.theme?.tableBorder ?? "0.5px solid #ebeef5",
-                            borderLeft: props?.theme?.tableBorder ?? "0.5px solid #ebeef5",
-                            borderBottom: props?.theme?.tableBorder ?? "0.5px solid #ebeef5",
+                            backgroundColor: "#f2eae3",
+                            //borderTop: props?.theme?.tableBorder ?? "0.5px solid #e5e5e5",
+                            //borderLeft: props?.theme?.tableBorder ?? "0.5px solid #e5e5e5",
+                            borderBottom: props?.theme?.tableBorder ?? "0.5px solid #e5e5e5",
                             display: "flex",
                             minWidth: "fit-content",
+                            height: props?.theme?.titleRowHeight,
                         }}>
                         {props.haveCheck &&
                             <BasicContainer theme={{
                                 textAlign: "center",
                                 width: props?.theme?.checkColWidth ?? "4rem",
                                 padding: "0.5rem",
-                                borderRight: props?.theme?.tableBorder ?? "0.5px solid #ebeef5"
+                                //borderRight: props?.theme?.tableBorder ?? "0.5px solid #ebeef5"
                             }} className={"checkbox"} >
                                 <Checkbox className={"checkIcon"} checked={(!(CheckedPatchArray ?? []).some(r => !CheckedArray.includes(r)))} onChange={(e) => { CheckedArray.length !== 0 ? setCheckedArray([]) : setCheckedArray(CheckedPatchArray) }} />
                             </BasicContainer>}
@@ -168,7 +170,7 @@ const TableBase = (props) => {
                                 padding: "0.8rem 0.5rem",
                                 textAlign: "left",
                                 width: (props?.theme?.[props?.colKeys[index]] ? (props?.theme[props.colKeys[index]].width ?? `calc( ( 100% - ${props?.theme?.checkColWidth ?? (props.haveCheck ? "4.5rem" : "0rem")} ) / ${props?.title?.length} )`) : `calc( ( 100% - ${props?.theme?.checkColWidth ?? (props.haveCheck ? "4.5rem" : "0rem")} ) / ${props?.title?.length} )`),
-                                borderRight: props?.theme?.tableBorder ?? "0.5px solid #ebeef5",
+                                //borderRight: props?.theme?.tableBorder ?? "0.5px solid #ebeef5",
                                 cursor: (props?.theme?.[props?.colKeys[index]]?.order ?? false) ? "pointer" : "default",
                             }}
                                 onClick={() => {
@@ -201,7 +203,7 @@ const TableBase = (props) => {
                                 }}
                             >
                                 {/* {console.log("width", (props?.theme?.[props?.colKeys[index]] ? (props?.theme[props.colKeys[index]].width ?? `calc( ( 100% - ${props?.theme?.checkColWidth ?? "4rem"} ) / ${props?.title?.length} )`) : `calc( ( 100% - ${props?.theme?.checkColWidth ?? "4rem"} ) / ${props?.title?.length} )`))} */}
-                                <Text theme={{ color: "#909399", fontWeight: "bold", cursor: "pointer" }}>{item}</Text>
+                                <Text theme={{ color: "#444", fontWeight: "900", cursor: "pointer", fontSize: "1.125rem" }}>{item}</Text>
                                 {
                                     (props?.theme?.[props?.colKeys[index]]?.order ?? false) &&
                                         (ColOrder.colName === item) ?
@@ -237,7 +239,8 @@ const TableBase = (props) => {
                                 height: props?.theme?.rowHeight,
                                 borderLeft: props?.theme?.tableBorder ?? "0.5px solid #ebeef5",
                                 borderBottom: props?.theme?.tableBorder ?? "0.5px solid #ebeef5",
-                                hoverBackgroundColor: props?.theme?.rowHoverBackgroundColor ?? "#f5f7fa",
+                                backgroundColor: (index % 2 === 1 ? "#f8f5f2" : "#fdfcfb"),
+                                //hoverBackgroundColor: props?.theme?.rowHoverBackgroundColor ?? "#f5f7fa",
                             }} key={`tr${index}`}>
 
                                 {props.haveCheck &&

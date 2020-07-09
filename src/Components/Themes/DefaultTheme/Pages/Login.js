@@ -1,5 +1,6 @@
 export default {
     loginContainer: {
+        zIndex:"100",
         height: "100vh",
         backgroundColor: "#f7f1ed",
         //padding: "7rem 0 0 0",

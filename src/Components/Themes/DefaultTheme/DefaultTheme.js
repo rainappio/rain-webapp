@@ -9,6 +9,7 @@ import home from './Pages/Home'
 import locations from './Pages/Locations'
 import percentage from './Pages/Percentage'
 import reservationList from './Pages/ReservationList'
+import test from './Pages/Test'
 import error404 from './ErrorPages/Error404'
 import forms from "./Forms";
 import tags from "./Tags";
@@ -34,6 +35,7 @@ export default {
         locations,
         percentage,
         reservationList,
+        test,
     },
     errorPages: {
         error404
