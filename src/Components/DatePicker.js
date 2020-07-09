@@ -12,16 +12,13 @@ import 'element-theme-default';
    Date   : 2020-07-08 16:41:30
    Author : GGGODLIN
    Content: 可傳入props
-                icon={<Logo />} : 顯示在上半部的icon
-                onClick={() => console.log("123")}
-                labelFirst="test" : 上方標籤的內容
-                labelSecond="2" : 下方標籤的內容
+                getDate (function) : 請塞useForm的第四個參數
             對外開放樣式 theme = {  }
 */
 
 export const DatePicker = (props) => {
-    const { Theme } = useContext(Context);
-    const { orderCard } = Theme;
+
+
     const [value, setvalue] = useState([new Date(), new Date()]);
 
     return (
