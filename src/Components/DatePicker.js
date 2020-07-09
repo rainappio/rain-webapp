@@ -4,6 +4,8 @@ import { BasicContainer, Container, SubContainer } from '../Components/Container
 import { Text } from '../Components/Texts';
 import { Context } from '../Store/store'
 import { DateRangePicker } from 'element-react';
+import 'element-theme-default';
+
 
 
 /*
@@ -20,9 +22,8 @@ import { DateRangePicker } from 'element-react';
 export const DatePicker = (props) => {
     const { Theme } = useContext(Context);
     const { orderCard } = Theme;
-    const [value, setvalue] = useState(null);
-    //console.log("IN OrderCard", props);
-    //...(isOn ? { backgroundColor: '#2f3e51' } : { backgroundColor: '#FFFFFF' })
+    const [value, setvalue] = useState([new Date(), new Date()]);
+
     return (
         <>
 
@@ -32,8 +33,9 @@ export const DatePicker = (props) => {
                         value={value}
                         placeholder="选择日期范围"
                         onChange={date => {
-                            console.log('DateRangePicker1 changed: ', date, date[0].getDate());
+                            //console.log('DateRangePicker1 changed: ', date);
                             setvalue(date);
+                            props.getDate && props.getDate(date);
                         }}
                         align='left'
                         rangeSeparator='至'
