@@ -85,6 +85,10 @@ letter-spacing: ${ props => props?.theme?.letterSpacing ?? '0.0075em'};
 text-decoration: ${ props => props?.theme?.textDecoration ?? 'initial'};
 user-select: ${ props => props?.theme?.userSelect ?? 'initial'};
 
+&:hover {
+    color: ${props => props?.theme?.hoverColor};
+}
+
 @media ${ mediaQuery.tablet} {
     box-sizing: border-box;
     display: ${props => props?.theme?.tablet?.display ? props.theme.tablet.display : (props?.theme?.display ?? 'initial')};
@@ -166,5 +170,9 @@ user-select: ${ props => props?.theme?.userSelect ?? 'initial'};
     font-weight: ${ props => props?.theme?.tablet?.fontWeight ? props.theme.tablet.fontWeight : (props?.theme?.fontWeight ?? '500')};
     letter-spacing: ${ props => props?.theme?.tablet?.letterSpacing ? props.theme.tablet.letterSpacing : (props?.theme?.letterSpacing ?? '0.0075em')};
     user-select: ${ props => props?.theme?.tablet?.userSelect ? props.theme.tablet.userSelect : (props?.theme?.userSelect ?? 'initial')};
+
+    &:hover {
+        color: ${ props => props?.theme?.tablet?.hoverColor ? props.theme.tablet.hoverColor : (props?.theme?.hoverColor)};
+    }
 }
 `

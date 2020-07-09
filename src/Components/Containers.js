@@ -264,6 +264,7 @@ export const BasicContainer = styled.div.attrs((props) => ({}))`
 
     &:hover {
         background-color: ${props => props?.theme?.hoverBackgroundColor};
+        color: ${props => props?.theme?.hoverColor};
     }
 
     @media ${mediaQuery.tablet} { 
@@ -290,10 +291,10 @@ export const BasicContainer = styled.div.attrs((props) => ({}))`
         margin: ${props => props?.theme?.tablet?.margin ? props.theme.tablet.margin : (props?.theme?.margin ?? 'initial')}; 
         border: ${props => props?.theme?.tablet?.border ? props.theme.tablet.border : (props?.theme?.border ?? 'initial')}; 
         border-radius: ${props => props?.theme?.tablet?.borderRadius ? props.theme.tablet.borderRadius : (props?.theme?.borderRadius ?? 'initial')}; 
-        border-top: ${props => props?.theme?.tablet?.borderTop ? props.theme.tablet.borderTop : (props?.theme?.borderTop ?? 'initial')}; 
-        border-left: ${props => props?.theme?.tablet?.borderLeft ? props.theme.tablet.borderLeft : (props?.theme?.borderLeft ?? 'initial')};  
-        border-right: ${props => props?.theme?.tablet?.borderRight ? props.theme.tablet.borderRight : (props?.theme?.borderRight ?? 'initial')};  
-        border-bottom: ${props => props?.theme?.tablet?.borderBottom ? props.theme.tablet.borderBottom : (props?.theme?.borderBottom ?? 'initial')}; 
+        border-top: ${props => props?.theme?.tablet?.borderTop ? props.theme.tablet.borderTop : props?.theme?.borderTop}; 
+        border-left: ${props => props?.theme?.tablet?.borderLeft ? props.theme.tablet.borderLeft : props?.theme?.borderLeft};  
+        border-right: ${props => props?.theme?.tablet?.borderRight ? props.theme.tablet.borderRight : props?.theme?.borderRight};  
+        border-bottom: ${props => props?.theme?.tablet?.borderBottom ? props.theme.tablet.borderBottom : props?.theme?.borderBottom}; 
         padding: ${props => props?.theme?.tablet?.padding ? props.theme.tablet.padding : (props?.theme?.padding ?? 'initial')}; 
     
         //溢出
@@ -350,6 +351,7 @@ export const BasicContainer = styled.div.attrs((props) => ({}))`
     
         &:hover {
             background-color: ${props => props?.theme?.tablet?.hoverBackgroundColor ? props.theme.tablet.hoverBackgroundColor : (props?.theme?.hoverBackgroundColor)};
+            color: ${props => props?.theme?.tablet?.hoverColor ? props.theme.tablet.hoverColor : (props?.theme?.hoverColor)};
         }
     }
 `

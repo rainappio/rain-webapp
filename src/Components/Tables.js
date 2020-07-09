@@ -234,6 +234,7 @@ const TableBase = (props) => {
                             <BasicContainer theme={{
                                 display: "flex",
                                 minWidth: "fit-content",
+                                height: props?.theme?.rowHeight,
                                 borderLeft: props?.theme?.tableBorder ?? "0.5px solid #ebeef5",
                                 borderBottom: props?.theme?.tableBorder ?? "0.5px solid #ebeef5",
                                 hoverBackgroundColor: props?.theme?.rowHoverBackgroundColor ?? "#f5f7fa",

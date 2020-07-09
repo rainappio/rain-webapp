@@ -5,6 +5,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import SearchIcon from '@material-ui/icons/Search';
 import { BasicContainer, Container, SubContainer } from './Containers';
 import { Context } from '../Store/store'
 import { Text } from './Texts';
@@ -86,7 +87,7 @@ export const FormControl = (props) => {
 export const FormRow = (props) => {
 
     return (
-        <Container theme={{ direction: "row" }}>
+        <Container theme={props?.theme ?? { direction: "row" }}>
             {props.children}
         </Container >
     )
@@ -167,6 +168,101 @@ export const TextInput = styled(TextInputBase).attrs((props) => ({}))`
         &:focus {
             outline: ${props => props?.theme?.input?.focusOutline ?? '1px solid #409eff00'};
             background-color: ${props => props?.theme?.input?.focusBackgroundColor ?? 'initial'};
+        }
+    }
+`
+//#endregion
+//#endregion
+
+//#region 搜尋輸入框
+//#region 搜尋輸入框框基底
+/* 
+   Date   : 2020-06-04 18:07:25
+   Author : Arhua Ho
+   Content: 搜尋輸入框框基底
+*/
+const SearchTextInputBase = (props) => {
+    //console.log(props)
+    const searchLeft = {
+        color: "#a4a4a4",
+        position: "absolute",
+        // right: "0",
+        left: "0.5rem",
+        top: "0.5rem",
+        transition: "left .3s ease-in-out",
+    }
+
+    const searchRight = {
+        color: "#444",
+        position: "absolute",
+        left: `calc( ${props?.theme?.inputBasicContainer.width} - 1.875rem )`,
+        // left: "0",
+        // right: "0.5rem",
+        top: "0.5rem",
+        transition: "left .3s ease-in-out",
+    }
+
+    const ref = useRef();
+    const [SearchIconPosition, setSearchIconPosition] = useState(searchLeft);
+
+    return (
+        <>
+            <SubContainer
+                theme={props?.theme?.inputSubContainer}
+                className={props.className} >
+                {/* 輸入框 */}
+                <BasicContainer theme={
+                    props?.theme?.inputBasicContainer
+                }>
+                    <input autoComplete="off"
+                        ref={ref}
+                        name={props?.name}
+                        disabled={props.disabled && "disabled"}
+                        type={props.pass ? "password" : "text"}
+                        value={props.value ?? ""}
+                        onChange={props.onChange}
+                        placeholder={props.placeholder}
+                        onFocus={() => { setSearchIconPosition(searchRight) }}
+                        onBlur={() => { setSearchIconPosition(searchLeft) }}
+                    />
+                    <SearchIcon style={SearchIconPosition} />
+                </BasicContainer>
+            </SubContainer>
+        </>
+    )
+}
+//#endregion
+
+//#region 搜尋輸入框組件 具一般輸入、顯示/隱藏密碼功能，請搭配useForm使用
+/* 
+   Date   : 2020-06-04 18:07:46
+   Author : Arhua Ho
+   Content: 搜尋輸入框，具一般輸入、顯示/隱藏密碼功能，請搭配useForm使用
+
+*/
+export const SearchTextInput = styled(SearchTextInputBase).attrs((props) => ({}))`
+    //固定屬性
+
+    input {
+        box-sizing: border-box;
+        position: ${props => props?.theme?.input?.inputPosition ?? 'relative'};
+        height: ${props => props?.theme?.input?.inputHeight ?? 'initial'}; 
+        line-height: ${props => props?.theme?.input?.inputHeight ? `calc( ${props.theme.input.inputHeight} - .8rem )` : 'initial'}; 
+        width: 100%; 
+        font-size: ${props => props?.theme?.input?.fontSize ?? 'initial'}; 
+        border: ${props => props?.theme?.input?.border ?? '1px solid #444'};
+        border-radius: ${props => props?.theme?.input?.borderRadius ?? '20px'};
+        color: ${props => props?.theme?.input?.color ?? '#606266'};
+        font-family: ${props => props?.theme?.input?.fontFamily ?? '"Arial", Microsoft JhengHei, "微軟正黑體", Helvetica, sans-serif'};
+        font-weight: ${props => props?.theme?.input?.fontWeight ?? '500'};
+        letter-spacing: ${props => props?.theme?.input?.letterSpacing ?? '0.0075em'};
+        text-align: ${props => props?.theme?.input?.textAlign ?? 'initial'};
+
+        &:focus {
+            outline: ${props => props?.theme?.input?.focusOutline ?? '1px solid #409eff00'};
+            background-color: ${props => props?.theme?.input?.focusBackgroundColor ?? 'initial'};
+            border: ${props => props?.theme?.input?.focusBorder ?? '1px solid #d25959'};
+
         }
     }
 `

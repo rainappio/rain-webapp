@@ -10,7 +10,7 @@ import SortIcon from '@material-ui/icons/Sort';
 
 export const MenuBar = (props) => {
     //document.documentElement.clientWidth ,can by js controll responed
-    const { Theme, setTheme } = useContext(Context);
+    const { Theme } = useContext(Context);
     const { menuBar } = Theme;
     const [OpenMenu, setOpenMenu] = useState(false);
     let location = useLocation();

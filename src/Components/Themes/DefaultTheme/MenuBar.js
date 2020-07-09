@@ -41,6 +41,7 @@ export default {
             fontSize: " 1.125em",
             fontWeight: 550,
             color: "#fff",
+            userSelect: "none"
         },
         // 登入者容器
         leftModeLoginNameContainer: {
@@ -57,14 +58,16 @@ export default {
             fontSize: ".875rem",
             fontWeight: 550,
             display: "block",
-            margin: "0 0 0.2rem 0"
+            margin: "0 0 0.2rem 0",
+            userSelect: "none"
         },
         // 登入者文字
         leftModeLoginNameText: {
             fontSize: "1.25rem",
             fontWeight: 700,
             color: "#fff",
-            padding: "0.6rem 0"
+            padding: "0.6rem 0",
+            userSelect: "none"
         },
         // 登入者按鈕
         leftModeLoginNameButton: {
@@ -93,6 +96,7 @@ export default {
             fontWeight: 550,
             display: "block",
             margin: "1rem 0 0.5rem 1rem",
+            userSelect: "none"
         },
         // 功能選單Ul
         leftModeMenuUl: {
@@ -103,6 +107,7 @@ export default {
             marginInlineStart: "0rem",
             marginInlineEnd: "0rem",
             paddingInlineStart: "0rem",
+            userSelect: "none"
         },
         // 功能選單Li
         leftModeMenuLi: {
@@ -114,6 +119,7 @@ export default {
             alignItems: "center",
             height: "2.5rem",
             hoverBackgroundColor: "#a58b7f",
+            userSelect: "none"
         },
         // 功能選單Li 被點擊
         leftModeMenuLiClicked: {
@@ -126,7 +132,8 @@ export default {
             height: "2.5rem",
             backgroundColor: "#f3f0eb",
             hoverBackgroundColor: "#f3f0eb",
-            borderRight: "3px solid #d25959"
+            borderRight: "3px solid #d25959",
+            userSelect: "none"
         },
         // 功能選單Li文字
         leftModeMenuLiTtext: {
@@ -134,6 +141,7 @@ export default {
             color: "inherit",
             fontSize: "inherit",
             margin: "0 0 0 0.9rem",
+            userSelect: "none"
         },
         // 功能選單Li文字 被點擊
         leftModeMenuLiTtextClicked: {
@@ -141,6 +149,7 @@ export default {
             color: "#964f18",
             fontSize: "inherit",
             margin: "0 0 0 0.9rem",
+            userSelect: "none"
         },
         //#endregion
         //#region 小於768的頂部欄
@@ -243,6 +252,7 @@ export default {
             alignItems: "center",
             height: "2.5rem",
             hoverBackgroundColor: "#a58b7f",
+            userSelect: "none"
         },
         // 功能選單Li 被點擊
         topModeMenuLiClicked: {
@@ -255,7 +265,8 @@ export default {
             height: "2.5rem",
             backgroundColor: "#f3f0eb",
             hoverBackgroundColor: "#f3f0eb",
-            borderRight: "3px solid #d25959"
+            borderRight: "3px solid #d25959",
+            userSelect: "none"
         },
         //border-bottom: .5px solid #ffffff26;
 

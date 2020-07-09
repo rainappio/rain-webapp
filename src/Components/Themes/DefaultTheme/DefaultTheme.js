@@ -12,6 +12,7 @@ import reservationList from './Pages/ReservationList'
 import error404 from './ErrorPages/Error404'
 import forms from "./Forms";
 import tags from "./Tags";
+import tables from "./Tables";
 import list from "./Lists";
 import menuBar from "./MenuBar";
 
@@ -21,6 +22,7 @@ export default {
     ...forms,
     ...tags,
     ...menuBar,
+    ...tables,
     pages: {
         login,
         administrators,
