@@ -11,13 +11,18 @@ import { Text } from './Texts';
 
 //#region 簡單按鈕
 
-export const EasyButton = (props) => {
+export const EasyButtonBase = (props) => {
     return (
         <BasicContainer onClick={props.onClick} theme={props?.theme} className={props.className}>
-            <Text theme={{ fontWeight: props?.theme?.fontWeight, color: props?.theme?.color, cursor: "pointer", userSelect: "none" }}>{props?.text ?? "按鈕"}</Text>
+            {props.icon}
+            <Text theme={{ fontSize: props?.theme?.fontSize, fontWeight: props?.theme?.fontWeight, color: "inherit", cursor: "pointer", userSelect: "none" }}>{props?.text ?? "按鈕"}</Text>
+            {props.children}
         </BasicContainer>
     )
 }
+export const EasyButton = styled(EasyButtonBase).attrs((props) => ({}))`
+
+`
 //#endregion
 
 
