@@ -45,3 +45,45 @@ export const PageSubTitle = (props) => {
         </Container>
     )
 }
+
+const containerMobile = {
+    direction: "row",
+    justify: "space-between",
+    padding: "0 16px 0 16px ",
+    width: '100%',
+    margin: '16px 0 16px 0',
+    //height: '3rem',
+}
+
+const textMobile = { color: "#444", fontSize: "18px", fontWeight: 700, }
+
+const subContainerMobile = {}
+
+const upperBlockMobile = {
+    width: "100%",
+    height: '1px',
+    backgroundColor: "#ddd",
+    margin: '12px 0 0 0',
+
+}
+
+/*
+   Date   : 2020-07-09 17:05:30
+   Author : GGGODLIN
+   Content: 可傳入props
+                title (string) : title
+            對外開放樣式 container subContainer text upperBlock
+*/
+export const PageSubTitleMobile = (props) => {
+    return (
+        <Container theme={props.containerMobile ?? containerMobile}>
+            <SubContainer theme={props.subContainerMobile ?? subContainerMobile}>
+                <Text theme={props.textMobile ?? textMobile}>
+                    {props.title}
+                </Text>
+            </SubContainer>
+
+
+        </Container>
+    )
+}

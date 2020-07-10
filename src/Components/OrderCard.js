@@ -45,4 +45,34 @@ export const OrderCard = (props) => {
     )
 }
 
+export const OrderCardMobile = (props) => {
+    const { Theme } = useContext(Context);
+    const { orderCard } = Theme;
+    const [isShown, setIsShown] = useState(false);
+    //console.log("IN OrderCard", props);
+    //...(isOn ? { backgroundColor: '#2f3e51' } : { backgroundColor: '#FFFFFF' })
+    return (
+        <>
+
+            <BasicContainer
+                theme={isShown ? (props?.theme?.orderCardMobileContainerHover ?? orderCard?.orderCardMobileContainerHover) : (props?.theme?.orderCardMobileContainer ?? orderCard?.orderCardMobileContainer)}
+                onClick={props?.onClick ?? (() => console.log("click OrderCard without onClick!", props))}
+                onMouseEnter={() => setIsShown(true)}
+                onMouseLeave={() => setIsShown(false)}
+            >
+                {props?.icon && <Container theme={{ justify: 'center', alignItems: 'center', height: '50%' }}>
+                    {isShown && React.cloneElement(props?.icon, { style: { fill: 'white', height: "3rem", width: "3rem" } })}
+                    {!isShown && React.cloneElement(props?.icon, { style: { fill: '#555555', height: "3rem", width: "3rem" } })}
+                </Container>}
+                <Container theme={{ direction: 'column', height: '50%' }}>
+                    <Text theme={{ color: `${isShown ? "white" : "#555555"}`, fontSize: "24px", textAlign: "center", display: "block", fontWeight: 'bold', lineHeight: '24px' }}>{props.labelFirst ?? "labelFirst"}</Text>
+                    <Text theme={{ color: `${isShown ? "white" : "#555555"}`, fontSize: "14px", textAlign: "center", display: "block" }}>{props.labelSecond ?? "labelSecond"}</Text>
+                </Container>
+            </BasicContainer>
+
+
+        </>
+    )
+}
+
 

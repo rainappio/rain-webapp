@@ -1,8 +1,8 @@
 import React, { useContext, useCallback, useState } from 'react';
 import { Context } from '../../Store/store'
-import { BasicContainer, SubContainer } from '../../Components/Containers';
+import { BasicContainer, SubContainer, Container } from '../../Components/Containers';
 import { PageTitle } from '../../Components/PageTitle';
-import { PageSubTitle } from '../../Components/PageSubTitle';
+import { PageSubTitle, PageSubTitleMobile } from '../../Components/PageSubTitle';
 import { EasyButton } from '../../Components/Buttons';
 import AddIcon from '@material-ui/icons/Add';
 import { SearchTextInput, FormControl, FormRow } from '../../Components/Forms';
@@ -16,17 +16,27 @@ import { Text } from '../../Components/Texts'
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { CardTable } from '../../Components/CardTable';
-import { OrderCard } from '../../Components/OrderCard';
+import { OrderCard, OrderCardMobile } from '../../Components/OrderCard';
+import { ReactComponent as LogoDone } from '../../Assets/img/done.svg'
+import { ReactComponent as LogoFail } from '../../Assets/img/fail.svg'
+import { ReactComponent as LogoNew } from '../../Assets/img/new.svg'
+import { ReactComponent as LogoPercentage } from '../../Assets/img/percentage.svg'
+import { ReactComponent as LogoTotal } from '../../Assets/img/total.svg'
 
 export const Home = (props) => {
 
     const { APIUrl, Theme } = useContext(Context);
-    const { pages: { administrators } } = Theme;
+    const { pages: { home } } = Theme;
     let history = useHistory();
     const [TableData, setTableData] = useState([]);
-
+    const [orderRes, setorderRes] = useState({});
+    const [cardCount, setcardCount] = useState([0, 0, 0, 0, 0]);
+    const [cardCountSeven, setcardCountSeven] = useState([0, 0, 0, 0, 0]);
     const [SearchWord, SearchWordhandler, SearchWordregExpResult] = useForm("", [""], [""]);
     const [width] = useWindowSize();
+
+
+
 
     //#region 查詢列表API
     const getRoleByPageOrkey = useCallback(async (page = 1, key) => {
@@ -74,240 +84,241 @@ export const Home = (props) => {
     const [execute, Pending] = useAsync(getRoleByPageOrkey, true);
     //#endregion
 
+    //#region 查詢單子API
+    const getOrder = useCallback(async (page = 1, key) => {
+
+        //#region 製造日期格式
+        let today = new Date();
+        let todayFormat = today.toISOString().substring(0, 10);
+        //console.log("today", todayFormat);
+
+        //#endregion
+
+        return await fetch(`${APIUrl}api/Orders/GetList?_date=${todayFormat}&_eDate=${todayFormat}`,
+            {
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
+                },
+            }
+        )//查詢角色、表格翻頁
+            .then(Result => {
+                const ResultJson = Result.clone().json();//Respone.clone()
+                return ResultJson;
+            })
+            .then((PreResult) => {
+                if (PreResult.Status === 401) {
+                    //Token過期 強制登出
+                    clearlocalStorage();
+                    history.push("/Login");
+                    throw new Error("Token過期 強制登出");
+                }
+
+                if (PreResult.success) {
+
+                    setorderRes(PreResult.response);
+                    let cardContent = analyzeStatus(PreResult.response);
+                    setcardCount(cardContent);
+                    console.log("1", PreResult.response, cardContent);
+                    return "查詢角色表格資訊成功"
+                } else {
+
+                    throw new Error("查詢角色表格資訊失敗");
+                }
+            })
+            .catch((Error) => {
+                throw Error;
+            })
+            .finally(() => {
+
+            });
+
+        // 這裡要接著打refresh 延長Token存活期
+
+    }, [APIUrl, history])
+
+    const [executeGetOrder, PendingGetOrder] = useAsync(getOrder, true);
+    //#endregion
+
+    //#region 查詢7天單子API
+    const getOrderSeven = useCallback(async (page = 1, key) => {
+
+        //#region 製造日期格式
+        let today = new Date();
+        let todayFormat = today.toISOString().substring(0, 10);
+        //console.log("today", todayFormat);
+        let endDay = new Date();
+        let realEnd = new Date(endDay.setDate(endDay.getDate() + 7));//此處+7取得一週後日期
+        let endDayFormat = realEnd.toISOString().substring(0, 10);
+        //console.log("endDay", endDayFormat);
+        //#endregion
+
+        return await fetch(`${APIUrl}api/Orders/GetList?_date=${todayFormat}&_eDate=${endDayFormat}`,
+            {
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
+                },
+            }
+        )//查詢角色、表格翻頁
+            .then(Result => {
+                const ResultJson = Result.clone().json();//Respone.clone()
+                return ResultJson;
+            })
+            .then((PreResult) => {
+                if (PreResult.Status === 401) {
+                    //Token過期 強制登出
+                    clearlocalStorage();
+                    history.push("/Login");
+                    throw new Error("Token過期 強制登出");
+                }
+
+                if (PreResult.success) {
+
+                    //setorderRes(PreResult.response);
+                    let cardContent = analyzeStatus(PreResult.response);
+                    setcardCountSeven(cardContent);
+                    console.log("7", PreResult.response, cardContent);
+                    return "查詢角色表格資訊成功"
+                } else {
+
+                    throw new Error("查詢角色表格資訊失敗");
+                }
+            })
+            .catch((Error) => {
+                throw Error;
+            })
+            .finally(() => {
+
+            });
+
+        // 這裡要接著打refresh 延長Token存活期
+
+    }, [APIUrl, history])
+
+    const [executeGetOrderSeven, PendingGetOrderSeven] = useAsync(getOrderSeven, true);
+    //#endregion
+
+    const analyzeStatus = (data) => {
+        let total = data?.length;
+        if (total === 0) {
+            return [0, 0, 0, 0, '無'];
+        }
+        let done = 0;
+        let timeout = 0;
+        let comming = 0;
+
+        data.forEach(function (item, index, array) {
+            if (item?.Status === 5) {
+                done += 1;
+            }
+            else if (item?.Status === 0 || item?.Status === 1) {
+                comming += 1;
+            }
+            else {
+                timeout += 1;
+            }
+        });
+
+        let percent = done / total;
+        return [total, done, timeout, comming, percent];
+    }
+
     return (
         <>
             {/* 寬度大於等於768時渲染的組件 */}
-            {width >= 768 && <BasicContainer theme={administrators.basicContainer}>
+            {width >= 768 && <BasicContainer theme={home.basicContainer}>
                 <PageTitle>預約件數</PageTitle>
                 <PageSubTitle title='今日預約件數' />
-                <FormControl theme={{}}>
-                    <FormRow theme={administrators.addAndSearchFormRow}>
-                        <SubContainer theme={administrators.addButtonSubContainer}>
-                            <EasyButton
-                                onClick={() => { console.log("sadf") }}
-                                theme={administrators.addButton}
-                                text={"新增帳號"} icon={<AddIcon style={{
-                                    position: "relative",
-                                    top: "0.3rem",
-                                    height: "1.28rem"
-                                }} />}
-                            />
-                        </SubContainer>
-                        <SearchTextInput
-                            value={SearchWord}
-                            onChange={SearchWordhandler}
-                            regExpResult={SearchWordregExpResult}
-                            placeholder={"搜尋姓名、電話、Email"}
-                            theme={administrators.searchInput}
-                        />
-                    </FormRow>
-                </FormControl>
-                <BasicContainer theme={administrators.tableBasicContainer}>
-                    <TableBasic
-                        data={TableData} //原始資料
-                        title={["姓名", "連絡電話", "建立日期", ""]} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
-                        colKeys={["uRealName", "phone", "uCreateTime", "controll"]} //必傳
-                        //haveCheck={true} //是否開啟勾選欄，預設不開啟
-                        showHowManyRows={9 * 1.143} //顯示列數 * 3.5rem
-                        turnPageExecute={(executePages) => { execute(executePages, SearchWord) }}//發查翻頁，必傳否則不能翻頁
-                        theme={{
-                            // width:"", //外層容器寬度
-                            minWidth: "0", //外層容器最小寬度
-                            rowHeight: "4rem",
-                            titleRowHeight: "4rem",
-                            // padding:"", //外層容器內距
-                            // checkColWidth: "6rem", //勾選欄寬度
-                            // checkIconSize: "2rem", //勾選框大小
-                            // checkIconColor: "red", //勾選框顏色
-                            // checkIconHoverBackgroundColor: "black", //勾選框大小Hover背景顏色
-                            // rowHoverBackgroundColor: "black", // hover資料列背景色
-                            // tableBorder: "2px solid #e5e5e5", // 列表的整體邊框樣式
-                            // borderwidth: "2px",
-                            "uRealName": {
-                                // width: "40rem", // 調整個別欄寬度
-                                // 提供客製化渲染內容，可使用預設參數 item 與 id，item 為 對應列表資料、id 為對應列表資料的id
-                                // render: (item, id) => (`${item} ${id} sdf`)
-                                width: "20%",
-                                order: true,// 是否開啟排序，預設為不開啟
-                                render: (item, id) => ((item &&
-                                    <Text theme={{
-                                        color: "#444",
-                                        fontWeight: "550",
-                                        cursor: "default",
-                                        fontSize: "1rem"
-                                    }}>{item}</Text>))
-                            },
-                            "phone": {
-                                // width: "45rem",
-                                width: "20%",
-                                order: true,// 是否開啟排序，預設為不開啟
-                                render: (item, id) => ((item &&
-                                    <Text theme={{
-                                        color: "#444",
-                                        fontWeight: "550",
-                                        cursor: "default",
-                                        fontSize: "1rem"
-                                    }}>{item}</Text>))
-                            },
-                            "uCreateTime": {
-                                // width: "20rem",
-                                width: "20%",
-                                order: true,
-                                render: (item, id) => ((item &&
-                                    <Text theme={{
-                                        color: "#444",
-                                        fontWeight: "550",
-                                        cursor: "default",
-                                        fontSize: "1rem"
-                                    }}>{item.split("T")[0]}</Text>))
-                            },
-                            "controll": {
-                                // width: "20rem",
-                                width: "40%",
-                                //order: true,
-                                render: (item, id, rowItem) => {
-                                    return (
-                                        <BasicContainer theme={{ textAlign: "right" }}>
-                                            {[
-                                                <CreateIcon key={`${item}1`} style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }} />,
-                                                <DeleteForeverIcon key={`${item}2`} style={{ cursor: "pointer", color: "#d25959", margin: "0 1rem 0 0" }} />
-                                            ]}
-                                        </BasicContainer>
-                                    )
+
+                <Container theme={home.orderCardFormRow}>
+                    <SubContainer >
+
+                        <OrderCard icon={<LogoTotal />} labelFirst={cardCount[0]} labelSecond="預約總件數" onClick={() => console.log("123")} />
 
 
-                                }
-                            },
-                        }} />
-                </BasicContainer>
+                        <OrderCard icon={<LogoDone />} labelFirst={cardCount[1]} labelSecond="已完成" onClick={() => console.log("123")} />
+
+
+                        <OrderCard icon={<LogoFail />} labelFirst={cardCount[2]} labelSecond="逾時未完成" onClick={() => console.log("123")} />
+
+                    </SubContainer>
+                    <SubContainer>
+
+                        <OrderCard icon={<LogoNew />} labelFirst={cardCount[3]} labelSecond="尚未執行" onClick={() => console.log("123")} />
+
+
+                        <OrderCard icon={<LogoPercentage />} labelFirst={cardCount[4] === '無' ? "無" : `${cardCount[4] * 100}%`} labelSecond="達成率" onClick={() => console.log("123")} />
+
+                    </SubContainer>
+                </Container>
+
+
+                <PageSubTitle title='本週預約件數' />
+                <Container theme={home.orderCardFormRow}>
+                    <SubContainer >
+                        <OrderCard icon={<LogoTotal />} labelFirst={cardCountSeven[0]} labelSecond="預約總件數" onClick={() => console.log("123")} />
+
+
+                        <OrderCard icon={<LogoDone />} labelFirst={cardCountSeven[1]} labelSecond="已完成" onClick={() => console.log("123")} />
+
+
+                        <OrderCard icon={<LogoFail />} labelFirst={cardCountSeven[2]} labelSecond="逾時未完成" onClick={() => console.log("123")} />
+                    </SubContainer>
+                    <SubContainer >
+                        <OrderCard icon={<LogoNew />} labelFirst={cardCountSeven[3]} labelSecond="尚未執行" onClick={() => console.log("123")} />
+
+                        <OrderCard icon={<LogoPercentage />} labelFirst={cardCountSeven[4] === '無' ? "無" : `${cardCountSeven[4] * 100}%`} labelSecond="達成率" onClick={() => console.log("123")} />
+                    </SubContainer>
+                </Container>
+
+
+
             </BasicContainer>
             }
+
             {/* 寬度小於768時渲染的組件 */}
-            {width < 768 && <BasicContainer theme={administrators.basicContainer}>
-                <FormControl theme={{}}>
-                    <FormRow theme={administrators.addAndSearchFormRowLessThan768}>
-                        <SearchTextInput
-                            value={SearchWord}
-                            onChange={SearchWordhandler}
-                            regExpResult={SearchWordregExpResult}
-                            placeholder={"搜尋姓名、電話、Email"}
-                            theme={administrators.searchInput}
-                        />
-                        <SubContainer theme={administrators.addButtonSubContainerLessThan768}>
-                            <EasyButton
-                                onClick={() => { console.log("sadf") }}
-                                theme={administrators.addButtonLessThan768}
-                                text={"新增帳號"} icon={<AddIcon style={{
-                                    position: "relative",
-                                    top: "0.3rem",
-                                    height: "1.28rem"
-                                }} />}
-                            />
+            {width < 768 && <BasicContainer theme={home.basicContainer}>
+                <PageSubTitleMobile title='今日預約件數' />
+                <FormControl theme={{ margin: '0 0 32px 0' }}>
+                    <FormRow theme={home.orderCardFormRowLessThan768}>
+                        <SubContainer theme={home.addButtonSubContainer}>
+                            <OrderCardMobile icon={<LogoTotal />} labelFirst={cardCount[0]} labelSecond="預約總件數" onClick={() => console.log("123")} />
+                        </SubContainer>
+                        <SubContainer theme={home.addButtonSubContainer}>
+                            <OrderCardMobile icon={<LogoDone />} labelFirst={cardCount[1]} labelSecond="已完成" onClick={() => console.log("123")} />
+                        </SubContainer>
+                        <SubContainer theme={home.addButtonSubContainer}>
+                            <OrderCardMobile icon={<LogoFail />} labelFirst={cardCount[2]} labelSecond="逾時未完成" onClick={() => console.log("123")} />
+                        </SubContainer>
+                        <SubContainer theme={home.addButtonSubContainer}>
+                            <OrderCardMobile icon={<LogoNew />} labelFirst={cardCount[3]} labelSecond="尚未執行" onClick={() => console.log("123")} />
+                        </SubContainer>
+                        <SubContainer theme={home.addButtonSubContainer}>
+                            <OrderCardMobile icon={<LogoPercentage />} labelFirst={cardCount[4] === '無' ? "無" : `${cardCount[4] * 100}%`} labelSecond="達成率" onClick={() => console.log("123")} />
                         </SubContainer>
                     </FormRow>
                 </FormControl>
-                <BasicContainer theme={administrators.tableBasicContainerLessThan768}>
-                    <CardTable data={TableData}
-                        title={["管理員姓名", "連絡電話", "Email", "建立日期", ""]} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
-                        colKeys={["uRealName", "phone", "uLoginName", "uCreateTime", "controll"]} //必傳
-                        // turnPageExecute={(executePages) => { execute(executePages, SearchWord) }}//暫不提供，因為沒用到 發查翻頁，必傳否則不能翻頁
-                        theme={{
-                            // basicContainer:{}, // 卡片最外層容器
-                            // rowContainer: {}, // 卡片內每個資料列容器樣式，可在下方針對個別欄位複寫樣式
-                            // rowTitle: {}, // 卡片內每個資料列中標題 不以renderTitle複寫時樣式
-                            // rowContent: {}, // 卡片內每個資料列中標題 不以renderContent複寫時樣式
-                            "uRealName": {
-                                // 提供客製化渲染內容，可使用預設參數 item 與 id，item 為 對應列表資料、id 為對應列表資料的id
-                                // renderTitle: (item, id) => (`${item} ${id} sdf`)
-                                width: "20%",
-                                renderTitle: (item, id) => ((item &&
-                                    <Text theme={{
-                                        display: "block",
-                                        margin: "0 0 0.375rem 0",
-                                        color: "#999",
-                                        fontSize: "0.75rem",
-                                        fontWeight: "500",
-                                        height: "0.875rem"
-                                    }}>{item}</Text>)),
-                                renderContent: (item, id) => ((item &&
-                                    <Text theme={{
-                                        color: "#444",
-                                        fontSize: "1.125rem",
-                                        fontWeight: "900"
-                                    }}>{item}</Text>))
-                            },
-                            "phone": {
-                                renderTitle: (item, id) => ((item &&
-                                    <Text theme={{
-                                        display: "block",
-                                        margin: "0 0 0.375rem 0",
-                                        color: "#999",
-                                        fontSize: "0.75rem",
-                                        fontWeight: "500"
-                                    }}>{item}</Text>)),
-                                renderContent: (item, id) => ((item &&
-                                    <Text theme={{
-                                        color: "#964f19",
-                                        fontSize: "1rem",
-                                        fontWeight: "550"
-                                    }}>{item}</Text>))
-                            },
-                            "uLoginName": {
-                                renderTitle: (item, id) => ((item &&
-                                    <Text theme={{
-                                        display: "block",
-                                        margin: "0 0 0.375rem 0",
-                                        color: "#999",
-                                        fontSize: "0.75rem",
-                                        fontWeight: "500"
-                                    }}>{item}</Text>)),
-                                renderContent: (item, id) => ((item &&
-                                    <Text theme={{
-                                        color: "#444",
-                                        fontSize: "1rem",
-                                        fontWeight: "500"
-                                    }}>{item.split("T")[0]}</Text>))
-                            },
-                            "uCreateTime": {
-                                renderTitle: (item, id) => ((item &&
-                                    <Text theme={{
-                                        display: "block",
-                                        margin: "0 0 0.375rem 0",
-                                        color: "#999",
-                                        fontSize: "0.75rem",
-                                        fontWeight: "500"
-                                    }}>{item}</Text>)),
-                                renderContent: (item, id) => ((item &&
-                                    <Text theme={{
-                                        color: "#444",
-                                        fontSize: "1rem",
-                                        fontWeight: "500"
-                                    }}>{item.split("T")[0]}</Text>))
-                            },
-                            "controll": {
-                                width: "40%",
-                                rowContainer: {
-                                    position: "absolute",
-                                    top: "0.875rem",
-                                    right: "0.2rem"
-                                },
-                                renderTitle: (item, id) => ((item && null)),
-                                renderContent: (item, id, rowItem) => {
-                                    return (
-                                        <BasicContainer theme={{
-                                            textAlign: "right",
-                                        }}>
-                                            {[
-                                                <CreateIcon key={`${item}1`} style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }} />,
-                                                <DeleteForeverIcon key={`${item}2`} style={{ cursor: "pointer", color: "#d25959", margin: "0 1rem 0 0" }} />
-                                            ]}
-                                        </BasicContainer>
-                                    )
-                                }
-                            },
-                        }}
-                    />
-                </BasicContainer>
+                <PageSubTitleMobile title='本週預約件數' />
+                <FormControl theme={{}}>
+                    <FormRow theme={home.orderCardFormRowLessThan768}>
+                        <SubContainer theme={home.addButtonSubContainer}>
+                            <OrderCardMobile icon={<LogoTotal />} labelFirst={cardCountSeven[0]} labelSecond="預約總件數" onClick={() => console.log("123")} />
+                        </SubContainer>
+                        <SubContainer theme={home.addButtonSubContainer}>
+                            <OrderCardMobile icon={<LogoDone />} labelFirst={cardCountSeven[1]} labelSecond="已完成" onClick={() => console.log("123")} />
+                        </SubContainer>
+                        <SubContainer theme={home.addButtonSubContainer}>
+                            <OrderCardMobile icon={<LogoFail />} labelFirst={cardCountSeven[2]} labelSecond="逾時未完成" onClick={() => console.log("123")} />
+                        </SubContainer>
+                        <SubContainer theme={home.addButtonSubContainer}>
+                            <OrderCardMobile icon={<LogoNew />} labelFirst={cardCountSeven[3]} labelSecond="尚未執行" onClick={() => console.log("123")} />
+                        </SubContainer>
+                        <SubContainer theme={home.addButtonSubContainer}>
+                            <OrderCardMobile icon={<LogoPercentage />} labelFirst={cardCountSeven[4] === '無' ? "無" : `${cardCountSeven[4] * 100}%`} labelSecond="達成率" onClick={() => console.log("123")} />
+                        </SubContainer>
+                    </FormRow>
+                </FormControl>
             </BasicContainer>
             }
 
