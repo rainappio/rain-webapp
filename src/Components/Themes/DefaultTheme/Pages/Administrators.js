@@ -35,7 +35,7 @@ export default {
         padding: "0 2.5rem 0 0"
     },
     addButtonSubContainer: {
-        margin: "0 0.75rem 0 0"
+        margin: "0 0.75rem 0 0",
     },
     addButton: {
         backgroundColor: "#fff",
@@ -49,7 +49,8 @@ export default {
         textAlign: "center",
         hoverBackgroundColor: "#964f19",
         hoverColor: "#fff",
-        fontSize: "0.875rem"
+        fontSize: "0.875rem",
+        cursor: "pointer",
     },
     searchInput: {
         inputSubContainer: {

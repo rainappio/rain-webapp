@@ -15,6 +15,8 @@ import { Text } from '../../Components/Texts'
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { CardTable } from '../../Components/CardTable';
+import { JumpDialog } from '../../Components/JumpDialog';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 export const Administrators = (props) => {
 
@@ -22,6 +24,7 @@ export const Administrators = (props) => {
     const { pages: { administrators } } = Theme;
     let history = useHistory();
     const [TableData, setTableData] = useState([]);
+    const [OpenDelJumpDialog, setOpenDelJumpDialog] = useState(false);// 測試彈窗
 
     const [SearchWord, SearchWordhandler, SearchWordregExpResult] = useForm("", [""], [""]);
     const [width] = useWindowSize();
@@ -54,11 +57,12 @@ export const Administrators = (props) => {
                     setTableData(PreResult.response);
                     return "查詢角色表格資訊成功"
                 } else {
-
                     throw new Error("查詢角色表格資訊失敗");
                 }
             })
             .catch((Error) => {
+                clearlocalStorage();
+                history.push("/Login");
                 throw Error;
             })
             .finally(() => {
@@ -131,7 +135,7 @@ export const Administrators = (props) => {
                                         color: "#444",
                                         fontWeight: "550",
                                         cursor: "default",
-                                        fontSize: "1rem"
+                                        fontSize: "1rem",
                                     }}>{item}</Text>))
                             },
                             "phone": {
@@ -166,7 +170,11 @@ export const Administrators = (props) => {
                                     return (
                                         <BasicContainer theme={{ textAlign: "right" }}>
                                             {[
-                                                <CreateIcon key={`${item}1`} style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }} />,
+                                                <CreateIcon
+                                                    key={`${item}1`}
+                                                    style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }}
+                                                    onClick={() => { setOpenDelJumpDialog((o) => (!o)); console.log(rowItem.uID) }}
+                                                />,
                                                 <DeleteForeverIcon key={`${item}2`} style={{ cursor: "pointer", color: "#d25959", margin: "0 1rem 0 0" }} />
                                             ]}
                                         </BasicContainer>
@@ -307,7 +315,33 @@ export const Administrators = (props) => {
                 </BasicContainer>
             </BasicContainer>
             }
-            
+            {OpenDelJumpDialog && <JumpDialog switch={[OpenDelJumpDialog, setOpenDelJumpDialog]}>
+                <BasicContainer theme={{ width: "100%", height: "9.375rem", textAlign: "center" }}>
+                    <ErrorOutlineIcon style={{
+                        position: "relative",
+                        top: "-1.5rem",
+                        height: "9.375rem",
+                        width: "6.5rem",
+                        color: "#facea8"
+                    }}></ErrorOutlineIcon>
+                </BasicContainer>
+                <Text theme={{
+                    display: "in;ine-block",
+                    color: "#545454",
+                    fontSize: "1.125em",
+                    fontWeight: 600
+                }}>
+                    您確定要將 <Text theme={{
+                        color: "#545454",
+                        fontSize: "1.15em",
+                        fontWeight: 600
+                    }}>公館長</Text> 的帳號從管理員名單中移除嗎？
+                </Text>
+                <BasicContainer theme={{ width: "100%", textAlign: "center" }}>
+                    <button>是，移除管理員</button>
+                    <button>是，移除管理員</button>
+                </BasicContainer>
+            </JumpDialog>}
         </>
     )
 }
