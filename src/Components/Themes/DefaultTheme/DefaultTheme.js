@@ -14,6 +14,7 @@ import error404 from './ErrorPages/Error404'
 import forms from "./Forms";
 import tags from "./Tags";
 import tables from "./Tables";
+import cardTable from "./CardTable";
 import list from "./Lists";
 import menuBar from "./MenuBar";
 
@@ -24,6 +25,7 @@ export default {
     ...tags,
     ...menuBar,
     ...tables,
+    ...cardTable,
     pages: {
         login,
         administrators,
