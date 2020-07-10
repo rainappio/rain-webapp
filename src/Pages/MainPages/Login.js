@@ -185,7 +185,7 @@ export const Login = (props) => {
                                 </TextInput>
                             </FormRow>
                             <FormRow>
-                                <EasyButton theme={login.loginButton} text={"立即登入"} onClick={() => { console.log("sdf") }}></EasyButton>
+                                <EasyButton theme={login.loginButton} text={"立即登入"} onClick={() => { execute(); }}></EasyButton>
                             </FormRow>
                             <FormRow>
                                 <BasicContainer theme={{ textAlign: "center", width: "100%" }}>

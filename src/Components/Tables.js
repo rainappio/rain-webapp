@@ -203,7 +203,7 @@ const TableBase = (props) => {
                                 }}
                             >
                                 {/* {console.log("width", (props?.theme?.[props?.colKeys[index]] ? (props?.theme[props.colKeys[index]].width ?? `calc( ( 100% - ${props?.theme?.checkColWidth ?? "4rem"} ) / ${props?.title?.length} )`) : `calc( ( 100% - ${props?.theme?.checkColWidth ?? "4rem"} ) / ${props?.title?.length} )`))} */}
-                                <Text theme={{ color: "#444", fontWeight: "900", cursor: "pointer", fontSize: "1.125rem" }}>{item}</Text>
+                                <Text theme={{ color: "#444", fontWeight: "900", cursor: "pointer", fontSize: "1.125rem", userSelect: "none", }}>{item}</Text>
                                 {
                                     (props?.theme?.[props?.colKeys[index]]?.order ?? false) &&
                                         (ColOrder.colName === item) ?
@@ -214,8 +214,8 @@ const TableBase = (props) => {
                         )
                         }
                         {/*佔位 */}
-                        <BasicContainer style={{ userSelect: "none" }} theme={{ position: "relative", right: "0rem", top: props?.theme?.borderwidth ?? "-1px", backgroundColor: "#fff", height: "3.5rem", textAlign: "left", width: "0.5rem" }}><Text theme={{ color: "#00000000", fontSize: "0.1rem" }}>0</Text></BasicContainer>
-                        <BasicContainer style={{ userSelect: "none" }} theme={{ position: "absolute", right: "0rem", bottom: props?.theme?.borderwidth ?? "-1px", backgroundColor: "#fff", height: "3.5rem", textAlign: "left", width: "0.5rem" }}><Text theme={{ color: "#00000000", fontSize: "0.1rem" }}>0</Text></BasicContainer>
+                        <BasicContainer style={{ userSelect: "none" }} theme={{ position: "relative", right: "0rem", top: props?.theme?.borderwidth ?? "-1px", backgroundColor: "#fff", height: "3.5rem", textAlign: "left", width: "0.5rem" }}><Text theme={{ userSelect: "none", color: "#00000000", fontSize: "0.1rem" }}>0</Text></BasicContainer>
+                        <BasicContainer style={{ userSelect: "none" }} theme={{ position: "absolute", right: "0rem", bottom: props?.theme?.borderwidth ?? "-1px", backgroundColor: "#fff", height: "3.5rem", textAlign: "left", width: "0.5rem" }}><Text theme={{ userSelect: "none", color: "#00000000", fontSize: "0.1rem" }}>0</Text></BasicContainer>
                     </BasicContainer>
                 </BasicContainer>
                 <BasicContainer theme={{
