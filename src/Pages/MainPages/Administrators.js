@@ -2,7 +2,7 @@ import React, { useContext, useCallback, useState } from 'react';
 import { Context } from '../../Store/store'
 import { BasicContainer, SubContainer } from '../../Components/Containers';
 import { PageTitle } from '../../Components/PageTitle';
-import { EasyButton } from '../../Components/Buttons';
+import { EasyButton, JumpDialogButton } from '../../Components/Buttons';
 import AddIcon from '@material-ui/icons/Add';
 import { SearchTextInput, FormControl, FormRow } from '../../Components/Forms';
 import { TableBasic } from '../../Components/Tables';
@@ -24,14 +24,14 @@ export const Administrators = (props) => {
     const { pages: { administrators } } = Theme;
     let history = useHistory();
     const [TableData, setTableData] = useState([]);
-    const [OpenDelJumpDialog, setOpenDelJumpDialog] = useState(false);// 測試彈窗
-
+    const [OpenDelJumpDialog, setOpenDelJumpDialog] = useState(false); // 開啟刪除彈窗
+    const [DelWho, setDelWho] = useState(""); // 刪除彈窗中刪除名字
     const [SearchWord, SearchWordhandler, SearchWordregExpResult] = useForm("", [""], [""]);
     const [width] = useWindowSize();
 
     //#region 查詢列表API
     const getRoleByPageOrkey = useCallback(async (page = 1, key) => {
-
+        console.log(key)
         return await fetch(`${APIUrl}api/User/Get?page=${page}&key=${(key ? `${key}` : "")}`,
             {
                 headers: {
@@ -81,7 +81,7 @@ export const Administrators = (props) => {
             {/* 寬度大於等於768時渲染的組件 */}
             {width >= 768 && <BasicContainer theme={administrators.basicContainer}>
                 <PageTitle>管理員名單</PageTitle>
-                <FormControl theme={{}}>
+                <FormControl theme={{}} onSubmit={(e) => { e.preventDefault(); execute(1, SearchWord) }}>
                     <FormRow theme={administrators.addAndSearchFormRow}>
                         <SubContainer theme={administrators.addButtonSubContainer}>
                             <EasyButton
@@ -100,6 +100,7 @@ export const Administrators = (props) => {
                             regExpResult={SearchWordregExpResult}
                             placeholder={"搜尋姓名、電話、Email"}
                             theme={administrators.searchInput}
+                            searchOnClick={() => { execute(1, SearchWord); }}
                         />
                     </FormRow>
                 </FormControl>
@@ -173,7 +174,7 @@ export const Administrators = (props) => {
                                                 <CreateIcon
                                                     key={`${item}1`}
                                                     style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }}
-                                                    onClick={() => { setOpenDelJumpDialog((o) => (!o)); console.log(rowItem.uID) }}
+                                                    onClick={() => { setOpenDelJumpDialog((o) => (!o)); setDelWho(rowItem.uRealName); console.log(rowItem.uID) }}
                                                 />,
                                                 <DeleteForeverIcon key={`${item}2`} style={{ cursor: "pointer", color: "#d25959", margin: "0 1rem 0 0" }} />
                                             ]}
@@ -189,7 +190,7 @@ export const Administrators = (props) => {
             }
             {/* 寬度小於768時渲染的組件 */}
             {width < 768 && <BasicContainer theme={administrators.basicContainer}>
-                <FormControl theme={{}}>
+                <FormControl theme={{}} onSubmit={(e) => { e.preventDefault(); execute(1, SearchWord) }}>
                     <FormRow theme={administrators.addAndSearchFormRowLessThan768}>
                         <SearchTextInput
                             value={SearchWord}
@@ -197,6 +198,7 @@ export const Administrators = (props) => {
                             regExpResult={SearchWordregExpResult}
                             placeholder={"搜尋姓名、電話、Email"}
                             theme={administrators.searchInput}
+                            searchOnClick={() => { execute(1, SearchWord); }}
                         />
                         <SubContainer theme={administrators.addButtonSubContainerLessThan768}>
                             <EasyButton
@@ -315,33 +317,38 @@ export const Administrators = (props) => {
                 </BasicContainer>
             </BasicContainer>
             }
-            {OpenDelJumpDialog && <JumpDialog switch={[OpenDelJumpDialog, setOpenDelJumpDialog]}>
-                <BasicContainer theme={{ width: "100%", height: "9.375rem", textAlign: "center" }}>
-                    <ErrorOutlineIcon style={{
-                        position: "relative",
-                        top: "-1.5rem",
-                        height: "9.375rem",
-                        width: "6.5rem",
-                        color: "#facea8"
-                    }}></ErrorOutlineIcon>
-                </BasicContainer>
-                <Text theme={{
-                    display: "in;ine-block",
-                    color: "#545454",
-                    fontSize: "1.125em",
-                    fontWeight: 600
-                }}>
-                    您確定要將 <Text theme={{
+            {OpenDelJumpDialog &&
+                <JumpDialog
+                    switch={[OpenDelJumpDialog, setOpenDelJumpDialog]}
+                    close={() => { setDelWho("") }}
+                    yes={() => { setDelWho(""); console.log("gffsdfsdf") }}
+                    yesText={"是，移除管理員"}
+                    no={() => { setDelWho(""); console.log("aaaaa") }}
+                    noText={"否，取消移除"}
+                >
+                    <BasicContainer theme={{ width: "100%", height: "9.375rem", textAlign: "center" }}>
+                        <ErrorOutlineIcon style={{
+                            position: "relative",
+                            top: "-1.5rem",
+                            height: "9.375rem",
+                            width: "6.5rem",
+                            color: "#facea8"
+                        }} />
+                    </BasicContainer>
+                    <Text theme={{
+                        display: "inline-block",
                         color: "#545454",
-                        fontSize: "1.15em",
+                        fontSize: "1.125em",
                         fontWeight: 600
-                    }}>公館長</Text> 的帳號從管理員名單中移除嗎？
-                </Text>
-                <BasicContainer theme={{ width: "100%", textAlign: "center" }}>
-                    <button>是，移除管理員</button>
-                    <button>是，移除管理員</button>
-                </BasicContainer>
-            </JumpDialog>}
+                    }}>
+                        您確定要將 <Text theme={{
+                            color: "#545454",
+                            fontSize: "1.15em",
+                            fontWeight: 600
+                        }}>{DelWho}</Text> 的帳號從管理員名單中移除嗎？
+                        </Text>
+                </JumpDialog>
+            }
         </>
     )
 }

@@ -5,12 +5,23 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import { BasicContainer } from './Containers';
 import { Text } from './Texts';
+import { Context } from '../Store/store'
 //import { Ul, Li } from './List';
 
-
-
 //#region 簡單按鈕
-
+/* 
+   Date   : 2020-07-11 14:36:28
+   Author : Arhua Ho
+   Content: 一簡單按鈕
+            可傳入props : 
+                onClick : 點擊事件函數
+                text : 按鈕文字
+                icon : 圖標元素
+                children : 子元素
+                theme : {
+                    //按鈕樣式
+                }
+*/
 export const EasyButtonBase = (props) => {
     return (
         <BasicContainer onClick={props.onClick} theme={props?.theme} className={props.className}>
@@ -20,11 +31,118 @@ export const EasyButtonBase = (props) => {
         </BasicContainer>
     )
 }
+
 export const EasyButton = styled(EasyButtonBase).attrs((props) => ({}))`
 
 `
 //#endregion
 
+//#region 原生button按鈕封裝
+export const OriginButton = styled.button.attrs((props) => ({}))`
+    //定位
+    position: ${props => props?.theme?.position ?? 'relative'};       //控制position屬性: static、relative、fixed、absolute、sticky、inherit、initial
+    top: ${props => props?.theme?.top ?? 'initial'};
+    right: ${props => props?.theme?.right ?? 'initial'};
+    bottom: ${props => props?.theme?.bottom ?? 'initial'};
+    left: ${props => props?.theme?.left ?? 'initial'};
+    z-index: ${props => props?.theme?.zIndex ?? 'initial'};
+
+    //寬高
+    height: ${props => props?.theme?.height ?? 'initial'};
+    min-width: ${props => props?.theme?.minWidth ?? '0'};//修復滾動條 x 方向
+
+    //外距、邊框、內距
+    margin: ${props => props?.theme?.margin ?? 'initial'};
+    border: ${props => props?.theme?.border ?? 'initial'};
+    border-bottom: ${props => props?.theme?.borderBottom};
+    border-radius: ${props => props?.theme?.borderRadius ?? 'initial'};
+    padding: ${props => props?.theme?.padding ?? 'initial'};
+
+    //陰影
+    box-shadow: ${props => props?.theme?.boxShadow ?? 'initial'};
+
+    //背景
+    background-attachment: ${props => props?.theme?.backgroundAttachment ?? 'initial'}; 
+    background-color: ${props => props?.theme?.backgroundColor ?? 'initial'};
+    background-image: ${props => 'url(' + props?.theme?.img + ')' ?? 'initial'};
+    background-position: ${props => props?.theme?.backgroundPosition ?? 'initial'};
+    background-position-y: ${props => props?.theme?.positionY ?? 'initial'};
+    background-position-x: ${props => props?.theme?.positionX ?? 'initial'};
+    background-repeat: ${props => props?.theme?.backgroundRepeat ?? 'initial'};
+    background-size: ${props => props?.theme?.backgroundSize ?? 'initial'};
+
+    //游標
+    cursor: ${props => props?.theme?.cursor ?? 'initial'}; 
+
+    //轉場
+    transition: ${props => props?.theme?.transition ?? 'initial'}; 
+
+    //字體
+    white-space : ${props => props?.theme?.whiteSpace ?? 'initial'};
+    text-align: ${props => props?.theme?.textAlign ?? 'initial'}; 
+    font-size: ${props => props?.theme?.fontSize ?? 'initial'}; 
+    color: ${props => props?.theme?.color ?? 'initial'}; 
+    font-family: ${props => props?.theme?.fontFamily ?? '"Arial", Microsoft JhengHei, "微軟正黑體", Helvetica, sans-serif'}; 
+    font-weight: ${props => props?.theme?.fontWeight ?? '500'};
+    letter-spacing: ${ props => props?.theme?.letterSpacing ?? '0.0075em'};
+    text-decoration: ${ props => props?.theme?.textDecoration ?? 'initial'};
+    user-select: ${ props => props?.theme?.userSelect ?? 'initial'};
+
+    //包裹
+    outline: ${props => props?.theme?.outline ?? 'initial'}; 
+
+    &:hover {
+        background-color: ${props => props?.theme?.hoverBackgroundColor};
+        color: ${props => props?.theme?.hoverColor};
+        box-shadow: ${props => props?.theme?.boxShadow};
+    }
+
+    &:focus {
+        background-color: ${props => props?.theme?.focusBackgroundColor};
+        color: ${props => props?.theme?.focusColor};
+        box-shadow: ${props => props?.theme?.focusBoxShadow};
+    }
+`
+//#endregion
+
+//#region 專案彈窗內按鈕
+//#region 專案彈窗內按鈕基底
+const JumpDialogButtonBase = (props) => {
+    const { Theme } = useContext(Context);
+    const { buttons } = Theme;
+    const { normalOriginButton, warnOriginButton } = buttons;
+
+    const switchTheme = (key = "") => {
+        switch (key.toString()) {
+            case "warn":
+                return warnOriginButton;
+            default:
+                return normalOriginButton;
+        }
+    }
+
+    return (
+        <OriginButton className={props.className} onClick={props.onClick} theme={props?.theme ?? switchTheme(props?.type)}>
+            {props.children}
+        </OriginButton>
+    )
+}
+//#endregion
+//#region 專案彈窗內按鈕組件
+/* 
+   Date   : 2020-06-24 23:04:27
+   Author : Arhua Ho
+   Content: 專案彈窗內按鈕組件
+            可傳入props : 
+                onClick : 點擊所要執行的函數
+                type : 按鈕預設樣式類型 : normal、warn
+                theme : { } //自訂按鈕樣式 (button)
+*/
+export const JumpDialogButton = styled(JumpDialogButtonBase).attrs((props) => ({}))`
+
+`
+//#endregion
+//#endregion
 
 const IconBtn = (props) => {
 

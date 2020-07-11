@@ -13,6 +13,7 @@ import test from './Pages/Test'
 import error404 from './ErrorPages/Error404'
 import forms from "./Forms";
 import tags from "./Tags";
+import buttons from "./Buttons";
 import tables from "./Tables";
 import jumpDialog from "./JumpDialog";
 import cardTable from "./CardTable";
@@ -28,6 +29,7 @@ export default {
     ...tables,
     ...cardTable,
     ...jumpDialog,
+    ...buttons,
     pages: {
         login,
         administrators,

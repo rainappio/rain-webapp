@@ -4,7 +4,7 @@ export default {
             zIndex: "1000",
             height: "100vh",
             backgroundColor: "#0000008f",
-            //padding: "7rem 0 0 0",
+            padding: "0.5rem",
             direction: "row",
             justify: "center",
             alignItems: "center",
@@ -17,7 +17,7 @@ export default {
             backgroundColor: "#fff",
             border: "1px solid #eee",
             minWidth: "0",
-            width:"32rem"
+            width: "32rem"
         }
     }
 }

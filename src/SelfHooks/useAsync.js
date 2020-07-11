@@ -20,11 +20,11 @@ export const useAsync = (asyncFunction, immediate = true) => {
                 並且透過3個State儲存異步任務執行狀況、執行結果、捕獲執行錯誤，
                 (每次執行 execute 時，重置Pending、Value、Error)
     */
-    const execute = useCallback(() => {
+    const execute = useCallback((...values) => {
         setPending(true);
         setValue(null);
         setError(null);
-        return asyncFunction()
+        return asyncFunction(...values)
             .then(response => setValue(response))
             .catch(error => setError(error))
             .finally(() => setPending(false));

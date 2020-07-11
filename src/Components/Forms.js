@@ -223,9 +223,17 @@ const SearchTextInputBase = (props) => {
                         onChange={props.onChange}
                         placeholder={props.placeholder}
                         onFocus={() => { setSearchIconPosition(searchRight) }}
-                        onBlur={() => { setSearchIconPosition(searchLeft) }}
+                        onBlur={() => { 
+                            new Promise((resolve, reject) => {
+                                setTimeout(() => {
+                                    setSearchIconPosition(searchLeft) 
+                                    resolve();
+                                }, 100, 'done');
+                            });
+                            
+                        }}
                     />
-                    <SearchIcon style={SearchIconPosition} />
+                    <SearchIcon style={SearchIconPosition}  onClick={props?.searchOnClick}/>
                 </BasicContainer>
             </SubContainer>
         </>
