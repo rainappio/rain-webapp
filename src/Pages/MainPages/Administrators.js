@@ -79,7 +79,7 @@ export const Administrators = (props) => {
     return (
         <>
             {/* 寬度大於等於768時渲染的組件 */}
-            {width >= 768 && <BasicContainer theme={administrators.basicContainer}>
+            {width > 768 && <BasicContainer theme={administrators.basicContainer}>
                 <PageTitle>管理員名單</PageTitle>
                 <FormControl theme={{}} onSubmit={(e) => { e.preventDefault(); execute(1, SearchWord) }}>
                     <FormRow theme={administrators.addAndSearchFormRow}>
@@ -189,7 +189,7 @@ export const Administrators = (props) => {
             </BasicContainer>
             }
             {/* 寬度小於768時渲染的組件 */}
-            {width < 768 && <BasicContainer theme={administrators.basicContainer}>
+            {width <= 768 && <BasicContainer theme={administrators.basicContainer}>
                 <FormControl theme={{}} onSubmit={(e) => { e.preventDefault(); execute(1, SearchWord) }}>
                     <FormRow theme={administrators.addAndSearchFormRowLessThan768}>
                         <SearchTextInput

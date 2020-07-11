@@ -227,7 +227,7 @@ export const Home = (props) => {
     return (
         <>
             {/* 寬度大於等於768時渲染的組件 */}
-            {width >= 768 && <BasicContainer theme={home.basicContainer}>
+            {width > 768 && <BasicContainer theme={home.basicContainer}>
                 <PageTitle>預約件數</PageTitle>
                 <PageSubTitle title='今日預約件數' />
 
@@ -278,7 +278,7 @@ export const Home = (props) => {
             }
 
             {/* 寬度小於768時渲染的組件 */}
-            {width < 768 && <BasicContainer theme={home.basicContainer}>
+            {width <= 768 && <BasicContainer theme={home.basicContainer}>
                 <PageSubTitleMobile title='今日預約件數' />
                 <FormControl theme={{ margin: '0 0 32px 0' }}>
                     <FormRow theme={home.orderCardFormRowLessThan768}>

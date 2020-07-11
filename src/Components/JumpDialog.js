@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Context } from '../Store/store'
 import { Container, BasicContainer } from './Containers';
@@ -11,6 +11,8 @@ const JumpDialogBase = (props) => {
   const { jumpDialog } = Theme;
   const [, setOpen] = props.switch;
   const [ControllAnimation, setControllAnimation] = useState(true);
+  const yesButton = useRef();
+  const noButton = useRef();
 
   //#region 控制開啟關閉動畫
   const closeJumpDialog = () => {
@@ -22,6 +24,10 @@ const JumpDialogBase = (props) => {
       }, 400, 'done');
     });
   }
+  //#endregion
+
+  //#region 讓tab、方向鍵在按鈕間移動
+
   //#endregion
 
   return (
@@ -46,6 +52,7 @@ const JumpDialogBase = (props) => {
           <BasicContainer theme={{ width: "100%", textAlign: "center" }}>
             {/* 確認按鈕 */}
             <JumpDialogButton
+              ref={yesButton}
               onClick={() => {
                 closeJumpDialog();
                 new Promise((resolve, reject) => {
@@ -61,6 +68,7 @@ const JumpDialogBase = (props) => {
             </JumpDialogButton>
             {/* 取消按鈕 */}
             <JumpDialogButton
+              ref={noButton}
               onClick={() => {
                 closeJumpDialog();
                 new Promise((resolve, reject) => {
