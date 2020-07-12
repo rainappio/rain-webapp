@@ -17,6 +17,7 @@ import buttons from "./Buttons";
 import tables from "./Tables";
 import jumpDialog from "./JumpDialog";
 import jumpAlerts from "./JumpAlerts";
+import formCard from "./FormCard";
 import cardTable from "./CardTable";
 import list from "./Lists";
 import menuBar from "./MenuBar";
@@ -32,6 +33,7 @@ export default {
     ...jumpDialog,
     ...jumpAlerts,
     ...buttons,
+    ...formCard,
     pages: {
         login,
         administrators,

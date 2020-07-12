@@ -18,6 +18,7 @@ import { CardTable } from '../../Components/CardTable';
 import { JumpDialog } from '../../Components/JumpDialog';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { alertService } from '../../Components/JumpAlerts';
+import { FormCard } from '../../Components/FormCard';
 
 export const Administrators = (props) => {
 
@@ -26,9 +27,20 @@ export const Administrators = (props) => {
     let history = useHistory();
     const [TableData, setTableData] = useState([]);
     const [OpenDelJumpDialog, setOpenDelJumpDialog] = useState(false); // 開啟刪除彈窗
+    const [OpenAddJumpDialog, setOpenAddJumpDialog] = useState(false); // 開啟新增彈窗
+    const [OpenEditJumpDialog, setOpenEditJumpDialog] = useState(false); // 開啟編輯彈窗
+    const [ScrollPage, setScrollPage] = useState(2); // 滾動到底部加載頁面
     const [DelWho, setDelWho] = useState(""); // 刪除彈窗中刪除名字
     const [SearchWord, SearchWordhandler, SearchWordregExpResult] = useForm("", [""], [""]);
     const [width] = useWindowSize();
+
+    const [Id, Idhandler, IdregExpResult, IdResetValue] = useForm("", [""], [""]); // Id欄位
+
+    //#region 重置表單欄位的State值
+    const formValueReast = () => {
+
+    }
+    //#endregion
 
     //#region 查詢列表API
     const getRoleByPageOrkey = useCallback(async (page = 1, key) => {
@@ -76,6 +88,99 @@ export const Administrators = (props) => {
     const [execute, Pending] = useAsync(getRoleByPageOrkey, true);
     //#endregion
 
+    //#region 滾動底部加載查詢列表API
+    const getRoleByPageOrkeyScrollBottom = useCallback(async (page = 1, key) => {
+        return await fetch(`${APIUrl}api/User/Get?page=${page}&key=${(key ? `${key}` : "")}`,
+            {
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
+                },
+            }
+        )//查詢角色、表格翻頁
+            .then(Result => {
+                const ResultJson = Result.clone().json();//Respone.clone()
+                return ResultJson;
+            })
+            .then((PreResult) => {
+                if (PreResult.Status === 401) {
+                    //Token過期 強制登出
+                    clearlocalStorage();
+                    history.push("/Login");
+                    throw new Error("Token過期 強制登出");
+                }
+
+                if (PreResult.success) {
+                    // console.log(PreResult.response)
+                    setTableData((d) => ({ ...d, data: [...(d?.data ?? []), ...PreResult.response.data] }));
+                    setScrollPage((p) => (p + 1)); // 頁數+1
+                    return "查詢角色表格資訊成功"
+                } else {
+                    throw new Error("查詢角色表格資訊失敗");
+                }
+            })
+            .catch((Error) => {
+                clearlocalStorage();
+                history.push("/Login");
+                throw Error;
+            })
+            .finally(() => {
+
+            });
+
+        // 這裡要接著打refresh 延長Token存活期
+
+    }, [APIUrl, history])
+
+    const [executeScrollBottom, PendingScrollBottom] = useAsync(getRoleByPageOrkeyScrollBottom, false);
+    //#endregion
+
+    //#region 刪除管理員 API
+    const delAdminUser = useCallback(async (id) => {
+        //console.log("id")
+        return await fetch(`${APIUrl}api/User/Delete?id=${id}`,
+            {
+                method: "DELETE",
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
+                }
+            }
+        )//刪除管理員
+            .then(Result => {
+                const ResultJson = Result.clone().json();//Respone.clone()
+                return ResultJson;
+            })
+            .then((PreResult) => {
+                if (PreResult.Status === 401) {
+                    //Token過期 強制登出
+                    clearlocalStorage();
+                    history.push("/Login");
+                    throw new Error("Token過期 強制登出");
+                }
+
+                if (PreResult.success) {
+                    alertService.normal("刪除管理員成功", { autoClose: true });
+                    return "刪除管理員成功"
+                } else {
+                    alertService.normal("刪除管理員失敗", { autoClose: true });
+                    throw new Error("刪除管理員失敗");
+                }
+            })
+            .catch((Error) => {
+                throw Error;
+            })
+            .finally(() => {
+                execute(1);
+            });
+
+        // 這裡要接著打refresh 延長Token存活期
+
+    }, [APIUrl, history, execute])
+
+    const [DelAdminUserExecute, DelAdminUserPending] = useAsync(delAdminUser, false);
+    //#endregion
+
     return (
         <>
             {/* 寬度大於等於768時渲染的組件 */}
@@ -85,7 +190,7 @@ export const Administrators = (props) => {
                     <FormRow theme={administrators.addAndSearchFormRow}>
                         <SubContainer theme={administrators.addButtonSubContainer}>
                             <EasyButton
-                                onClick={() => { console.log("sadf") }}
+                                onClick={() => { setOpenAddJumpDialog(true) }}
                                 theme={administrators.addButton}
                                 text={"新增帳號"} icon={<AddIcon style={{
                                     position: "relative",
@@ -174,12 +279,12 @@ export const Administrators = (props) => {
                                                 <CreateIcon
                                                     key={`${item}1`}
                                                     style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }}
-                                                    onClick={() => { setOpenDelJumpDialog((o) => (!o)); setDelWho(rowItem.uRealName); console.log(rowItem.uID) }}
+                                                    onClick={() => { setOpenEditJumpDialog(true) }}
                                                 />,
                                                 <DeleteForeverIcon
                                                     key={`${item}2`}
                                                     style={{ cursor: "pointer", color: "#d25959", margin: "0 1rem 0 0" }}
-                                                    onClick={() => { setOpenDelJumpDialog((o) => (!o)); setDelWho(rowItem.uRealName); console.log(rowItem.uID) }}
+                                                    onClick={() => { setOpenDelJumpDialog((o) => (!o)); setDelWho(rowItem.uRealName); IdResetValue(rowItem.uID) }}
                                                 />
                                             ]}
                                         </BasicContainer>
@@ -193,7 +298,18 @@ export const Administrators = (props) => {
             </BasicContainer>
             }
             {/* 寬度小於768時渲染的組件 */}
-            {width <= 768 && <BasicContainer theme={administrators.basicContainer}>
+            {width <= 768 && <BasicContainer theme={administrators.basicContainer}
+                onScroll={(e) => {
+                    // 滾動至最底部加載新資料
+                    if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
+                        if (!PendingScrollBottom) {
+                            //非API執行中
+                            executeScrollBottom(ScrollPage)
+                            //console.log("Bottom")
+                        }
+                    }
+                }}
+            >
                 <FormControl theme={{}} onSubmit={(e) => { e.preventDefault(); execute(1, SearchWord) }}>
                     <FormRow theme={administrators.addAndSearchFormRowLessThan768}>
                         <SearchTextInput
@@ -206,7 +322,7 @@ export const Administrators = (props) => {
                         />
                         <SubContainer theme={administrators.addButtonSubContainerLessThan768}>
                             <EasyButton
-                                onClick={() => { console.log("sadf") }}
+                                onClick={() => { setOpenAddJumpDialog(true) }}
                                 theme={administrators.addButtonLessThan768}
                                 text={"新增帳號"} icon={<AddIcon style={{
                                     position: "relative",
@@ -309,8 +425,16 @@ export const Administrators = (props) => {
                                             textAlign: "right",
                                         }}>
                                             {[
-                                                <CreateIcon key={`${item}1`} style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }} />,
-                                                <DeleteForeverIcon key={`${item}2`} style={{ cursor: "pointer", color: "#d25959", margin: "0 1rem 0 0" }} />
+                                                <CreateIcon
+                                                    key={`${item}1`}
+                                                    style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }}
+                                                    onClick={() => { setOpenEditJumpDialog(true) }}
+                                                />,
+                                                <DeleteForeverIcon
+                                                    key={`${item}2`}
+                                                    style={{ cursor: "pointer", color: "#d25959", margin: "0 1rem 0 0" }}
+                                                    onClick={() => { setOpenDelJumpDialog(true); setDelWho(rowItem.uRealName); IdResetValue(rowItem.uID) }}
+                                                />
                                             ]}
                                         </BasicContainer>
                                     )
@@ -327,13 +451,12 @@ export const Administrators = (props) => {
                     switch={[OpenDelJumpDialog, setOpenDelJumpDialog]}
                     close={() => { setDelWho("") }}
                     yes={() => {
-                        setDelWho(""); console.log("gffsdfsdf");
-                        alertService.warn("sdf");
-                        alertService.normal("sss", { autoClose: true });
+                        setDelWho("");
+                        DelAdminUserExecute(Id);
                     }}
                     yesText={"是，移除管理員"}
                     no={() => {
-                        setDelWho(""); console.log("aaaaa");
+                        setDelWho("");
                         alertService.clear();
                     }}
                     noText={"否，取消移除"}
@@ -361,6 +484,26 @@ export const Administrators = (props) => {
                         </Text>
                 </JumpDialog>
             }
+            {/* 新增表單卡片 */}
+            {OpenAddJumpDialog && <FormCard
+                title={"新增管理員帳號"}
+                yes={() => { }}
+                yesText={"新增"}
+                no={() => { setOpenAddJumpDialog(false) }}
+                noText={"取消"}
+                close={() => { setOpenAddJumpDialog(false) }}
+            >
+            </FormCard>}
+            {/* 編輯表單卡片 */}
+            {OpenEditJumpDialog && <FormCard
+                title={"編輯管理員帳號"}
+                yes={() => { }}
+                yesText={"新增"}
+                no={() => { setOpenEditJumpDialog(false) }}
+                noText={"取消"}
+                close={() => { setOpenEditJumpDialog(false) }}
+            >
+            </FormCard>}
         </>
     )
 }

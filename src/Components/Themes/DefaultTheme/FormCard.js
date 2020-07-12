@@ -1,0 +1,68 @@
+export default {
+    formCard: {
+        formCardContainer: {
+            zIndex: "1000",
+            height: "100vh",
+            backgroundColor: "#0000008f",
+            padding: "0.5rem",
+            direction: "row",
+            justify: "center",
+            alignItems: "center",
+        },
+        formCard: {
+            zIndex: "1001",
+            padding: "1.25rem",
+            boxShadow: "0 2px 4px #0000001a",
+            borderRadius: "4px",
+            backgroundColor: "#fff",
+            border: "1px solid #eee",
+            minWidth: "0",
+            width: "35rem"
+        },
+        titleBar: {
+            direction: "row",
+            justify: "space-between",
+            alignItems: "center"
+        },
+        titleText: {
+            display: "inline-block",
+            color: "#444",
+            fontWeight: 600,
+            fontSize: "1.2rem",
+            height: "2rem",
+            lineHeight: "2rem",
+        },
+        yesButton: {
+            margin: "-0.2rem 0.5rem 0 0",
+            backgroundColor: "#fff",
+            display: "inline-block",
+            width: "3.5rem",
+            height: "2rem",
+            lineHeight: "2rem",
+            color: "#964f19",
+            border: "1px solid #964f19",
+            borderRadius: "1.25rem",
+            textAlign: "center",
+            hoverBackgroundColor: "#964f19",
+            hoverColor: "#fff",
+            fontSize: "0.875rem",
+            cursor: "pointer",
+        },
+        noButton: {
+            margin: "-0.2rem 0 0 0",
+            backgroundColor: "#fff",
+            display: "inline-block",
+            width: "3.5rem",
+            height: "2rem",
+            lineHeight: "2rem",
+            color: "#d25959",
+            border: "1px solid #d25959",
+            borderRadius: "1.25rem",
+            textAlign: "center",
+            hoverBackgroundColor: "#d25959",
+            hoverColor: "#fff",
+            fontSize: "0.875rem",
+            cursor: "pointer",
+        },
+    }
+}

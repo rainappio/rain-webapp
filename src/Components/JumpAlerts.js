@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { useHistory } from 'react-router-dom';
 
+//#region 右側彈跳警告組件
 //#region 右側彈跳警告組件基底
 
 //#region 顯示Alert動畫
@@ -278,5 +279,5 @@ export const JumpAlert = styled(JumpAlertBase).attrs((props) => ({}))`
     //#endregion
 `
 //#endregion
-
+//#endregion
 
