@@ -5,6 +5,11 @@ import { BasicContainer } from './Containers';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { Text } from '../Components/Texts'
+import { Subject } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { useHistory } from 'react-router-dom';
+
+//#region 右側彈跳警告組件基底
 
 //#region 顯示Alert動畫
 const jumpIn = keyframes`
@@ -58,44 +63,124 @@ const backOutRight = keyframes`
 `
 //#endregion
 
-const JumpAlertBase = (props) => {
+//#region Alert obserable handler，提供alertService (AlertService.js)
+const alertSubject = new Subject(); // 啟用訂閱 Alert observable
+const defaultId = 'default-alert'; // 預留功能 : 可適應多個Alert欄
+
+//#region 導出方法供使用
+const onAlert = (id = defaultId) => {
+    return alertSubject.asObservable().pipe(filter(x => x && x.id === id));
+}
+
+// 要新增Alert時，調用的方法
+const normal = (message, options) => {
+    alert({ ...options, keepAfterRouteChange: false, type: "normal", message });
+}
+
+const warn = (message, options) => {
+    alert({ ...options, keepAfterRouteChange: false, type: "warn", message });
+}
+
+// const error = (message, options) => {
+//     alert({ ...options, keepAfterRouteChange: false, type: "error", message });
+// }
+
+// const info = (message, options) => {
+//     alert({ ...options, keepAfterRouteChange: false, type: "info", message });
+// }
+
+// 新增alert 核心方法
+function alert(alert) {
+    alert.id = alert.id || defaultId;
+    alertSubject.next(alert);
+}
+
+// 清除 alerts方法
+function clear(id = defaultId) {
+    alertSubject.next({ id });
+}
+
+export const alertService = {
+    onAlert,
+    normal,
+    warn,
+    // error,
+    // info,
+    alert,
+    clear
+};
+//#endregion
+//#endregion
+
+const JumpAlertBase = (props, { id, fade = true }) => {
     const { Theme } = useContext(Context);
     const { jumpAlerts } = Theme;
-    const [AlertList, setAlertList] = useState([]); // 儲存Alert
+    const [Alerts, setAlerts] = useState([]); // 儲存Alert
+    const history = useHistory();
 
-    // useEffect(() => {
-    //     // subscribe to new alert notifications
-    //     const subscription = alertService.onAlert(id)
-    //         .subscribe(alert => {
-    //             // clear alerts when an empty alert is received
-    //             if (!alert.message) {
-    //                 setAlerts(alerts => {
-    //                     // filter out alerts without 'keepAfterRouteChange' flag
-    //                     const filteredAlerts = alerts.filter(x => x.keepAfterRouteChange);
+    const animationClasses = (alert) => {
+        if (!alert) return;
 
-    //                     // remove 'keepAfterRouteChange' flag on the rest
-    //                     filteredAlerts.forEach(x => delete x.keepAfterRouteChange);
-    //                     return filteredAlerts;
-    //                 });
-    //             } else {
-    //                 // add alert to array
-    //                 setAlerts(alerts => ([...alerts, alert]));
+        if (alert.fade) {
+            //Alert上有標記 fade : true，則套用淡出動畫
+            return "backOutRight";
+        } else {
+            return 'jumpIn'
+        }
+    }
 
-    //                 // auto close alert if required
-    //                 if (alert.autoClose) {
-    //                     setTimeout(() => removeAlert(alert), 3000);
-    //                 }
-    //             }
-    //         });
+    const removeAlert = (alert) => {
+        //console.log("alert", alert)
+        // console.log("fade", fade)
+        if (fade) {
+            // 將要退出的 Alert加上標記 fade : true
+            const alertWithFade = { ...alert, fade: true };
+            setAlerts(alerts => alerts.map(x => x === alert ? alertWithFade : x));
 
-    //     // clear alerts on location change
-    //     const historyUnlisten = history.listen(() => {
-    //         alertService.clear(id);
-    //     });
+            // 播放動畫後移除 alert
+            setTimeout(() => {
+                setAlerts(alerts => alerts.filter(x => x !== alertWithFade));
+            }, 750);//這裡的秒數等同於 "退出動畫秒數"
+        } else {
+            // 不播放動畫直接移除 alert (一般不會進這裡)
+            setAlerts(alerts => alerts.filter(x => x !== alert));
+        }
+    }
 
-        // clean up function that runs when the component unmounts
+    useEffect(() => {
+        // 訂閱新的 Alert
+        //console.log("?id", id)
+        const subscription = onAlert(id)
+            .subscribe(alert => {
+                //console.log(alert)
+                // 若訊息為空則清除，因為只讓 clear() 方法時不用傳參數
+                if (!alert.message) {
+                    // 進來這裡 代表外面呼叫的是 clear()
+                    setAlerts(alerts => {
+                        const filteredAlerts = alerts.filter(x => x.keepAfterRouteChange);//把陣列清空
+                        // 移除 key 'keepAfterRouteChange' 
+                        // filteredAlerts.forEach(x => delete x.keepAfterRouteChange);
+                        return filteredAlerts;
+                    });
+                } else {
+                    // 增加 alert 至陣列
+                    setAlerts(alerts => ([...alerts, alert]));
+                    //console.log(Alerts)
+                    // 自動關閉 alert 設定
+                    if (alert.autoClose) {
+                        setTimeout(() => removeAlert(alert), 3000);
+                    }
+                }
+            });
+
+        // 路由變化時清除 Alerts
+        const historyUnlisten = history.listen(() => {
+            clear(id);
+        });
+
+        // 清除副作用
         return () => {
-            // unsubscribe & unlisten to avoid memory leaks
+            // 取消訂閱，與防止 memory leaks
             subscription.unsubscribe();
             historyUnlisten();
         };
@@ -104,21 +189,26 @@ const JumpAlertBase = (props) => {
     return (
         <>
             <BasicContainer className={props.className} theme={jumpAlerts.basicContainer}>
-                {(AlertList ?? []).map((item, index, arr) => {
-                    return <Snackbar alertsList={[AlertList, setAlertList]} guid={item.guid} key={index} msg={item.msg} type={item.type}></Snackbar>;
+                {(Alerts ?? []).map((item, index, arr) => {
+                    return <Snackbar
+                        class={animationClasses(item)}
+                        key={index}
+                        msg={item.message}
+                        type={item.type}
+                        onClick={() => removeAlert(item)} />
                 })
                 }
             </BasicContainer>
         </>
     )
 }
+//#endregion
 
+//#region 單個Alert
 const Snackbar = (props) => {
 
     const { Theme } = useContext(Context);
     const { jumpAlerts } = Theme;
-    const [IsActive, setIsActive] = useState(false); // 儲存Alert的Class狀態
-    const [AlertList, setAlertList] = props.alertsList; // 儲存本次新增的Alert
 
     //#region 傳回對應的圖標
     const switchIcon = (key = "") => {
@@ -145,29 +235,10 @@ const Snackbar = (props) => {
     }
     //#endregion
 
-    const openSnackBar = () => {
-        setIsActive(true);
-    }
-
-    useEffect(() => {
-        openSnackBar();
-    }, [])
-
-    useEffect(() => {
-        setTimeout(() => {
-            setIsActive(false);
-            //動畫結束，移除資料
-            setTimeout(() => {
-                setAlertList((v) => v.slice(1))
-            }, 750);
-        }, props?.showTime ?? 3000);
-
-
-    }, [IsActive])
-
     return (
         <BasicContainer
-            className={IsActive ? "jumpIn" : "backOutRight"}
+            onClick={props.onClick}
+            className={props.class}
             theme={jumpAlerts.alertContainer} >
             {switchIcon(props.type)}
             <Text theme={jumpAlerts.alertText}
@@ -175,12 +246,29 @@ const Snackbar = (props) => {
         </BasicContainer>
     )
 }
+//#endregion
 
-
+//#region 右側彈跳警告組件
+/* 
+   Date   : 2020-07-12 18:49:52
+   Author : Arhua Ho
+   Content: 右側彈跳警告組件
+            可傳入props : 
+                無 : 暫不開放
+            使用方法 : 
+                1. 請在頂層組件引入 JumpAlert，並使用 <JumpAlert/>
+                2. 在需要操作警告的組件內引入 alertService，如 import { alertService } from '../../Components/JumpAlerts';
+                3. 使用 alertService 內方法操作 Alert，
+                    如 : alertService.[警告類型](警告訊息文字 ,選項) 
+                        選項 : { autoClose : 是否需自動關閉，預設為false }
+                    alertService.warn("警告...", {autoClose: true});
+                    alertService.normal("成功...", {autoClose: false});
+*/
 export const JumpAlert = styled(JumpAlertBase).attrs((props) => ({}))`
     //#region 開啟、關閉動畫
     .jumpIn {
         animation: ${jumpIn} .5s 1;
+        animation-fill-mode: forwards; 
     }
 
     .backOutRight {
@@ -189,6 +277,6 @@ export const JumpAlert = styled(JumpAlertBase).attrs((props) => ({}))`
     }
     //#endregion
 `
-
+//#endregion
 
 

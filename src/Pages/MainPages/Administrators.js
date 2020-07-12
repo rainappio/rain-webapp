@@ -17,7 +17,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { CardTable } from '../../Components/CardTable';
 import { JumpDialog } from '../../Components/JumpDialog';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import { JumpAlert } from '../../Components/JumpAlerts';
+import { alertService } from '../../Components/JumpAlerts';
 
 export const Administrators = (props) => {
 
@@ -27,7 +27,6 @@ export const Administrators = (props) => {
     const [TableData, setTableData] = useState([]);
     const [OpenDelJumpDialog, setOpenDelJumpDialog] = useState(false); // 開啟刪除彈窗
     const [DelWho, setDelWho] = useState(""); // 刪除彈窗中刪除名字
-    const [Open, setOpen] = useState([{ type: "normal", msg: "XXXX" }, { type: "warn", msg: "XXXX" }]); // 警告訊息
     const [SearchWord, SearchWordhandler, SearchWordregExpResult] = useForm("", [""], [""]);
     const [width] = useWindowSize();
 
@@ -327,9 +326,16 @@ export const Administrators = (props) => {
                 <JumpDialog
                     switch={[OpenDelJumpDialog, setOpenDelJumpDialog]}
                     close={() => { setDelWho("") }}
-                    yes={() => { setDelWho(""); console.log("gffsdfsdf") }}
+                    yes={() => {
+                        setDelWho(""); console.log("gffsdfsdf");
+                        alertService.warn("sdf");
+                        alertService.normal("sss", { autoClose: true });
+                    }}
                     yesText={"是，移除管理員"}
-                    no={() => { setDelWho(""); console.log("aaaaa"); setOpen((o) => ([...o, { type: "normal", msg: "aaa" }, { type: "warn", msg: "ddd" }])) }}
+                    no={() => {
+                        setDelWho(""); console.log("aaaaa");
+                        alertService.clear();
+                    }}
                     noText={"否，取消移除"}
                 >
                     <BasicContainer theme={{ width: "100%", height: "9.375rem", textAlign: "center" }}>
@@ -355,7 +361,6 @@ export const Administrators = (props) => {
                         </Text>
                 </JumpDialog>
             }
-            <JumpAlert alertsList={[Open, setOpen]}></JumpAlert>
         </>
     )
 }
