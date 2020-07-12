@@ -107,7 +107,7 @@ export const OriginButton = styled.button.attrs((props) => ({}))`
 
 //#region 專案彈窗內按鈕
 //#region 專案彈窗內按鈕基底
-const JumpDialogButtonBase = (props) => {
+const JumpDialogButtonBase = React.forwardRef((props, ref) => {
     const { Theme } = useContext(Context);
     const { buttons } = Theme;
     const { normalOriginButton, warnOriginButton } = buttons;
@@ -122,11 +122,11 @@ const JumpDialogButtonBase = (props) => {
     }
 
     return (
-        <OriginButton className={props.className} onClick={props.onClick} theme={props?.theme ?? switchTheme(props?.type)}>
+        <OriginButton ref={ref} className={props.className} onClick={props.onClick} theme={props?.theme ?? switchTheme(props?.type)}>
             {props.children}
         </OriginButton>
     )
-}
+})
 //#endregion
 //#region 專案彈窗內按鈕組件
 /* 

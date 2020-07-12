@@ -16,6 +16,7 @@ import tags from "./Tags";
 import buttons from "./Buttons";
 import tables from "./Tables";
 import jumpDialog from "./JumpDialog";
+import jumpAlerts from "./JumpAlerts";
 import cardTable from "./CardTable";
 import list from "./Lists";
 import menuBar from "./MenuBar";
@@ -29,6 +30,7 @@ export default {
     ...tables,
     ...cardTable,
     ...jumpDialog,
+    ...jumpAlerts,
     ...buttons,
     pages: {
         login,

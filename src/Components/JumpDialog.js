@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Context } from '../Store/store'
 import { Container, BasicContainer } from './Containers';
@@ -11,6 +11,7 @@ const JumpDialogBase = (props) => {
   const { jumpDialog } = Theme;
   const [, setOpen] = props.switch;
   const [ControllAnimation, setControllAnimation] = useState(true);
+  const [FocusWhichButton, setFocusWhichButton] = useState(false);
   const yesButton = useRef();
   const noButton = useRef();
 
@@ -26,8 +27,32 @@ const JumpDialogBase = (props) => {
   }
   //#endregion
 
-  //#region 讓tab、方向鍵在按鈕間移動
+  //#region 讓一開始focus在確認按鈕上
+  useEffect(() => {
+    yesButton.current.focus();
+  }, [])
+  //#endregion
 
+  //#region 讓tab、方向鍵在按鈕間移動
+  useEffect(() => {
+    window.onkeydown = (e) => {
+      if (e.keyCode === 9 ||
+        e.keyCode === 37 ||
+        e.keyCode === 38 ||
+        e.keyCode === 39 ||
+        e.keyCode === 40
+      ) {
+        e.preventDefault();
+        FocusWhichButton ? yesButton.current.focus() : noButton.current.focus();
+        setFocusWhichButton((f) => (!f))
+      }
+    }
+
+    return () => {
+      window.onkeydown = null;
+    }
+
+  })
   //#endregion
 
   return (

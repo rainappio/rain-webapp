@@ -404,7 +404,7 @@ export const BasicContainer = styled.div.attrs((props) => ({}))`
             }
     
         //陰影
-        box-shadow: ${props => props?.theme?.tablet?.boxShadow ? props.theme.tablet.boxShadow : (props?.theme?.boxShadow ?? '#initial')};
+        box-shadow: ${props => props?.theme?.tablet?.boxShadow ? props.theme.tablet.boxShadow : (props?.theme?.boxShadow ?? 'initial')};
     
         //背景
         background-attachment: ${props => props?.theme?.tablet?.backgroundAttachment ? props.theme.tablet.backgroundAttachment : (props?.theme?.backgroundAttachment ?? 'initial')};
