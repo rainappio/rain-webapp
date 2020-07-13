@@ -16,8 +16,9 @@ const ArrowDropUpIconTrans = styled(ArrowDropUpIcon).attrs((props) => ({}))`
     animation: ${props => props?.theme?.animation ?? 'initial'};
     animation-fill-mode: forwards;
     position: absolute;
-    left: ${props => props?.theme?.left ?? 'initial'};
-    top: ${props => props?.theme?.top ?? 'initial'};
+    left: ${props => props?.theme?.left ?? '0.3rem'};
+    right: ${props => props?.theme?.right ?? 'initial'};
+    top: ${props => props?.theme?.top ?? '2.2rem'};
     color: ${props => props?.theme?.color ?? '#595959'};
     display: ${props => props?.theme?.display ?? 'initial'};
 
@@ -138,7 +139,7 @@ const TableBase = (props) => {
                 // 供外部調整表格大小、最小寬度、內距
                 position: "relative",
                 width: (props?.theme?.width ?? "100%"),
-                minWidth: (props?.theme?.minWidth ?? "50rem"),
+                minWidth: (props?.theme?.minWidth ?? "0"),
                 padding: (props?.theme?.padding ?? "0"),
             }}>
                 <BasicContainer theme={{
@@ -153,7 +154,9 @@ const TableBase = (props) => {
                             //borderLeft: props?.theme?.tableBorder ?? "0.5px solid #e5e5e5",
                             borderBottom: props?.theme?.tableBorder ?? "0.5px solid #e5e5e5",
                             display: "flex",
-                            minWidth: "fit-content",
+                            width: "100%",
+                            //minWidth: "fit-content",
+                            minWidth: (props?.theme?.minWidth ?? "0"),
                             height: props?.theme?.titleRowHeight,
                         }}>
                         {props.haveCheck &&
@@ -203,7 +206,16 @@ const TableBase = (props) => {
                                 }}
                             >
                                 {/* {console.log("width", (props?.theme?.[props?.colKeys[index]] ? (props?.theme[props.colKeys[index]].width ?? `calc( ( 100% - ${props?.theme?.checkColWidth ?? "4rem"} ) / ${props?.title?.length} )`) : `calc( ( 100% - ${props?.theme?.checkColWidth ?? "4rem"} ) / ${props?.title?.length} )`))} */}
-                                <Text theme={{ color: "#444", fontWeight: "900", cursor: "pointer", fontSize: "1.125rem", userSelect: "none", }}>{item}</Text>
+                                <Text style={{
+                                    // 標題自帶...
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    WebkitLineClamp: 1,
+                                    width: "100%",
+                                    WebkitBoxOrient: "vertical",
+                                    whiteSpace: "nowrap"
+                                }}
+                                    theme={{ display: "inline-block", color: "#444", fontWeight: "900", cursor: "pointer", fontSize: "1.125rem", userSelect: "none", }}>{item}</Text>
                                 {
                                     (props?.theme?.[props?.colKeys[index]]?.order ?? false) &&
                                         (ColOrder.colName === item) ?
@@ -235,7 +247,9 @@ const TableBase = (props) => {
                         {(Data ?? []).map((item, index) => (
                             <BasicContainer theme={{
                                 display: "flex",
-                                minWidth: "fit-content",
+                                //minWidth: "fit-content",
+                                width: "100%",
+                                minWidth: (props?.theme?.minWidth ?? "0"),
                                 height: props?.theme?.rowHeight,
                                 borderLeft: props?.theme?.tableBorder ?? "0.5px solid #ebeef5",
                                 borderBottom: props?.theme?.tableBorder ?? "0.5px solid #ebeef5",
@@ -286,7 +300,7 @@ const TableBase = (props) => {
                 padding: "0 0.5rem 0 0",
                 position: "relative",
                 width: (props?.theme?.width ?? "100%"),
-                minWidth: (props?.theme?.minWidth ?? "50rem"),
+                minWidth: (props?.theme?.minWidth ?? "0"),
 
             }}>
                 <BasicContainer theme={{
