@@ -17,8 +17,10 @@ export const useForm = (initialValue, regExp, validError) => {
 
     [...(Array.isArray(regExp) ? regExp : [regExp])].forEach((item, index) => {
         if (!RegExp(item).test(Value)) {
-            RegExpTest = false;
-            validErrorIndex = index;
+            if (RegExpTest) {
+                RegExpTest = false;
+                validErrorIndex = index;
+            }
         }
     })
 
@@ -28,13 +30,13 @@ export const useForm = (initialValue, regExp, validError) => {
 /* 
    Date   : 2020-06-04 14:45:08
    Author : Arhua Ho
-   Content: SearchSelector 輸入欄位控制與驗證
+   Content: Selector 輸入欄位控制與驗證
    @Param : initialValue ； 參數值 : 欄位初始值  (應為陣列)
    @Param : regExp ； 參數值 : 檢核欄位的正則表達式  (應為函數陣列，函數返回 true代表通過驗證)
    @Param : validError ； 參數值 : 驗證失敗的錯誤訊息 (應為字串陣列)
    @return : [Value, handlerChange, Regtext, resetValue] ； 回傳值 : [欄位當前值, 輸入時改變值的函數, 測試結果與錯誤訊息, 重設初始值]
 */
-export const useSearchSelector = (initialValue, regExp, validError) => {
+export const useSelector = (initialValue, regExp, validError) => {
 
     const [Value, setValue] = useState(initialValue);
     let RegExpTest = true;
@@ -48,8 +50,10 @@ export const useSearchSelector = (initialValue, regExp, validError) => {
             //undefined的情況跳過檢核，用於查無資料的情況
         }
         else if (!item(Value)) {
-            RegExpTest = false;
-            validErrorIndex = index;
+            if (RegExpTest) {
+                RegExpTest = false;
+                validErrorIndex = index;
+            }
         }
     })
 

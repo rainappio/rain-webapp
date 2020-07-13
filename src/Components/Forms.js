@@ -11,6 +11,7 @@ import { Context } from '../Store/store'
 import { Text } from './Texts';
 import { Ul, Li } from './Lists';
 import { TagClose } from './Tags';
+import Select from 'react-select'
 
 //#region  列表排序遞增遞減旋轉箭頭動畫
 const ArrowDropUpIconTrans = styled(ArrowDropUpIcon).attrs((props) => ({}))`
@@ -368,6 +369,78 @@ export const FormCardTextInput = styled(FormCardTextInputBase).attrs((props) => 
             background-color: ${props => props?.theme?.input?.focusBackgroundColor ?? 'initial'};
         }
     }
+`
+//#endregion
+//#endregion
+
+//#region FormCard表單卡片內的 選擇框
+//#region 繼承 react-select 的 Select
+const SelectExtend = styled(Select).attrs((props) => ({}))`
+`
+
+//#region FormCard表單卡片內的 選擇框 基底
+/* 
+   Date   : 2020-06-04 18:07:25
+   Author : Arhua Ho
+   Content: FormCard表單卡片內的 選擇框 基底
+*/
+const FormCardSelectorBase = (props) => {
+    //console.log(props)
+    const { Theme } = useContext(Context);
+    const { form } = Theme;
+
+    return (
+        <>
+            <SubContainer
+                theme={props?.theme?.inputSubContainer}
+                className={props.className} >
+                {/* 輸入框 */}
+                <BasicContainer>
+                    <Text theme={props?.theme?.formCardTextInputLabel ?? form.formCardTextInputLabel} >
+                        {props.label}
+                    </Text>
+                </BasicContainer>
+                <BasicContainer theme={
+                    props?.theme?.inputBasicContainer
+                }>
+                    <SelectExtend
+                        isSearchable={props?.isSearchable ?? false}
+                        isClearable={props?.isClearable ?? false}
+                        isMulti={props?.isMulti ?? false}
+                        defaultValue={props?.defaultValue}
+                        options={props?.options}
+                        value={props.value}
+                        //onChange={(e, t) => { console.log(e, t) }}
+                        onChange={(values, action) => {
+                            // console.log(values);
+                            // console.log(action);
+                            props?.onChange && props.onChange(values)
+                        }}
+                        noOptionsMessage={() => (props?.noOptionsMessage ?? "無符合資料")}
+                        placeholder={props?.placeholder}
+                        styles={props?.theme?.select ?? form.select(props)}></SelectExtend>
+                </BasicContainer>
+                <BasicContainer theme={{ margin: "0 0 0.5rem 0" }}>
+                    <Text theme={props?.theme?.formCardTextInputHint ?? form.formCardTextInputHint}>{props.hint}</Text>
+                </BasicContainer>
+            </SubContainer>
+        </>
+    )
+}
+//#endregion
+
+//#region FormCard表單卡片內的 選擇框，請搭配useForm使用
+/* 
+   Date   : 2020-06-04 18:07:46
+   Author : Arhua Ho
+   Content: FormCard表單卡片內的 選擇框，請搭配useForm使用
+
+    formCardTextInputLabel
+    formCardTextInputHint
+    input
+
+*/
+export const FormCardSelector = styled(FormCardSelectorBase).attrs((props) => ({}))`
 `
 //#endregion
 //#endregion

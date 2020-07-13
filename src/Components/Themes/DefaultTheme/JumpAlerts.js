@@ -4,7 +4,7 @@ export default {
         //#region 容器
         basicContainer: {
             zIndex: 1100,
-            width: "13.75rem",
+            width: "fit-content",
             position: "fixed",
             top: "0rem",
             right: "0rem",

@@ -21,7 +21,7 @@ export const Login = (props) => {
 
     const loginVerification = useCallback(async () => {
         //let uid = "";
-        await fetch(`${APIUrl}/api/Login/JWTToken?name=${Account}&pass=${Pass}`)//取得Token
+        await fetch(`${APIUrl}api/Login/JWTToken?name=${Account}&pass=${Pass}`)//取得Token
             .then(Result => {
                 const ResultJson = Result.clone().json();//Respone.clone()
                 return ResultJson;
@@ -44,7 +44,7 @@ export const Login = (props) => {
                 //Switch();//觸發LS路由重新更新
             });
 
-        await fetch(`${APIUrl}/api/User/GetInfoByToken?token=${getItemlocalStorage("Auth")}`)//透過Token取得使用者資訊
+        await fetch(`${APIUrl}api/User/GetInfoByToken?token=${getItemlocalStorage("Auth")}`)//透過Token取得使用者資訊
             .then(Result => {
                 const ResultJson = Result.clone().json();//Respone.clone()
                 return ResultJson;
