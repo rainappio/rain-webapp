@@ -519,8 +519,6 @@ export const Administrators = (props) => {
                             placeholder={"請輸入中文姓名"}
                             theme={administrators.nameFormCardTextInput}
                         ></FormCardTextInput>
-                    </FormRow>
-                    <FormRow>
                         <FormCardTextInput
                             label={"手機號碼"}
                             hint={""}
@@ -530,6 +528,9 @@ export const Administrators = (props) => {
                             placeholder={"請輸入手機號碼"}
                             theme={administrators.nameFormCardTextInput}
                         ></FormCardTextInput>
+                    </FormRow>
+                    <FormRow>
+
                     </FormRow>
                 </FormControl>
 

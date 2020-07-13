@@ -153,7 +153,8 @@ export default {
             borderRadius: "0rem",
         },
         inputSubContainer: {
-            occupy: 12,
+            occupy: 6,
+            padding: "0 0.1rem 0 0"
         }
     },
 }
