@@ -520,8 +520,8 @@ export const Experts = (props) => {
                                 renderContent: (item, id) => ((item &&
                                     <Text theme={{
                                         color: "#444",
-                                        fontSize: "1.125rem",
-                                        fontWeight: "900"
+                                        fontSize: "1rem",
+                                        fontWeight: "500"
                                     }}>{item}</Text>))
                             },
                             "mTel": {
@@ -537,7 +537,7 @@ export const Experts = (props) => {
                                     <Text theme={{
                                         color: "#964f19",
                                         fontSize: "1rem",
-                                        fontWeight: "550"
+                                        fontWeight: "500"
                                     }}>{item}</Text>))
                             },
                             "CommCounty": {
