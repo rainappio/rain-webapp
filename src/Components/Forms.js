@@ -223,17 +223,17 @@ const SearchTextInputBase = (props) => {
                         onChange={props.onChange}
                         placeholder={props.placeholder}
                         onFocus={() => { setSearchIconPosition(searchRight) }}
-                        onBlur={() => { 
+                        onBlur={() => {
                             new Promise((resolve, reject) => {
                                 setTimeout(() => {
-                                    setSearchIconPosition(searchLeft) 
+                                    setSearchIconPosition(searchLeft)
                                     resolve();
                                 }, 100, 'done');
                             });
-                            
+
                         }}
                     />
-                    <SearchIcon style={SearchIconPosition}  onClick={props?.searchOnClick}/>
+                    <SearchIcon style={SearchIconPosition} onClick={props?.searchOnClick} />
                 </BasicContainer>
             </SubContainer>
         </>
@@ -276,6 +276,102 @@ export const SearchTextInput = styled(SearchTextInputBase).attrs((props) => ({})
 `
 //#endregion
 //#endregion
+
+//#region FormCard表單卡片內的輸入框
+//#region FormCard表單卡片內的輸入框基底
+/* 
+   Date   : 2020-06-04 18:07:25
+   Author : Arhua Ho
+   Content: FormCard表單卡片內的輸入框基底
+*/
+const FormCardTextInputBase = (props) => {
+    //console.log(props)
+    const { Theme } = useContext(Context);
+    const { form } = Theme;
+    const ref = useRef();
+
+    return (
+        <>
+            <SubContainer
+                theme={props?.theme?.inputSubContainer}
+                className={props.className} >
+                {/* 輸入框 */}
+                <BasicContainer>
+                    <Text theme={props?.theme?.formCardTextInputLabel ?? form.formCardTextInputLabel} >
+                        {props.label}
+                    </Text>
+                </BasicContainer>
+                <BasicContainer theme={
+                    props?.theme?.inputBasicContainer
+                }>
+                    <input autoComplete="off"
+                        ref={ref}
+                        name={props?.name}
+                        disabled={props.disabled && "disabled"}
+                        type={props.pass ? "password" : "text"}
+                        value={props.value ?? ""}
+                        onChange={props.onChange}
+                        placeholder={props.placeholder} />
+                    {/* <BasicContainer theme={{
+                        position: "absolute",
+                        top: "0.5rem",
+                        left: "0.5rem",
+                        color: "#444",
+                    }}>
+                        {props.icon}
+                    </BasicContainer> */}
+                </BasicContainer>
+                <BasicContainer theme={{ margin: "0 0 0.5rem 0" }}>
+                    <Text theme={props?.theme?.formCardTextInputHint ?? form.formCardTextInputHint}>{props.hint}</Text>
+                </BasicContainer>
+            </SubContainer>
+        </>
+    )
+}
+//#endregion
+
+//#region FormCard表單卡片內的輸入框組件，請搭配useForm使用
+/* 
+   Date   : 2020-06-04 18:07:46
+   Author : Arhua Ho
+   Content: FormCard表單卡片內的輸入框組件，請搭配useForm使用
+
+    formCardTextInputLabel
+    formCardTextInputHint
+    input
+
+*/
+export const FormCardTextInput = styled(FormCardTextInputBase).attrs((props) => ({}))`
+    //固定屬性
+
+    input {
+        box-sizing: border-box;
+        position: ${props => props?.theme?.input?.inputPosition ?? 'relative'};
+        height: ${props => props?.theme?.input?.height ?? 'initial'}; 
+        line-height: ${props => props?.theme?.input?.lineHeight ? `calc( ${props.theme.input.lineHeight} - .8rem )` : 'initial'}; 
+        width: 100%; 
+        font-size: ${props => props?.theme?.input?.fontSize ?? 'initial'}; 
+        border: ${props => props?.theme?.input?.border ?? 'initial'};
+        border-bottom: ${props => props?.theme?.input?.borderBottom};
+        border-radius: ${props => props?.theme?.input?.borderRadius ?? '20px'};
+        color: ${props => props?.theme?.input?.color ?? '#606266'};
+        font-family: ${props => props?.theme?.input?.fontFamily ?? '"Arial", Microsoft JhengHei, "微軟正黑體", Helvetica, sans-serif'};
+        font-weight: ${props => props?.theme?.input?.fontWeight ?? '500'};
+        letter-spacing: ${props => props?.theme?.input?.letterSpacing ?? '0.0075em'};
+        text-align: ${props => props?.theme?.input?.textAlign ?? 'initial'};
+
+        &:focus {
+            outline: ${props => props?.theme?.input?.focusOutline ?? '1px solid #409eff00'};
+            border: ${props => props?.theme?.input?.focusBorder ?? '2px solid #444'};
+            border-bottom: ${props => props?.theme?.input?.focusBorderBottom};
+            border-radius: ${props => props?.theme?.input?.focusBorderRadius ?? '4px'};
+            background-color: ${props => props?.theme?.input?.focusBackgroundColor ?? 'initial'};
+        }
+    }
+`
+//#endregion
+//#endregion
+
 
 //#region 一般下拉式選單
 //#region 一般下拉式選單基底  

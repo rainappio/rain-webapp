@@ -4,7 +4,7 @@ import { BasicContainer, SubContainer } from '../../Components/Containers';
 import { PageTitle } from '../../Components/PageTitle';
 import { EasyButton, JumpDialogButton } from '../../Components/Buttons';
 import AddIcon from '@material-ui/icons/Add';
-import { SearchTextInput, FormControl, FormRow } from '../../Components/Forms';
+import { SearchTextInput, FormCardTextInput, FormControl, FormRow } from '../../Components/Forms';
 import { TableBasic } from '../../Components/Tables';
 import { setItemlocalStorage, getItemlocalStorage, clearlocalStorage } from '../../Handlers/LocalStorageHandler'
 import { useHistory } from 'react-router-dom';
@@ -35,6 +35,9 @@ export const Administrators = (props) => {
     const [width] = useWindowSize();
 
     const [Id, Idhandler, IdregExpResult, IdResetValue] = useForm("", [""], [""]); // Id欄位
+    const [Name, Namehandler, NameregExpResult, NameResetValue] = useForm("", [""], [""]); // 管理員姓名欄位
+    const [Pass, Passhandler, PassregExpResult, PassResetValue] = useForm("", [""], [""]); // 管理員密碼欄位
+    const [Phone, Phonehandler, PhoneregExpResult, PhoneResetValue] = useForm("", [""], [""]); // 管理員手機欄位
 
     //#region 重置表單欄位的State值
     const formValueReast = () => {
@@ -491,8 +494,45 @@ export const Administrators = (props) => {
                 yesText={"新增"}
                 no={() => { setOpenAddJumpDialog(false) }}
                 noText={"取消"}
-                close={() => { setOpenAddJumpDialog(false) }}
+                close={() => { setOpenAddJumpDialog(false); }}
             >
+                <FormControl theme={{ margin: "20px 0 0 0" }}>
+                    <FormRow>
+                        <FormCardTextInput
+                            label={"管理員密碼"}
+                            hint={"請輸入 4 ~ 16 位半形英文或數字"}
+                            value={Pass}
+                            pass
+                            onChange={Passhandler}
+                            regExpResult={PassregExpResult}
+                            placeholder={"請輸入 4 ~ 16 位半形英文或數字"}
+                            theme={administrators.passFormCardTextInput(Pass.length)}
+                        ></FormCardTextInput>
+                    </FormRow>
+                    <FormRow>
+                        <FormCardTextInput
+                            label={"姓名"}
+                            hint={""}
+                            value={Name}
+                            onChange={Namehandler}
+                            regExpResult={NameregExpResult}
+                            placeholder={"請輸入中文姓名"}
+                            theme={administrators.nameFormCardTextInput}
+                        ></FormCardTextInput>
+                    </FormRow>
+                    <FormRow>
+                        <FormCardTextInput
+                            label={"手機號碼"}
+                            hint={""}
+                            value={Phone}
+                            onChange={Phonehandler}
+                            regExpResult={PhoneregExpResult}
+                            placeholder={"請輸入手機號碼"}
+                            theme={administrators.nameFormCardTextInput}
+                        ></FormCardTextInput>
+                    </FormRow>
+                </FormControl>
+
             </FormCard>}
             {/* 編輯表單卡片 */}
             {OpenEditJumpDialog && <FormCard

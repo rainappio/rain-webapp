@@ -67,6 +67,17 @@ export default {
             width: "initial",
             margin: "0.2rem"
 
-        }
+        },
+        formCardTextInputLabel: {
+            color: "#444",
+            fontSize: "1rem",
+            fontWeight: 700,
+        },
+        formCardTextInputHint: {
+            padding: "0 0 0 2px",
+            color: "#d25959",
+            fontSize: "0.75rem",
+        },
+
     }
 }
