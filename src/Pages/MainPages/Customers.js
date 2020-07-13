@@ -341,7 +341,7 @@ export const Customers = (props) => {
                                             whiteSpace: 'nowarp'
                                         }}
                                         theme={{
-                                            display: "-webkit-inline-box",
+                                            display: "inline-block",
                                             color: "#444",
                                             fontWeight: "550",
                                             cursor: "default",
