@@ -7,6 +7,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import FirstPageIcon from '@material-ui/icons/FirstPage';
 import LastPageIcon from '@material-ui/icons/LastPage';
+import { TooltipBasic } from './Tooltips';
 
 //#region  列表排序遞增遞減旋轉箭頭動畫
 const ArrowDropUpIconTrans = styled(ArrowDropUpIcon).attrs((props) => ({}))`
@@ -206,16 +207,18 @@ const TableBase = (props) => {
                                 }}
                             >
                                 {/* {console.log("width", (props?.theme?.[props?.colKeys[index]] ? (props?.theme[props.colKeys[index]].width ?? `calc( ( 100% - ${props?.theme?.checkColWidth ?? "4rem"} ) / ${props?.title?.length} )`) : `calc( ( 100% - ${props?.theme?.checkColWidth ?? "4rem"} ) / ${props?.title?.length} )`))} */}
-                                <Text style={{
-                                    // 標題自帶...
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
-                                    WebkitLineClamp: 1,
-                                    width: "100%",
-                                    WebkitBoxOrient: "vertical",
-                                    whiteSpace: "nowrap"
-                                }}
-                                    theme={{ display: "inline-block", color: "#444", fontWeight: "900", cursor: "pointer", fontSize: "1.125rem", userSelect: "none", }}>{item}</Text>
+                                <TooltipBasic title={item} arrow>
+                                    <Text style={{
+                                        // 標題自帶...
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                        WebkitLineClamp: 1,
+                                        width: "100%",
+                                        WebkitBoxOrient: "vertical",
+                                        whiteSpace: "nowrap"
+                                    }}
+                                        theme={{ display: "inline-block", color: "#444", fontWeight: "900", cursor: "pointer", fontSize: "1.125rem", userSelect: "none", }}>{item}</Text>
+                                </TooltipBasic>
                                 {
                                     (props?.theme?.[props?.colKeys[index]]?.order ?? false) &&
                                         (ColOrder.colName === item) ?
@@ -285,7 +288,7 @@ const TableBase = (props) => {
                                         }}>
                                         {props?.theme?.[subItem]?.render ?
                                             props.theme[subItem].render(item[subItem], item.Id ?? null, item)
-                                            : < Text key={`tr${subIndex}`} theme={{ fontSize: "1rem", color: "#595959" }}>{`${item[subItem]}`}</Text>
+                                            : <TooltipBasic title={`${item[subItem]}`} arrow>< Text key={`tr${subIndex}`} theme={{ fontSize: "1rem", color: "#595959" }}>{`${item[subItem]}`}</Text></TooltipBasic>
                                         }
                                     </BasicContainer>
                                 ))

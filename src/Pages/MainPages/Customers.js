@@ -19,6 +19,7 @@ import { JumpDialog } from '../../Components/JumpDialog';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { alertService } from '../../Components/JumpAlerts';
 import { FormCard } from '../../Components/FormCard';
+import { TooltipBasic } from '../../Components/Tooltips';
 export const Customers = (props) => {
 
     const { APIUrl, Theme } = useContext(Context);
@@ -239,138 +240,150 @@ export const Customers = (props) => {
                                 order: true,// 是否開啟排序，預設為不開啟
 
                                 render: (item, id) => ((item &&
-                                    <Text
-                                        style={{
-                                            overflow: "hidden",
-                                            textOverflow: "ellipsis",
-                                            WebkitLineClamp: 1,
-                                            width: "100%",
-                                            WebkitBoxOrient: "vertical",
-                                            whiteSpace: 'nowarp',
-                                        }}
-                                        theme={{
-                                            display: "-webkit-inline-box",
-                                            color: "#444",
-                                            fontWeight: "550",
-                                            cursor: "default",
-                                            fontSize: "1rem",
-                                            whiteSpace: 'nowarp'
-                                        }}>{item}</Text>))
+                                    <TooltipBasic title={item} arrow>
+                                        <Text
+                                            style={{
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                WebkitLineClamp: 1,
+                                                width: "100%",
+                                                WebkitBoxOrient: "vertical",
+                                                whiteSpace: 'nowarp',
+                                            }}
+                                            theme={{
+                                                display: "-webkit-inline-box",
+                                                color: "#444",
+                                                fontWeight: "550",
+                                                cursor: "default",
+                                                fontSize: "1rem",
+                                                whiteSpace: 'nowarp'
+                                            }}>{item}</Text>
+                                    </TooltipBasic>))
                             },
                             "cTel": {
                                 // width: "45rem",
                                 width: "10%",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id) => ((item &&
-                                    <Text
-                                        style={{
-                                            overflow: "hidden",
-                                            textOverflow: "ellipsis",
-                                            WebkitLineClamp: 1,
-                                            width: "100%",
-                                            WebkitBoxOrient: "vertical",
-                                            //whiteSpace: 'nowarp'
-                                        }}
-                                        theme={{
-                                            display: "inline-block",
-                                            color: "#444",
-                                            fontWeight: "550",
-                                            cursor: "default",
-                                            fontSize: "1rem",
-                                            whiteSpace: 'nowarp'
-                                        }}>{item}</Text>))
+                                    <TooltipBasic title={item} arrow>
+                                        <Text
+                                            style={{
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                WebkitLineClamp: 1,
+                                                width: "100%",
+                                                WebkitBoxOrient: "vertical",
+                                                //whiteSpace: 'nowarp'
+                                            }}
+                                            theme={{
+                                                display: "inline-block",
+                                                color: "#444",
+                                                fontWeight: "550",
+                                                cursor: "default",
+                                                fontSize: "1rem",
+                                                whiteSpace: 'nowarp'
+                                            }}>{item}</Text>
+                                    </TooltipBasic>))
                             },
                             "CommCounty": {
                                 // width: "45rem",
                                 width: "20%",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id, rowItem) => ((item &&
-                                    <Text
-                                        style={{
-                                            overflow: "hidden",
-                                            textOverflow: "ellipsis",
-                                            WebkitLineClamp: 1,
-                                            width: "100%",
-                                            WebkitBoxOrient: "vertical",
-                                            whiteSpace: 'nowarp'
-                                        }}
-                                        theme={{
-                                            display: "-webkit-inline-box",
-                                            color: "#444",
-                                            fontWeight: "550",
-                                            cursor: "default",
-                                            fontSize: "1rem",
-                                            whiteSpace: 'nowarp'
-                                        }}>{`${item ?? ''}${rowItem?.CommDistrict ?? ''}${rowItem?.CommAddr ?? ''}`}</Text>))
+                                    <TooltipBasic title={`${item ?? ''}${rowItem?.CommDistrict ?? ''}${rowItem?.CommAddr ?? ''}`} arrow>
+                                        <Text
+                                            style={{
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                WebkitLineClamp: 1,
+                                                width: "100%",
+                                                WebkitBoxOrient: "vertical",
+                                                whiteSpace: 'nowarp'
+                                            }}
+                                            theme={{
+                                                display: "-webkit-inline-box",
+                                                color: "#444",
+                                                fontWeight: "550",
+                                                cursor: "default",
+                                                fontSize: "1rem",
+                                                whiteSpace: 'nowarp'
+                                            }}>{`${item ?? ''}${rowItem?.CommDistrict ?? ''}${rowItem?.CommAddr ?? ''}`}</Text>
+                                    </TooltipBasic>))
                             },
                             "cBirthDay": {
                                 // width: "45rem",
                                 width: "10%",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id) => ((item &&
-                                    <Text
-                                        style={{
-                                            overflow: "hidden",
-                                            textOverflow: "ellipsis",
-                                            WebkitLineClamp: 1,
-                                            width: '100%',
-                                            WebkitBoxOrient: "vertical",
-                                            //whiteSpace: 'nowarp'
-                                        }}
-                                        theme={{
-                                            display: "-webkit-inline-box",
-                                            color: "#444",
-                                            fontWeight: "550",
-                                            cursor: "default",
-                                            fontSize: "1rem",
-                                            whiteSpace: 'nowarp'
-                                        }}>{item.split("T")[0]}</Text>))
+                                    <TooltipBasic title={item} arrow>
+                                        <Text
+                                            style={{
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                WebkitLineClamp: 1,
+                                                width: '100%',
+                                                WebkitBoxOrient: "vertical",
+                                                //whiteSpace: 'nowarp'
+                                            }}
+                                            theme={{
+                                                display: "-webkit-inline-box",
+                                                color: "#444",
+                                                fontWeight: "550",
+                                                cursor: "default",
+                                                fontSize: "1rem",
+                                                whiteSpace: 'nowarp'
+                                            }}>{item.split("T")[0]}</Text>
+                                    </TooltipBasic>))
                             },
                             "cEmail": {
                                 // width: "45rem",
                                 width: "20%",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id) => ((item &&
-                                    <Text
-                                        style={{
-                                            overflow: "hidden",
-                                            textOverflow: "ellipsis",
-                                            WebkitLineClamp: 1,
-                                            width: "100%",
-                                            WebkitBoxOrient: "vertical",
-                                            whiteSpace: 'nowarp'
-                                        }}
-                                        theme={{
-                                            display: "inline-block",
-                                            color: "#444",
-                                            fontWeight: "550",
-                                            cursor: "default",
-                                            fontSize: "1rem",
-                                            whiteSpace: 'nowarp'
-                                        }}>{item}</Text>))
+                                    <TooltipBasic title={item} arrow>
+                                        <Text
+                                            style={{
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                WebkitLineClamp: 1,
+                                                width: "100%",
+                                                WebkitBoxOrient: "vertical",
+                                                whiteSpace: 'nowarp'
+                                            }}
+                                            theme={{
+                                                display: "inline-block",
+                                                color: "#444",
+                                                fontWeight: "550",
+                                                cursor: "default",
+                                                fontSize: "1rem",
+                                                whiteSpace: 'nowarp'
+                                            }}>{item}</Text>
+                                    </TooltipBasic>))
                             },
                             "CreateTime": {
                                 // width: "45rem",
                                 width: "10%",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id) => ((item &&
-                                    <Text
-                                        style={{
-                                            overflow: "hidden",
-                                            textOverflow: "ellipsis",
-                                            WebkitLineClamp: 1,
-                                            width: "100%",
-                                            WebkitBoxOrient: "vertical",
-                                            whiteSpace: 'nowarp'
-                                        }}
-                                        theme={{
-                                            display: "-webkit-inline-box",
-                                            color: "#444",
-                                            fontWeight: "550",
-                                            cursor: "default",
-                                            fontSize: "1rem",
-                                            whiteSpace: 'nowarp'
-                                        }}>{item.split("T")[0]}</Text>))
+                                    <TooltipBasic title={item} arrow>
+                                        <Text
+                                            style={{
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                WebkitLineClamp: 1,
+                                                width: "100%",
+                                                WebkitBoxOrient: "vertical",
+                                                whiteSpace: 'nowarp'
+                                            }}
+                                            theme={{
+                                                display: "-webkit-inline-box",
+                                                color: "#444",
+                                                fontWeight: "550",
+                                                cursor: "default",
+                                                fontSize: "1rem",
+                                                whiteSpace: 'nowarp'
+                                            }}>{item.split("T")[0]}</Text>
+                                    </TooltipBasic>))
                             },
                             "controll": {
                                 //width: "20rem",
@@ -380,16 +393,20 @@ export const Customers = (props) => {
                                     return (
                                         <BasicContainer theme={{ textAlign: "right" }}>
                                             {[
-                                                <CreateIcon
-                                                    key={`${item}1`}
-                                                    style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }}
-                                                    onClick={() => { setOpenEditJumpDialog(true) }}
-                                                />,
-                                                <DeleteForeverIcon
-                                                    key={`${item}2`}
-                                                    style={{ cursor: "pointer", color: "#d25959", margin: "0 1rem 0 0" }}
-                                                    onClick={() => { setOpenDelJumpDialog((o) => (!o)); setDelWho(rowItem.cRealName); IdResetValue(rowItem.Id) }}
-                                                />
+                                                <TooltipBasic title={"編輯"} arrow>
+                                                    <CreateIcon
+                                                        key={`${item}1`}
+                                                        style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }}
+                                                        onClick={() => { setOpenEditJumpDialog(true) }}
+                                                    />
+                                                </TooltipBasic>,
+                                                <TooltipBasic title={"刪除"} arrow>
+                                                    <DeleteForeverIcon
+                                                        key={`${item}2`}
+                                                        style={{ cursor: "pointer", color: "#d25959", margin: "0 1rem 0 0" }}
+                                                        onClick={() => { setOpenDelJumpDialog((o) => (!o)); setDelWho(rowItem.cRealName); IdResetValue(rowItem.Id) }}
+                                                    />
+                                                </TooltipBasic>
                                             ]}
                                         </BasicContainer>
                                     )

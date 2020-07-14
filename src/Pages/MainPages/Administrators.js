@@ -19,6 +19,7 @@ import { JumpDialog } from '../../Components/JumpDialog';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { alertService } from '../../Components/JumpAlerts';
 import { FormCard } from '../../Components/FormCard';
+import { TooltipBasic } from '../../Components/Tooltips';
 
 export const Administrators = (props) => {
 
@@ -313,36 +314,42 @@ export const Administrators = (props) => {
                                 width: "20%",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id) => ((item &&
-                                    <Text theme={{
-                                        color: "#444",
-                                        fontWeight: "550",
-                                        cursor: "default",
-                                        fontSize: "1rem",
-                                    }}>{item}</Text>))
+                                    <TooltipBasic title={item} arrow>
+                                        <Text theme={{
+                                            color: "#444",
+                                            fontWeight: "550",
+                                            cursor: "default",
+                                            fontSize: "1rem",
+                                        }}>{item}</Text>
+                                    </TooltipBasic>))
                             },
                             "phone": {
                                 // width: "45rem",
                                 width: "20%",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id) => ((item &&
-                                    <Text theme={{
-                                        color: "#444",
-                                        fontWeight: "550",
-                                        cursor: "default",
-                                        fontSize: "1rem"
-                                    }}>{item}</Text>))
+                                    <TooltipBasic title={item} arrow>
+                                        <Text theme={{
+                                            color: "#444",
+                                            fontWeight: "550",
+                                            cursor: "default",
+                                            fontSize: "1rem"
+                                        }}>{item}</Text>
+                                    </TooltipBasic>))
                             },
                             "uCreateTime": {
                                 // width: "20rem",
                                 width: "20%",
                                 order: true,
                                 render: (item, id) => ((item &&
-                                    <Text theme={{
-                                        color: "#444",
-                                        fontWeight: "550",
-                                        cursor: "default",
-                                        fontSize: "1rem"
-                                    }}>{item.split("T")[0]}</Text>))
+                                    <TooltipBasic title={item.split("T")[0]} arrow>
+                                        <Text theme={{
+                                            color: "#444",
+                                            fontWeight: "550",
+                                            cursor: "default",
+                                            fontSize: "1rem"
+                                        }}>{item.split("T")[0]}</Text>
+                                    </TooltipBasic>))
                             },
                             "controll": {
                                 // width: "20rem",
@@ -352,16 +359,20 @@ export const Administrators = (props) => {
                                     return (
                                         <BasicContainer theme={{ textAlign: "right" }}>
                                             {[
-                                                <CreateIcon
-                                                    key={`${item}1`}
-                                                    style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }}
-                                                    onClick={() => { setOpenEditJumpDialog(true) }}
-                                                />,
-                                                <DeleteForeverIcon
-                                                    key={`${item}2`}
-                                                    style={{ cursor: "pointer", color: "#d25959", margin: "0 1rem 0 0" }}
-                                                    onClick={() => { setOpenDelJumpDialog((o) => (!o)); setDelWho(rowItem.uRealName); IdResetValue(rowItem.uID) }}
-                                                />
+                                                <TooltipBasic title={"編輯"} arrow>
+                                                    <CreateIcon
+                                                        key={`${item}1`}
+                                                        style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }}
+                                                        onClick={() => { setOpenEditJumpDialog(true) }}
+                                                    />
+                                                </TooltipBasic>,
+                                                <TooltipBasic title={"刪除"} arrow>
+                                                    <DeleteForeverIcon
+                                                        key={`${item}2`}
+                                                        style={{ cursor: "pointer", color: "#d25959", margin: "0 1rem 0 0" }}
+                                                        onClick={() => { setOpenDelJumpDialog((o) => (!o)); setDelWho(rowItem.uRealName); IdResetValue(rowItem.uID) }}
+                                                    />
+                                                </TooltipBasic>
                                             ]}
                                         </BasicContainer>
                                     )
