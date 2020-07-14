@@ -78,6 +78,13 @@ export default {
             color: props.hint === "" ? "#00000000" : "#d25959",
             fontSize: "0.75rem",
         }),
+        formCardHowManyCheckedText: (props) => ({
+            padding: props.hint === "" ? "0 0 0 2px" : "initial",
+            color: props.hint === "" ? "#00000000" : "#d25959",
+            fontSize: "0.5rem",
+            margin: "0 0 0 0.3rem",
+            fontWeight: 500,
+        }),
         //#region FormCardSelector組件樣式
         select: (props) => (
             {
@@ -356,5 +363,35 @@ export default {
             }
         ),
         //#endregion    
+        checkBoxLabel: {
+            fontSize: "0.8rem",
+            fontWeight: 800,
+            color: "#444",
+            top: "-0.1rem",
+            left: "0.1rem",
+            userSelect: "none"
+        },
+        cityCheckBoxGroupBasicContainer: {
+            height: "10rem",
+            overflowY: "scroll",
+            margin: "0.5rem 0 0 0"
+        },
+        cityTitleBasicContainer: {
+            height: "1.5rem",
+            lineHeight: "1.5rem",
+            borderBottom: "1px solid #ccc",
+            backgroundColor: "#f2f2f2",
+            margin: "0 0 0.5rem 0",
+        },
+        cityTitleText: {
+            margin: "0 0 0 0.5rem",
+            fontSize: "14px",
+            color: "#666"
+        },
+        countiesRowContainer: {
+            overflowY: "hidden",
+            direction: "row",
+            padding: "0 0 0 0.5rem"
+        }
     }
 }

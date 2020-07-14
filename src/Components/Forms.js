@@ -13,6 +13,7 @@ import { Text } from './Texts';
 import { Ul, Li } from './Lists';
 import { TagClose } from './Tags';
 import Select, { components } from 'react-select'
+import { cityAndCounties } from '../Mappings/Mappings'
 
 //#region  列表排序遞增遞減旋轉箭頭動畫
 const ArrowDropUpIconTrans = styled(ArrowDropUpIcon).attrs((props) => ({}))`
@@ -279,7 +280,7 @@ export const SearchTextInput = styled(SearchTextInputBase).attrs((props) => ({})
 //#endregion
 //#endregion
 
-//#region FormCard表單卡片內的輸入框
+//#region FormCard表單卡片內的 輸入框
 //#region FormCard表單卡片內的輸入框基底
 /* 
    Date   : 2020-06-04 18:07:25
@@ -488,7 +489,6 @@ export const FormCardSelector = styled(FormCardSelectorBase).attrs((props) => ({
 //#endregion
 //#endregion
 
-
 //#region FormCard表單卡片內的 時間選擇框 (icon 在左方)
 //#region 時間icon
 const DropdownIndicator = (props: ElementConfig<typeof components.DropdownIndicator>) => {
@@ -581,6 +581,160 @@ const FormCardLeftIconSelectorBase = React.memo((props) => {
                 }
 */
 export const FormCardLeftIconSelector = styled(FormCardLeftIconSelectorBase).attrs((props) => ({}))`
+`
+//#endregion
+//#endregion
+
+//#region FormCard表單卡片內的 區域選擇Checkbox群組
+//#region 單一CheckBox製作
+const CheckboxContainer = styled.div`
+  display: inline-block;
+  width: 0.8125rem;
+  height: 0.8125rem;
+  position: relative;
+`
+const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
+  border: 0;
+  padding: 0;
+  top: 0rem;
+  position: absolute;
+  white-space: nowrap;
+  width: 0.8125rem;
+  height: 0.8125rem;
+  margin : 0rem;
+`
+const SingleCheckBox = ({ className, ...props }) => {
+    //console.log(className, props)
+    return (
+        <CheckboxContainer className={className}>
+            <HiddenCheckbox  {...props} />
+        </CheckboxContainer>
+    )
+}
+//#endregion
+//#region 吐回分成四個一組的地區陣列函數
+const remixArrayFour = (data) => {
+    let res = [];
+    let totalStep = Math.ceil((data ?? []).length / 4);
+    for (let i = 0; i < totalStep; i++) {
+        res.push([...data.slice(i * 4, i * 4 + 4)]);
+    }
+    //console.log(res)
+    return res;
+}
+//#endregion
+//#region FormCard表單卡片內的 區域選擇Checkbox群組基底
+const CityCheckBoxGroupBase = (props) => {
+
+    const { Theme } = useContext(Context);
+    const { form } = Theme;
+    const [WhichExpand, setWhichExpand] = useState("");
+    const [Checked, setChecked] = useState(props.value ?? []);
+
+    return (
+        <>
+            <SubContainer
+                theme={props?.theme?.cityCheckBoxGroupSubContainer}
+                className={props.className} >
+                {/* 標題 */}
+                <BasicContainer>
+                    <Text theme={props?.theme?.formCardCityCheckBoxGroupLabel ?? form.formCardTextInputLabel(props)} >
+                        {props.label === "" ? "0" : props.label}
+                    </Text>
+                    <Text theme={props?.theme?.formCardHowManyCheckedText ?? form.formCardHowManyCheckedText(props)} >
+                        {props.label === "" ? "0" : `共選了 ${Checked.length} 個區域`}
+                    </Text>
+                </BasicContainer>
+                {/* 地區勾選群 */}
+                <BasicContainer theme={
+                    props?.theme?.cityCheckBoxGroupBasicContainer ?? form.cityCheckBoxGroupBasicContainer
+                }>
+                    {/* 地區容器 */}
+                    {/* 開始遍歷 */}
+                    {Object.keys(cityAndCounties).map((item, index, arr) => {
+                        return (
+                            <React.Fragment key={index}>
+                                {/* 地區標題 */}
+                                <BasicContainer
+                                    onClick={() => { setWhichExpand((w) => ((w === item) ? "" : item)) }}
+                                    theme={props?.theme?.cityTitleBasicContainer ?? form.cityTitleBasicContainer}>
+                                    <Text theme={props?.theme?.cityTitleText ?? form.cityTitleText}>{item}</Text>
+                                </BasicContainer>
+                                {/* 子地區勾選 ，每四個換一列*/}
+                                {
+                                    (WhichExpand === item) && remixArrayFour(cityAndCounties[item]).map((subitem, subindex) => (
+                                        <Container
+                                            key={subindex}
+                                            className={WhichExpand === item ? "expand" : "collapse"}
+                                            theme={form.countiesRowContainer}>
+                                            {subitem.map((subitem1, subindex1) => (
+                                                <SubContainer theme={{ occupy: 3 }} key={subitem1.label}>
+                                                    <SingleCheckBox
+                                                        name={subitem1.label}
+                                                        value={subitem1.value}
+                                                        checked={(props?.value && props.value.filter(e => e.value === subitem1.value).length > 0) ?? Checked.filter(e => e.value === subitem1.value).length > 0}
+                                                        onChange={(event) => {
+                                                            //console.log(event.target.value);
+                                                            //console.log(event.target.checked);
+                                                            setChecked((c) => {
+                                                                return (c.filter(e => e.value === subitem1.value).length > 0) ? c.filter(e => e.value !== subitem1.value) : [...c, { value: subitem1.value, label: subitem1.label }]
+                                                            })
+                                                            props?.onChange && props.onChange((Checked.filter(e => e.value === subitem1.value).length > 0) ? Checked.filter(e => e.value !== subitem1.value) : [...Checked, { value: subitem1.value, label: subitem1.label }])
+                                                        }}>
+                                                    </SingleCheckBox>
+                                                    <Text theme={props?.theme?.checkBoxLabel ?? form.checkBoxLabel}>{subitem1.label}</Text>
+                                                </SubContainer>
+                                            ))}
+                                        </Container>
+                                    )
+                                    )
+                                }
+                            </React.Fragment>
+                        )
+                    })
+                    }
+                </BasicContainer>
+                {/* 底部提示 */}
+                <BasicContainer theme={{ margin: "0 0 0.5rem 0" }}>
+                    <Text theme={props?.theme?.formCardCityCheckBoxGroupHint ?? form.formCardTextInputHint(props)}>
+                        {props.hint === "" ? "0" : props.hint}
+                    </Text>
+                </BasicContainer>
+            </SubContainer>
+        </>
+    )
+}
+//#endregion
+//#region FormCard表單卡片內的 區域選擇Checkbox群組組件
+/* 
+   Date   : 2020-07-15 01:11:42
+   Author : Arhua Ho
+   Content: FormCard表單卡片內的 區域選擇Checkbox群組組件，請搭配useSelector使用
+            可傳入props : 
+                label : (ReactDom 或 文字) //標題
+                value : useSelector第一個參數，若有預設值格式應為 [{ value: "給後端的值", label: "顯示的值" ,isDisabled: "選填，是否禁止選擇" }, {}, ...]
+                onChange : (value) => { useSelector第四個參數(value); ...其他動作 }，固定傳入本函數，"其他動作" 為選擇選項後，要執行的其他函數
+                theme: {
+                    cityCheckBoxGroupSubContainer : {}, //SubContainer容器樣式
+                    formCardCityCheckBoxGroupLabel : {}, //標題樣式
+                    formCardHowManyCheckedText : {}, //選擇了幾個區域文字樣式
+                    cityCheckBoxGroupBasicContainer : {} //整個地區勾選群組區域容器樣式 (BasicContainer) ，可用來調整體高度
+                    cityTitleBasicContainer : {} //地區標題容器樣式 (BasicContainer)
+                    cityTitleText : {} //地區標題文字樣式
+                    checkBoxLabel : {} //勾選項文字樣式
+                    formCardCityCheckBoxGroupHint : {} // 下方提示字串樣式
+                }
+*/
+export const CityCheckBoxGroup = styled(CityCheckBoxGroupBase).attrs((props) => ({}))`
+    .expand {
+        max-height: 1000rem;
+        transition: max-height .3s ease-in-out;
+    }
+
+    .collapse {
+        max-height: 0rem;
+        transition: max-height .3s ease-in-out;
+    }
 `
 //#endregion
 //#endregion
