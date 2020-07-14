@@ -393,16 +393,14 @@ export const Customers = (props) => {
                                     return (
                                         <BasicContainer theme={{ textAlign: "right" }}>
                                             {[
-                                                <TooltipBasic title={"編輯"} arrow>
+                                                <TooltipBasic key={`${item}1`} title={"編輯"} arrow>
                                                     <CreateIcon
-                                                        key={`${item}1`}
                                                         style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }}
                                                         onClick={() => { setOpenEditJumpDialog(true) }}
                                                     />
                                                 </TooltipBasic>,
-                                                <TooltipBasic title={"刪除"} arrow>
+                                                <TooltipBasic key={`${item}2`} title={"刪除"} arrow>
                                                     <DeleteForeverIcon
-                                                        key={`${item}2`}
                                                         style={{ cursor: "pointer", color: "#d25959", margin: "0 1rem 0 0" }}
                                                         onClick={() => { setOpenDelJumpDialog((o) => (!o)); setDelWho(rowItem.cRealName); IdResetValue(rowItem.Id) }}
                                                     />

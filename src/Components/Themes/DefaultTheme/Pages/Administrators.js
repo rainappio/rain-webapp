@@ -157,5 +157,11 @@ export default {
             padding: "0 0.1rem 0 0"
         }
     },
+    locationFormCardTextInput: {
+        selectSubContainer: {
+            occupy: 6,
+            padding: "0 0.1rem 0 0"
+        }
+    },
 }
 

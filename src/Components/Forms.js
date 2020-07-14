@@ -377,7 +377,7 @@ export const FormCardTextInput = styled(FormCardTextInputBase).attrs((props) => 
 //#region 繼承 react-select 的 Select
 const SelectExtend = styled(Select).attrs((props) => ({}))`
 `
-
+//#endregion
 //#region FormCard表單卡片內的 選擇框 基底
 /* 
    Date   : 2020-06-04 18:07:25
@@ -392,16 +392,16 @@ const FormCardSelectorBase = (props) => {
     return (
         <>
             <SubContainer
-                theme={props?.theme?.inputSubContainer}
+                theme={props?.theme?.selectSubContainer}
                 className={props.className} >
                 {/* 輸入框 */}
                 <BasicContainer>
-                    <Text theme={props?.theme?.formCardTextInputLabel ?? form.formCardTextInputLabel} >
+                    <Text theme={props?.theme?.formCardSelectLabel ?? form.formCardTextInputLabel} >
                         {props.label}
                     </Text>
                 </BasicContainer>
                 <BasicContainer theme={
-                    props?.theme?.inputBasicContainer
+                    props?.theme?.selectBasicContainer
                 }>
                     <SelectExtend
                         isSearchable={props?.isSearchable ?? false}
@@ -421,30 +421,122 @@ const FormCardSelectorBase = (props) => {
                         styles={props?.theme?.select ?? form.select(props)}></SelectExtend>
                 </BasicContainer>
                 <BasicContainer theme={{ margin: "0 0 0.5rem 0" }}>
-                    <Text theme={props?.theme?.formCardTextInputHint ?? form.formCardTextInputHint}>{props.hint}</Text>
+                    <Text theme={props?.theme?.formCardSelectHint ?? form.formCardTextInputHint}>{props.hint}</Text>
                 </BasicContainer>
             </SubContainer>
         </>
     )
 }
 //#endregion
-
-//#region FormCard表單卡片內的 選擇框，請搭配useForm使用
+//#region FormCard表單卡片內的 選擇框，請搭配useSelector使用
 /* 
    Date   : 2020-06-04 18:07:46
    Author : Arhua Ho
-   Content: FormCard表單卡片內的 選擇框，請搭配useForm使用
-
-    formCardTextInputLabel
-    formCardTextInputHint
-    input
-
+   Content: FormCard表單卡片內的 選擇框，請搭配useSelector使用
+            可傳入props : 
+                label : (ReactDom 或 文字) //標題
+                isSearchable : Boolean 下拉選單是否可搜尋 ， 預設false，不可搜尋
+                isClearable : Boolean 下拉選單是否可清除內容 ，預設false，不可清除內容
+                isMulti : Boolean 下拉選單是否可多選 ，預設false，不可多選
+                defaultValue : { value: "給後端的值", label: "顯示的值" ,isDisabled: "選填，是否禁止選擇" } //下拉選單預設選中項，無預設值
+                options : [{ value: "給後端的值", label: "顯示的值" ,isDisabled: "選填，是否禁止選擇" }, {}, ...] //下拉選單選項
+                value : useSelector第一個參數
+                onChange : (value) => { useSelector第四個參數(value); ...其他動作 }，固定傳入本函數，"其他動作" 為選擇選項後，要執行的其他函數
+                noOptionsMessage : 當無選項或搜尋無選項時要顯示的訊息
+                placeholder : 提示字元
+                theme: {
+                    selectSubContainer : {}, //SubContainer容器樣式
+                    formCardSelectLabel : {}, //標題樣式
+                    selectBasicContainer : {} //選框容器樣式(BasicContainer)
+                    formCardSelectHint : {} // 下方提示字串樣式
+                    select :{} //選擇框樣式
+                }
 */
 export const FormCardSelector = styled(FormCardSelectorBase).attrs((props) => ({}))`
 `
 //#endregion
 //#endregion
 
+
+//#region FormCard表單卡片內的 時間選擇框 (icon 在左方)
+//#region FormCard表單卡片內的 時間選擇框 (icon 在左方)
+/* 
+   Date   : 2020-06-04 18:07:25
+   Author : Arhua Ho
+   Content: FormCard表單卡片內的 時間選擇框 (icon 在左方)
+*/
+const FormCardLeftIconSelectorBase = (props) => {
+    //console.log(props)
+    const { Theme } = useContext(Context);
+    const { form } = Theme;
+
+    return (
+        <>
+            <SubContainer
+                theme={props?.theme?.selectSubContainer}
+                className={props.className} >
+                {/* 輸入框 */}
+                <BasicContainer>
+                    <Text theme={props?.theme?.formCardSelectLabel ?? form.formCardTextInputLabel} >
+                        {props.label}
+                    </Text>
+                </BasicContainer>
+                <BasicContainer theme={
+                    props?.theme?.selectBasicContainer
+                }>
+                    <SelectExtend
+                        isSearchable={props?.isSearchable ?? false}
+                        isClearable={props?.isClearable ?? false}
+                        isMulti={props?.isMulti ?? false}
+                        defaultValue={props?.defaultValue}
+                        options={props?.options}
+                        value={props.value}
+                        //onChange={(e, t) => { console.log(e, t) }}
+                        onChange={(values, action) => {
+                            // console.log(values);
+                            // console.log(action);
+                            props?.onChange && props.onChange(values)
+                        }}
+                        noOptionsMessage={() => (props?.noOptionsMessage ?? "無符合資料")}
+                        placeholder={props?.placeholder}
+                        styles={props?.theme?.select ?? form.leftIconSelect(props)}></SelectExtend>
+                </BasicContainer>
+                <BasicContainer theme={{ margin: "0 0 0.5rem 0" }}>
+                    <Text theme={props?.theme?.formCardSelectHint ?? form.formCardTextInputHint}>{props.hint}</Text>
+                </BasicContainer>
+            </SubContainer>
+        </>
+    )
+}
+//#endregion
+//#region FormCard表單卡片內的 時間選擇框 (icon 在左方)，請搭配useSelector使用
+/* 
+   Date   : 2020-06-04 18:07:46
+   Author : Arhua Ho
+   Content: FormCard表單卡片內的 時間選擇框 (icon 在左方)，請搭配useSelector使用
+            可傳入props : 
+                label : (ReactDom 或 文字) //標題
+                isSearchable : Boolean 下拉選單是否可搜尋 ， 預設false，不可搜尋
+                isClearable : Boolean 下拉選單是否可清除內容 ，預設false，不可清除內容
+                isMulti : Boolean 下拉選單是否可多選 ，預設false，不可多選
+                defaultValue : { value: "給後端的值", label: "顯示的值" ,isDisabled: "選填，是否禁止選擇" } //下拉選單預設選中項，無預設值
+                options : [{ value: "給後端的值", label: "顯示的值" ,isDisabled: "選填，是否禁止選擇" }, {}, ...] //下拉選單選項
+                value : useSelector第一個參數
+                onChange : (value) => { useSelector第四個參數(value); ...其他動作 }，固定傳入本函數，"其他動作" 為選擇選項後，要執行的其他函數
+                noOptionsMessage : 當無選項或搜尋無選項時要顯示的訊息
+                placeholder : 提示字元
+                theme: {
+                    selectSubContainer : {}, //SubContainer容器樣式
+                    formCardSelectLabel : {}, //標題樣式
+                    selectBasicContainer : {} //選框容器樣式(BasicContainer)
+                    formCardSelectHint : {} // 下方提示字串樣式
+                    select :{} //選擇框樣式
+                }
+*/
+export const FormCardLeftIconSelector = styled(FormCardLeftIconSelectorBase).attrs((props) => ({}))`
+`
+//#endregion
+//#endregion
 
 //#region 一般下拉式選單
 //#region 一般下拉式選單基底  

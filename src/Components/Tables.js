@@ -288,7 +288,7 @@ const TableBase = (props) => {
                                         }}>
                                         {props?.theme?.[subItem]?.render ?
                                             props.theme[subItem].render(item[subItem], item.Id ?? null, item)
-                                            : <TooltipBasic title={`${item[subItem]}`} arrow>< Text key={`tr${subIndex}`} theme={{ fontSize: "1rem", color: "#595959" }}>{`${item[subItem]}`}</Text></TooltipBasic>
+                                            : <TooltipBasic key={`tr${subIndex}`} title={`${item[subItem]}`} arrow>< Text theme={{ fontSize: "1rem", color: "#595959" }}>{`${item[subItem]}`}</Text></TooltipBasic>
                                         }
                                     </BasicContainer>
                                 ))

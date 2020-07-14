@@ -4,7 +4,7 @@ import { BasicContainer, SubContainer } from '../../Components/Containers';
 import { PageTitle } from '../../Components/PageTitle';
 import { EasyButton, JumpDialogButton } from '../../Components/Buttons';
 import AddIcon from '@material-ui/icons/Add';
-import { SearchTextInput, FormCardTextInput, FormControl, FormRow, FormCardSelector } from '../../Components/Forms';
+import { SearchTextInput, FormCardTextInput, FormControl, FormRow, FormCardSelector, FormCardLeftIconSelector } from '../../Components/Forms';
 import { TableBasic } from '../../Components/Tables';
 import { setItemlocalStorage, getItemlocalStorage, clearlocalStorage } from '../../Handlers/LocalStorageHandler'
 import { useHistory } from 'react-router-dom';
@@ -359,16 +359,14 @@ export const Administrators = (props) => {
                                     return (
                                         <BasicContainer theme={{ textAlign: "right" }}>
                                             {[
-                                                <TooltipBasic title={"編輯"} arrow>
+                                                <TooltipBasic key={`${item}1`} title={"編輯"} arrow>
                                                     <CreateIcon
-                                                        key={`${item}1`}
                                                         style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }}
                                                         onClick={() => { setOpenEditJumpDialog(true) }}
                                                     />
                                                 </TooltipBasic>,
-                                                <TooltipBasic title={"刪除"} arrow>
+                                                <TooltipBasic key={`${item}2`} title={"刪除"} arrow>
                                                     <DeleteForeverIcon
-                                                        key={`${item}2`}
                                                         style={{ cursor: "pointer", color: "#d25959", margin: "0 1rem 0 0" }}
                                                         onClick={() => { setOpenDelJumpDialog((o) => (!o)); setDelWho(rowItem.uRealName); IdResetValue(rowItem.uID) }}
                                                     />
@@ -663,7 +661,7 @@ export const Administrators = (props) => {
                             //defaultValue={ { value: '1', label: 'Chocolate' }}
                             onChange={(value) => { LocationResetValue(value) }}
                             regExpResult={LocationregExpResult}
-                            theme={administrators.nameFormCardTextInput}
+                            theme={administrators.locationFormCardTextInput}
                         ></FormCardSelector>
                         <FormCardSelector
                             label={"管理員身份"}
@@ -679,8 +677,26 @@ export const Administrators = (props) => {
                             ]}
                             onChange={(values) => { RoleResetValue(values) }}
                             regExpResult={RoleregExpResult}
-                            theme={administrators.nameFormCardTextInput}
+                            theme={administrators.locationFormCardTextInput}
                         ></FormCardSelector>
+                    </FormRow>
+                    <FormRow>
+                        <FormCardLeftIconSelector
+                            label={"管理員身份"}
+                            hint={""}
+                            placeholder={"請選擇管理員身份"}
+                            value={Role}
+                            isMulti
+                            isSearchable
+                            options={[
+                                { value: '1', label: '選項1' },//isDisabled: true 
+                                { value: '2', label: '選項2' },
+                                { value: '3', label: '選項3' }
+                            ]}
+                            onChange={(values) => { RoleResetValue(values) }}
+                            regExpResult={RoleregExpResult}
+                            theme={administrators.locationFormCardTextInput}
+                        ></FormCardLeftIconSelector>
                     </FormRow>
                 </FormControl>
             </FormCard>}
