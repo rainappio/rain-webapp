@@ -682,9 +682,31 @@ export const Administrators = (props) => {
                     </FormRow>
                     <FormRow>
                         <FormCardLeftIconSelector
-                            label={"管理員身份"}
-                            hint={""}
-                            placeholder={"請選擇管理員身份"}
+                            //label={"時間"}
+                            //hint={""}
+                            placeholder={"請選擇時間"}
+                            value={Role}
+                            isMulti
+                            isSearchable
+                            options={[
+                                { value: '1', label: '選項1' },//isDisabled: true 
+                                { value: '2', label: '選項2' },
+                                { value: '3', label: '選項3' },
+                                { value: '4', label: '選項4' },
+                                { value: '5', label: '選項5' },
+                                { value: '6', label: '選項6' },
+                                { value: '7', label: '選項7' },
+                                { value: '8', label: '選項8' },
+                                { value: '9', label: '選項9' },
+                            ]}
+                            onChange={(values) => { RoleResetValue(values) }}
+                            regExpResult={RoleregExpResult}
+                            theme={administrators.locationFormCardTextInput}
+                        ></FormCardLeftIconSelector>
+                        <FormCardLeftIconSelector
+                            //label={""}
+                            //hint={"請選擇時間"}
+                            placeholder={"請選擇時間"}
                             value={Role}
                             isMulti
                             isSearchable

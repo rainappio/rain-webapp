@@ -298,8 +298,8 @@ const FormCardTextInputBase = (props) => {
                 className={props.className} >
                 {/* 輸入框 */}
                 <BasicContainer>
-                    <Text theme={props?.theme?.formCardTextInputLabel ?? form.formCardTextInputLabel} >
-                        {props.label}
+                    <Text theme={props?.theme?.formCardTextInputLabel ?? form.formCardTextInputLabel(props)} >
+                        {props.label === "" ? "0" : props.label}
                     </Text>
                 </BasicContainer>
                 <BasicContainer theme={
@@ -323,7 +323,9 @@ const FormCardTextInputBase = (props) => {
                     </BasicContainer> */}
                 </BasicContainer>
                 <BasicContainer theme={{ margin: "0 0 0.5rem 0" }}>
-                    <Text theme={props?.theme?.formCardTextInputHint ?? form.formCardTextInputHint}>{props.hint}</Text>
+                    <Text theme={props?.theme?.formCardTextInputHint ?? form.formCardTextInputHint(props)}>
+                        {props.hint === "" ? "0" : props.hint}
+                    </Text>
                 </BasicContainer>
             </SubContainer>
         </>
@@ -337,7 +339,7 @@ const FormCardTextInputBase = (props) => {
    Author : Arhua Ho
    Content: FormCard表單卡片內的輸入框組件，請搭配useForm使用
 
-    formCardTextInputLabel
+    formCardTextInputLabel(props)
     formCardTextInputHint
     input
 
@@ -376,6 +378,30 @@ export const FormCardTextInput = styled(FormCardTextInputBase).attrs((props) => 
 //#region FormCard表單卡片內的 選擇框
 //#region 繼承 react-select 的 Select
 const SelectExtend = styled(Select).attrs((props) => ({}))`
+    && {
+        [class*="MenuList"] {
+            //滾動條美化
+            ::-webkit-scrollbar {
+                width: 0.5em;
+                height: ${props => props?.theme?.scrollHeight ?? 'initial'}; //scroll-x 的高度
+            }
+            ::-webkit-scrollbar-track {
+                -webkit-border-radius: 10px;
+                border-radius: 10px;
+                margin:0px 0.1rem 5px 0;
+            }
+            ::-webkit-scrollbar-thumb {
+                -webkit-border-radius: 4px;
+                border-radius: 4px;
+                background: ${props => props?.theme?.scrollUnhoverBackgroundColor ?? '#9093994d'};
+            }
+            &:hover::-webkit-scrollbar-thumb {
+                -webkit-border-radius: 4px;
+                border-radius: 4px;
+                background: ${props => props?.theme?.scrollHoverBackgroundColor ?? '#9093994d'};
+            }
+        }
+    }
 `
 //#endregion
 //#region FormCard表單卡片內的 選擇框 基底
@@ -396,8 +422,8 @@ const FormCardSelectorBase = (props) => {
                 className={props.className} >
                 {/* 輸入框 */}
                 <BasicContainer>
-                    <Text theme={props?.theme?.formCardSelectLabel ?? form.formCardTextInputLabel} >
-                        {props.label}
+                    <Text theme={props?.theme?.formCardSelectLabel ?? form.formCardTextInputLabel(props)} >
+                        {props.label === "" ? "0" : props.label}
                     </Text>
                 </BasicContainer>
                 <BasicContainer theme={
@@ -410,6 +436,7 @@ const FormCardSelectorBase = (props) => {
                         defaultValue={props?.defaultValue}
                         options={props?.options}
                         value={props.value}
+                        maxMenuHeight={props?.theme?.select?.maxMenuHeight ?? "12.5rem"}
                         //onChange={(e, t) => { console.log(e, t) }}
                         onChange={(values, action) => {
                             // console.log(values);
@@ -421,7 +448,9 @@ const FormCardSelectorBase = (props) => {
                         styles={props?.theme?.select ?? form.select(props)}></SelectExtend>
                 </BasicContainer>
                 <BasicContainer theme={{ margin: "0 0 0.5rem 0" }}>
-                    <Text theme={props?.theme?.formCardSelectHint ?? form.formCardTextInputHint}>{props.hint}</Text>
+                    <Text theme={props?.theme?.formCardSelectHint ?? form.formCardTextInputHint(props)}>
+                        {props.hint === "" ? "0" : props.hint}
+                    </Text>
                 </BasicContainer>
             </SubContainer>
         </>
@@ -449,7 +478,9 @@ const FormCardSelectorBase = (props) => {
                     formCardSelectLabel : {}, //標題樣式
                     selectBasicContainer : {} //選框容器樣式(BasicContainer)
                     formCardSelectHint : {} // 下方提示字串樣式
-                    select :{} //選擇框樣式
+                    select :{
+                        maxMenuHeight : "rem" //選單最高高度
+                    } //選擇框樣式
                 }
 */
 export const FormCardSelector = styled(FormCardSelectorBase).attrs((props) => ({}))`
@@ -477,8 +508,8 @@ const FormCardLeftIconSelectorBase = (props) => {
                 className={props.className} >
                 {/* 輸入框 */}
                 <BasicContainer>
-                    <Text theme={props?.theme?.formCardSelectLabel ?? form.formCardTextInputLabel} >
-                        {props.label}
+                    <Text theme={props?.theme?.formCardSelectLabel ?? form.formCardTextInputLabel(props)} >
+                        {props.label === "" ? "0" : props.label}
                     </Text>
                 </BasicContainer>
                 <BasicContainer theme={
@@ -491,6 +522,7 @@ const FormCardLeftIconSelectorBase = (props) => {
                         defaultValue={props?.defaultValue}
                         options={props?.options}
                         value={props.value}
+                        maxMenuHeight={props?.theme?.select?.maxMenuHeight ?? "12.5rem"}
                         //onChange={(e, t) => { console.log(e, t) }}
                         onChange={(values, action) => {
                             // console.log(values);
@@ -502,7 +534,9 @@ const FormCardLeftIconSelectorBase = (props) => {
                         styles={props?.theme?.select ?? form.leftIconSelect(props)}></SelectExtend>
                 </BasicContainer>
                 <BasicContainer theme={{ margin: "0 0 0.5rem 0" }}>
-                    <Text theme={props?.theme?.formCardSelectHint ?? form.formCardTextInputHint}>{props.hint}</Text>
+                    <Text theme={props?.theme?.formCardSelectHint ?? form.formCardTextInputHint(props)}>
+                        {props.hint === "" ? "0" : props.hint}
+                    </Text>
                 </BasicContainer>
             </SubContainer>
         </>
@@ -530,7 +564,9 @@ const FormCardLeftIconSelectorBase = (props) => {
                     formCardSelectLabel : {}, //標題樣式
                     selectBasicContainer : {} //選框容器樣式(BasicContainer)
                     formCardSelectHint : {} // 下方提示字串樣式
-                    select :{} //選擇框樣式
+                    select : {
+                        maxMenuHeight : "rem" //選單最高高度
+                    } //選擇框樣式
                 }
 */
 export const FormCardLeftIconSelector = styled(FormCardLeftIconSelectorBase).attrs((props) => ({}))`

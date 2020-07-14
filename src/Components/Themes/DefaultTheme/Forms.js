@@ -67,16 +67,17 @@ export default {
             margin: "0.2rem"
 
         },
-        formCardTextInputLabel: {
-            color: "#444",
+        formCardTextInputLabel: (props) => ({
+            color: props.label === "" ? "#00000000" : "#444",
             fontSize: "1rem",
             fontWeight: 700,
-        },
-        formCardTextInputHint: {
-            padding: "0 0 0 2px",
-            color: "#d25959",
+            userSelect: "none"
+        }),
+        formCardTextInputHint: (props) => ({
+            padding: props.hint === "" ? "0 0 0 2px" : "initial",
+            color: props.hint === "" ? "#00000000" : "#d25959",
             fontSize: "0.75rem",
-        },
+        }),
         //#region FormCardSelector組件樣式
         select: (props) => (
             {
