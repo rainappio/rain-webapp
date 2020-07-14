@@ -391,7 +391,14 @@ export const Customers = (props) => {
                                 //order: true,
                                 render: (item, id, rowItem) => {
                                     return (
-                                        <BasicContainer theme={{ textAlign: "right" }}>
+                                        <BasicContainer theme={{ textAlign: "right" }} style={{
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                            WebkitLineClamp: 1,
+                                            width: "100%",
+                                            WebkitBoxOrient: "vertical",
+                                            whiteSpace: 'nowarp', display: "-webkit-inline-box",
+                                        }}>
                                             {[
                                                 <TooltipBasic key={`${item}1`} title={"編輯"} arrow>
                                                     <CreateIcon
