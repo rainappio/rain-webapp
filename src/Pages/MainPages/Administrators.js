@@ -41,7 +41,7 @@ export const Administrators = (props) => {
     const [Account, Accounthandler, AccountregExpResult, AccountResetValue] = useForm("", ["^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z]+$"], ["請輸入正確E-mail格式"]); // 管理員姓名欄位
     const [Pass, Passhandler, PassregExpResult, PassResetValue] = useForm("", ["^.{1,}$"], ["請輸入正確密碼格式"]); // 管理員密碼欄位
     const [Phone, Phonehandler, PhoneregExpResult, PhoneResetValue] = useForm("", ["^.{1,}$", "^09[0-9]{8}$"], ["請輸入手機號碼", "請輸入正確手機格式"]); // 管理員手機欄位
-    const [Location, Locationhandler, LocationregExpResult, LocationResetValue] = useSelector("", [(value) => (value.length > 0)], ["請選擇所在門市"]); // 管理員門市欄位
+    const [Location, Locationhandler, LocationregExpResult, LocationResetValue] = useSelector("", [(value) => (value?.value?.length > 0)], ["請選擇所在門市"]); // 管理員門市欄位
     const [Role, Rolehandler, RoleregExpResult, RoleResetValue] = useSelector([], [(value) => (value.length > 0)], ["請選擇管理員身份"]); // 管理員身分欄位
     //#endregion
 
@@ -680,7 +680,7 @@ export const Administrators = (props) => {
                             theme={administrators.locationFormCardTextInput}
                         ></FormCardSelector>
                     </FormRow>
-                    <FormRow>
+                    {/* <FormRow>
                         <FormCardLeftIconSelector
                             //label={"時間"}
                             //hint={""}
@@ -718,8 +718,8 @@ export const Administrators = (props) => {
                             onChange={(values) => { RoleResetValue(values) }}
                             regExpResult={RoleregExpResult}
                             theme={administrators.locationFormCardTextInput}
-                        ></FormCardLeftIconSelector>
-                    </FormRow>
+                        ></FormCardLeftIconSelector> 
+                    </FormRow>*/}
                 </FormControl>
             </FormCard>}
             {/* 編輯表單卡片 */}
