@@ -1,9 +1,10 @@
-import React, { useState, useRef, useContext, useEffect } from 'react';
+import React, { useState, useRef, useContext, useEffect, type ElementConfig } from 'react';
 import styled from 'styled-components'
 import { StyledIconButton } from './Buttons';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import SearchIcon from '@material-ui/icons/Search';
 import { BasicContainer, Container, SubContainer } from './Containers';
@@ -11,7 +12,7 @@ import { Context } from '../Store/store'
 import { Text } from './Texts';
 import { Ul, Li } from './Lists';
 import { TagClose } from './Tags';
-import Select from 'react-select'
+import Select, { components } from 'react-select'
 
 //#region  列表排序遞增遞減旋轉箭頭動畫
 const ArrowDropUpIconTrans = styled(ArrowDropUpIcon).attrs((props) => ({}))`
@@ -410,7 +411,7 @@ const SelectExtend = styled(Select).attrs((props) => ({}))`
    Author : Arhua Ho
    Content: FormCard表單卡片內的 選擇框 基底
 */
-const FormCardSelectorBase = (props) => {
+const FormCardSelectorBase = React.memo((props) => {
     //console.log(props)
     const { Theme } = useContext(Context);
     const { form } = Theme;
@@ -436,7 +437,7 @@ const FormCardSelectorBase = (props) => {
                         defaultValue={props?.defaultValue}
                         options={props?.options}
                         value={props.value}
-                        maxMenuHeight={props?.theme?.select?.maxMenuHeight ?? "12.5rem"}
+                        maxMenuHeight={props?.maxMenuHeight ?? "12.5rem"}
                         //onChange={(e, t) => { console.log(e, t) }}
                         onChange={(values, action) => {
                             // console.log(values);
@@ -455,7 +456,7 @@ const FormCardSelectorBase = (props) => {
             </SubContainer>
         </>
     )
-}
+})
 //#endregion
 //#region FormCard表單卡片內的 選擇框，請搭配useSelector使用
 /* 
@@ -473,14 +474,13 @@ const FormCardSelectorBase = (props) => {
                 onChange : (value) => { useSelector第四個參數(value); ...其他動作 }，固定傳入本函數，"其他動作" 為選擇選項後，要執行的其他函數
                 noOptionsMessage : 當無選項或搜尋無選項時要顯示的訊息
                 placeholder : 提示字元
+                maxMenuHeight : "rem" //選單最高高度
                 theme: {
                     selectSubContainer : {}, //SubContainer容器樣式
                     formCardSelectLabel : {}, //標題樣式
                     selectBasicContainer : {} //選框容器樣式(BasicContainer)
                     formCardSelectHint : {} // 下方提示字串樣式
-                    select :{
-                        maxMenuHeight : "rem" //選單最高高度
-                    } //選擇框樣式
+                    select :{} //選擇框樣式
                 }
 */
 export const FormCardSelector = styled(FormCardSelectorBase).attrs((props) => ({}))`
@@ -490,13 +490,23 @@ export const FormCardSelector = styled(FormCardSelectorBase).attrs((props) => ({
 
 
 //#region FormCard表單卡片內的 時間選擇框 (icon 在左方)
+//#region 時間icon
+const DropdownIndicator = (props: ElementConfig<typeof components.DropdownIndicator>) => {
+
+    return (
+        <components.DropdownIndicator {...props}>
+            <AccessTimeIcon style={{ height: "20px", width: "20px" }} />
+        </components.DropdownIndicator>
+    );
+};
+//#endregion
 //#region FormCard表單卡片內的 時間選擇框 (icon 在左方)
 /* 
    Date   : 2020-06-04 18:07:25
    Author : Arhua Ho
    Content: FormCard表單卡片內的 時間選擇框 (icon 在左方)
 */
-const FormCardLeftIconSelectorBase = (props) => {
+const FormCardLeftIconSelectorBase = React.memo((props) => {
     //console.log(props)
     const { Theme } = useContext(Context);
     const { form } = Theme;
@@ -522,13 +532,14 @@ const FormCardLeftIconSelectorBase = (props) => {
                         defaultValue={props?.defaultValue}
                         options={props?.options}
                         value={props.value}
-                        maxMenuHeight={props?.theme?.select?.maxMenuHeight ?? "12.5rem"}
+                        maxMenuHeight={props?.maxMenuHeight ?? "12.5rem"}
                         //onChange={(e, t) => { console.log(e, t) }}
                         onChange={(values, action) => {
                             // console.log(values);
                             // console.log(action);
                             props?.onChange && props.onChange(values)
                         }}
+                        components={{ DropdownIndicator }}
                         noOptionsMessage={() => (props?.noOptionsMessage ?? "無符合資料")}
                         placeholder={props?.placeholder}
                         styles={props?.theme?.select ?? form.leftIconSelect(props)}></SelectExtend>
@@ -541,7 +552,7 @@ const FormCardLeftIconSelectorBase = (props) => {
             </SubContainer>
         </>
     )
-}
+})
 //#endregion
 //#region FormCard表單卡片內的 時間選擇框 (icon 在左方)，請搭配useSelector使用
 /* 
@@ -559,13 +570,13 @@ const FormCardLeftIconSelectorBase = (props) => {
                 onChange : (value) => { useSelector第四個參數(value); ...其他動作 }，固定傳入本函數，"其他動作" 為選擇選項後，要執行的其他函數
                 noOptionsMessage : 當無選項或搜尋無選項時要顯示的訊息
                 placeholder : 提示字元
+                maxMenuHeight : "rem" //選單最高高度
                 theme: {
                     selectSubContainer : {}, //SubContainer容器樣式
                     formCardSelectLabel : {}, //標題樣式
                     selectBasicContainer : {} //選框容器樣式(BasicContainer)
                     formCardSelectHint : {} // 下方提示字串樣式
                     select : {
-                        maxMenuHeight : "rem" //選單最高高度
                     } //選擇框樣式
                 }
 */

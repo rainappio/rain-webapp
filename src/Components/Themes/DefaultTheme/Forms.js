@@ -243,6 +243,7 @@ export default {
                     border: "0px solid #00000000",
                     borderBottom: !state.isFocused ? "#444444 1px solid" : "none",
                     borderRadius: state.isFocused ? "4px" : "0rem",
+                    position: "relative",//
                     '&:focus': {
                         border: "0px solid #00000000",
                         borderBottom: !state.isFocused ? "#444444 1px solid" : "none",
@@ -261,7 +262,7 @@ export default {
                     ...provided,
                     height: props?.isMulti ? "fit-content" : "2rem",
                     lineHeight: props?.isMulti ? "fit-content" : "2rem",
-                    padding: "0 0 0 2px;"
+                    padding: "0 0 0 2.125rem",
                 }),
                 input: (provided, state) => ({
                     ...provided,
@@ -271,12 +272,15 @@ export default {
                     ...provided,
                     // height: "2rem",
                     // lineHeight: "2rem",
-                    transition: 'all .2s ease',
-                    transform: state.isFocused ? 'rotate(-180deg)' : null
+                    //transition: 'all .2s ease',
+                    //transform: state.isFocused ? 'rotate(-180deg)' : null,
                 }),
                 indicatorsContainer: (provided, state) => ({
                     ...provided,
                     height: props?.isMulti ? "calc( 2rem - 1px )" : "2rem",
+                    position: "absolute",//
+                    left: "0rem",//
+                    padding: "10px 14px 6px 2px",
                 }),
                 singleValue: (provided, state) => ({
                     ...provided,
@@ -324,7 +328,7 @@ export default {
                 placeholder: (provided, state) => ({
                     ...provided,
                     fontFamily: '"Arial", Microsoft JhengHei, "微軟正黑體", Helvetica, sans-serif',
-                    marginTop: "0.2rem",
+                    marginTop: "0.1rem",
                     marginLeft: "0rem",
                 }),
                 option: (provided, { data, isDisabled, isFocused, isSelected }) => {
