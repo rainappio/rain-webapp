@@ -23,7 +23,7 @@ import { TooltipBasic } from '../../../Components/Tooltips';
 export const Locations = (props) => {
 
     const { APIUrl, Theme } = useContext(Context);
-    const { pages: { administratorsPage: { administrators } } } = Theme;
+    const { pages: { locationsPage: { locations } } } = Theme;
     let history = useHistory();
     const [TableData, setTableData] = useState([]);
     const [OpenDelJumpDialog, setOpenDelJumpDialog] = useState(false); // 開啟刪除彈窗
@@ -184,14 +184,14 @@ export const Locations = (props) => {
     return (
         <>
             {/* 寬度大於等於768時渲染的組件 */}
-            {width > 768 && <BasicContainer theme={administrators.basicContainer}>
+            {width > 768 && <BasicContainer theme={locations.basicContainer}>
                 <PageTitle>門市名單</PageTitle>
                 <FormControl theme={{}} onSubmit={(e) => { e.preventDefault(); execute(1, SearchWord) }}>
-                    <FormRow theme={administrators.addAndSearchFormRow}>
-                        <SubContainer theme={administrators.addButtonSubContainer}>
+                    <FormRow theme={locations.addAndSearchFormRow}>
+                        <SubContainer theme={locations.addButtonSubContainer}>
                             <EasyButton
                                 onClick={() => { setOpenAddJumpDialog(true) }}
-                                theme={administrators.addButton}
+                                theme={locations.addButton}
                                 text={"新增門市"} icon={<AddIcon style={{
                                     position: "relative",
                                     top: "0.3rem",
@@ -204,12 +204,12 @@ export const Locations = (props) => {
                             onChange={SearchWordhandler}
                             regExpResult={SearchWordregExpResult}
                             placeholder={"搜尋門市名、所屬縣市"}
-                            theme={administrators.searchInput}
+                            theme={locations.searchInput}
                             searchOnClick={() => { execute(1, SearchWord); }}
                         />
                     </FormRow>
                 </FormControl>
-                <BasicContainer theme={administrators.tableBasicContainer}>
+                <BasicContainer theme={locations.tableBasicContainer}>
                     <TableBasic
                         data={TableData} //原始資料
                         title={["門市名稱", "所屬縣市", "門市電話", "門市地址", "聯絡人", '建立日期', '']} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
@@ -428,7 +428,7 @@ export const Locations = (props) => {
             </BasicContainer>
             }
             {/* 寬度小於768時渲染的組件 */}
-            {width <= 768 && <BasicContainer theme={administrators.basicContainer}
+            {width <= 768 && <BasicContainer theme={locations.basicContainer}
                 onScroll={(e) => {
                     // 滾動至最底部加載新資料
                     if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
@@ -441,19 +441,19 @@ export const Locations = (props) => {
                 }}
             >
                 <FormControl theme={{}} onSubmit={(e) => { e.preventDefault(); execute(1, SearchWord) }}>
-                    <FormRow theme={administrators.addAndSearchFormRowLessThan768}>
+                    <FormRow theme={locations.addAndSearchFormRowLessThan768}>
                         <SearchTextInput
                             value={SearchWord}
                             onChange={SearchWordhandler}
                             regExpResult={SearchWordregExpResult}
                             placeholder={"搜尋門市名、所屬縣市"}
-                            theme={administrators.searchInput}
+                            theme={locations.searchInput}
                             searchOnClick={() => { execute(1, SearchWord); }}
                         />
-                        <SubContainer theme={administrators.addButtonSubContainerLessThan768}>
+                        <SubContainer theme={locations.addButtonSubContainerLessThan768}>
                             <EasyButton
                                 onClick={() => { setOpenAddJumpDialog(true) }}
-                                theme={administrators.addButtonLessThan768}
+                                theme={locations.addButtonLessThan768}
                                 text={"新增門市"} icon={<AddIcon style={{
                                     position: "relative",
                                     top: "0.3rem",
@@ -463,7 +463,7 @@ export const Locations = (props) => {
                         </SubContainer>
                     </FormRow>
                 </FormControl>
-                <BasicContainer theme={administrators.tableBasicContainerLessThan768}>
+                <BasicContainer theme={locations.tableBasicContainerLessThan768}>
                     <CardTable data={TableData}
                         title={["門市名稱", "所屬縣市", "門市電話", "門市地址", "聯絡人姓名", '建立日期', '']} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
                         colKeys={["ShopName", "County", "ShopTel", "District", "ContactName", 'CreateTime', 'controll']} //必傳
