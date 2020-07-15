@@ -1,9 +1,6 @@
 import React, { useContext, useCallback, useState } from 'react';
 import { Context } from '../../../Store/store'
-import { BasicContainer, SubContainer } from '../../../Components/Containers';
-import { PageTitle } from '../../../Components/PageTitle';
-import { EasyButton, JumpDialogButton } from '../../../Components/Buttons';
-import { SearchTextInput, FormCardTextInput, FormControl, FormRow, FormCardSelector, FormCardLeftIconSelector } from '../../../Components/Forms';
+import { FormCardTextInput, FormControl, FormRow, FormCardSelector } from '../../../Components/Forms';
 import { getItemlocalStorage, clearlocalStorage } from '../../../Handlers/LocalStorageHandler'
 import { useHistory } from 'react-router-dom';
 import { useAsync } from '../../../SelfHooks/useAsync';
@@ -32,8 +29,8 @@ export const EditCard = (props) => {
     const [Account, Accounthandler, AccountregExpResult, AccountResetValue] = useForm("", ["^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z]+$"], ["請輸入正確E-mail格式"]); // 管理員姓名欄位
     const [Pass, Passhandler, PassregExpResult, PassResetValue] = useForm("", ["^.{1,}$"], ["請輸入正確密碼格式"]); // 管理員密碼欄位
     const [Phone, Phonehandler, PhoneregExpResult, PhoneResetValue] = useForm("", ["^.{1,}$", "^09[0-9]{8}$"], ["請輸入手機號碼", "請輸入正確手機格式"]); // 管理員手機欄位
-    const [Location, Locationhandler, LocationregExpResult, LocationResetValue] = useSelector([], [(value) => { console.log(value); return (value?.value ?? "").toString()?.length > 0 }], ["請選擇所在門市"]); // 管理員門市欄位
-    const [Role, Rolehandler, RoleregExpResult, RoleResetValue] = useSelector([], [(value) => (value.length > 0)], ["請選擇管理員身份"]); // 管理員身分欄位
+    const [Location, Locationhandler, LocationregExpResult, LocationResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇所在門市"]); // 管理員門市欄位
+    const [Role, Rolehandler, RoleregExpResult, RoleResetValue] = useSelector([], [(value) => { /*console.log(value);*/ return (value ? value.length > 0 : false) }], ["請選擇管理員身份"]); // 管理員身分欄位
     const [rowData, setrowData] = useState({});//修改表單的rowItem
     //#endregion
 
@@ -47,70 +44,6 @@ export const EditCard = (props) => {
         LocationResetValue(location);
         RoleResetValue(role);
     }
-    //#endregion
-
-    //#region 修改用戶API
-    const putAdminUser = useCallback(async (rowData, name, account, pass, phone, location, role) => {
-        formValueReset();
-        props?.onClose && props.onClose(false);
-
-        return await fetch(`${APIUrl}api/User/Put`,
-            {
-                method: "PUT",
-                headers: {
-                    'content-type': 'application/json',
-                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
-                },
-                body: JSON.stringify({
-                    ...rowData,
-                    age: 0,
-                    uStatus: 0,
-                    sex: 0,
-                    tdIsDelete: false,
-                    uUpdateTime: new Date(),
-                    name: name,
-                    uRealName: name,
-                    uLoginName: account,
-                    uLoginPWD: pass,
-                    phone: phone,
-                    ShopIds: location?.value,
-                    RIDs: (role ?? []).map((item) => (item.value)),
-                })
-            }
-        )//查詢角色、表格翻頁
-            .then(Result => {
-                const ResultJson = Result.clone().json();//Respone.clone()
-                return ResultJson;
-            })
-            .then((PreResult) => {
-                //console.log(PreResult)
-                if (PreResult.Status === 401) {
-                    //Token過期 強制登出
-                    clearlocalStorage();
-                    history.push("/Login");
-                    throw new Error("Token過期 強制登出");
-                }
-
-                if (PreResult.success) {
-                    alertService.normal("修改管理員成功", { autoClose: true });
-                    return "修改管理員成功"
-                } else {
-                    alertService.warn(PreResult.msg, { autoClose: true });
-                    throw new Error("修改管理員失敗");
-                }
-            })
-            .catch((Error) => {
-                throw Error;
-            })
-            .finally(() => {
-                props?.execute && props.execute(1);
-            });
-
-        // 這裡要接著打refresh 延長Token存活期
-
-    }, [APIUrl, history])
-
-    const [PutAdminUserExecute, PutAdminUserPending] = useAsync(putAdminUser, false);
     //#endregion
 
     //#region 查詢對應ID的管理員資料、全部分店資料
@@ -171,7 +104,7 @@ export const EditCard = (props) => {
         //#endregion
         //#region 透過後端回傳值，返回符合格式的選項陣列
         const getShopIds = (ShopIds) => {
-            return shopList.filter((r) => (r.value.toString() === ShopIds))
+            return shopList.filter((r) => (r.value.toString() === ShopIds))[0];
         }
         //#endregion
         //#region 查詢對應ID的管理員資料
@@ -227,13 +160,12 @@ export const EditCard = (props) => {
                 title={"修改管理員資訊"}
                 yes={() => {
                     //全部通過檢核才可放行
-
                     (PassregExpResult ? alertService.warn(PassregExpResult, { autoClose: true })
                         : (NameregExpResult ? alertService.warn(NameregExpResult, { autoClose: true })
                             : (PhoneregExpResult ? alertService.warn(PhoneregExpResult, { autoClose: true })
                                 : (LocationregExpResult ? alertService.warn(LocationregExpResult, { autoClose: true })
                                     : (RoleregExpResult ? alertService.warn(RoleregExpResult, { autoClose: true })
-                                        : PutAdminUserExecute(rowData, Name, Account, Pass, Phone, Location, Role)
+                                        : props.editAdminUserExecute(rowData, Name, Account, Pass, Phone, Location, Role)
                                     )
                                 )
                             )
@@ -320,46 +252,6 @@ export const EditCard = (props) => {
                             theme={editCard.locationFormCardTextInput}
                         ></FormCardSelector>
                     </FormRow>
-                    {/* <FormRow>
-                        <FormCardLeftIconSelector
-                            //label={"時間"}
-                            //hint={""}
-                            placeholder={"請選擇時間"}
-                            value={Role}
-                            isMulti
-                            isSearchable
-                            options={[
-                                { value: '1', label: '選項1' },//isDisabled: true 
-                                { value: '2', label: '選項2' },
-                                { value: '3', label: '選項3' },
-                                { value: '4', label: '選項4' },
-                                { value: '5', label: '選項5' },
-                                { value: '6', label: '選項6' },
-                                { value: '7', label: '選項7' },
-                                { value: '8', label: '選項8' },
-                                { value: '9', label: '選項9' },
-                            ]}
-                            onChange={(values) => { RoleResetValue(values) }}
-                            regExpResult={RoleregExpResult}
-                            theme={editCard.locationFormCardTextInput}
-                        ></FormCardLeftIconSelector>
-                        <FormCardLeftIconSelector
-                            //label={""}
-                            //hint={"請選擇時間"}
-                            placeholder={"請選擇時間"}
-                            value={Role}
-                            isMulti
-                            isSearchable
-                            options={[
-                                { value: '1', label: '選項1' },//isDisabled: true 
-                                { value: '2', label: '選項2' },
-                                { value: '3', label: '選項3' }
-                            ]}
-                            onChange={(values) => { RoleResetValue(values) }}
-                            regExpResult={RoleregExpResult}
-                            theme={editCard.locationFormCardTextInput}
-                        ></FormCardLeftIconSelector> 
-                    </FormRow>*/}
                 </FormControl>
             </FormCard>
         </>

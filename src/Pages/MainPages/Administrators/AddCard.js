@@ -1,9 +1,6 @@
 import React, { useContext, useCallback, useState } from 'react';
 import { Context } from '../../../Store/store'
-import { BasicContainer, SubContainer } from '../../../Components/Containers';
-import { PageTitle } from '../../../Components/PageTitle';
-import { EasyButton, JumpDialogButton } from '../../../Components/Buttons';
-import { SearchTextInput, FormCardTextInput, FormControl, FormRow, FormCardSelector, FormCardLeftIconSelector } from '../../../Components/Forms';
+import { FormCardTextInput, FormControl, FormRow, FormCardSelector } from '../../../Components/Forms';
 import { getItemlocalStorage, clearlocalStorage } from '../../../Handlers/LocalStorageHandler'
 import { useHistory } from 'react-router-dom';
 import { useAsync } from '../../../SelfHooks/useAsync';
@@ -27,76 +24,15 @@ export const AddCard = (props) => {
     let history = useHistory();
 
     //#region 表單狀態管理
-    const [Id, Idhandler, IdregExpResult, IdResetValue] = useForm("", [""], [""]); // Id欄位
     const [Name, Namehandler, NameregExpResult, NameResetValue] = useForm("", ["^[\u4E00-\u9FA5]{1,}$", "^.{1,5}$"], ["請輸入管理員中文姓名", "姓名最長為5個中文字"]); // 管理員姓名欄位
     const [Account, Accounthandler, AccountregExpResult, AccountResetValue] = useForm("", ["^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z]+$"], ["請輸入正確E-mail格式"]); // 管理員姓名欄位
     const [Pass, Passhandler, PassregExpResult, PassResetValue] = useForm("", ["^.{1,}$"], ["請輸入正確密碼格式"]); // 管理員密碼欄位
     const [Phone, Phonehandler, PhoneregExpResult, PhoneResetValue] = useForm("", ["^.{1,}$", "^09[0-9]{8}$"], ["請輸入手機號碼", "請輸入正確手機格式"]); // 管理員手機欄位
     const [Location, Locationhandler, LocationregExpResult, LocationResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇所在門市"]); // 管理員門市欄位
-    const [Role, Rolehandler, RoleregExpResult, RoleResetValue] = useSelector([], [(value) => (value.length > 0)], ["請選擇管理員身份"]); // 管理員身分欄位
-    const [rowData, setrowData] = useState({});//修改表單的rowItem
+    const [Role, Rolehandler, RoleregExpResult, RoleResetValue] = useSelector([], [(value) => { /*console.log(value);*/ return (value ? value.length > 0 : false) }], ["請選擇管理員身份"]); // 管理員身分欄位
     //#endregion
 
-    //#region 新增用戶API
-    const addAdminUser = useCallback(async (name, account, pass, phone, location, role) => {
-        props?.onClose && props.onClose(false);
-        return await fetch(`${APIUrl}api/User/Post`,
-            {
-                method: "POST",
-                headers: {
-                    'content-type': 'application/json',
-                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
-                },
-                body: JSON.stringify({
-                    age: 0,
-                    uStatus: 0,
-                    sex: 0,
-                    tdIsDelete: false,
-                    uCreateTime: new Date(),
-                    name: name,
-                    uRealName: name,
-                    uLoginName: account,
-                    uLoginPWD: pass,
-                    phone: phone,
-                    ShopIds: location?.value,
-                    RIDs: (role ?? []).map((item) => (item.value)),
-                })
-            }
-        )//查詢角色、表格翻頁
-            .then(Result => {
-                const ResultJson = Result.clone().json();//Respone.clone()
-                return ResultJson;
-            })
-            .then((PreResult) => {
-                //console.log(PreResult)
-                if (PreResult.Status === 401) {
-                    //Token過期 強制登出
-                    clearlocalStorage();
-                    history.push("/Login");
-                    throw new Error("Token過期 強制登出");
-                }
 
-                if (PreResult.success) {
-                    alertService.normal("新增管理員成功", { autoClose: true });
-                    return "新增管理員成功"
-                } else {
-                    alertService.warn(PreResult.msg, { autoClose: true });
-                    throw new Error("新增管理員失敗");
-                }
-            })
-            .catch((Error) => {
-                throw Error;
-            })
-            .finally(() => {
-                props?.execute && props.execute(1);
-            });
-
-        // 這裡要接著打refresh 延長Token存活期
-
-    }, [APIUrl, history])
-
-    const [AddAdminUserExecute, AddAdminUserPending] = useAsync(addAdminUser, false);
-    //#endregion
 
     //#region 查詢全部分店API
     const getAllShop = useCallback(async (key) => {
@@ -159,7 +95,7 @@ export const AddCard = (props) => {
                                 : (PhoneregExpResult ? alertService.warn(PhoneregExpResult, { autoClose: true })
                                     : (LocationregExpResult ? alertService.warn(LocationregExpResult, { autoClose: true })
                                         : (RoleregExpResult ? alertService.warn(RoleregExpResult, { autoClose: true })
-                                            : AddAdminUserExecute(Name, Account, Pass, Phone, Location, Role)
+                                            : props.addAdminUserExecute(Name, Account, Pass, Phone, Location, Role)
                                         )
                                     )
                                 )
@@ -254,46 +190,6 @@ export const AddCard = (props) => {
                             theme={addCard.locationFormCardTextInput}
                         ></FormCardSelector>
                     </FormRow>
-                    {/* <FormRow>
-                        <FormCardLeftIconSelector
-                            //label={"時間"}
-                            //hint={""}
-                            placeholder={"請選擇時間"}
-                            value={Role}
-                            isMulti
-                            isSearchable
-                            options={[
-                                { value: '1', label: '選項1' },//isDisabled: true 
-                                { value: '2', label: '選項2' },
-                                { value: '3', label: '選項3' },
-                                { value: '4', label: '選項4' },
-                                { value: '5', label: '選項5' },
-                                { value: '6', label: '選項6' },
-                                { value: '7', label: '選項7' },
-                                { value: '8', label: '選項8' },
-                                { value: '9', label: '選項9' },
-                            ]}
-                            onChange={(values) => { RoleResetValue(values) }}
-                            regExpResult={RoleregExpResult}
-                            theme={addCard.locationFormCardTextInput}
-                        ></FormCardLeftIconSelector>
-                        <FormCardLeftIconSelector
-                            //label={""}
-                            //hint={"請選擇時間"}
-                            placeholder={"請選擇時間"}
-                            value={Role}
-                            isMulti
-                            isSearchable
-                            options={[
-                                { value: '1', label: '選項1' },//isDisabled: true 
-                                { value: '2', label: '選項2' },
-                                { value: '3', label: '選項3' }
-                            ]}
-                            onChange={(values) => { RoleResetValue(values) }}
-                            regExpResult={RoleregExpResult}
-                            theme={addCard.locationFormCardTextInput}
-                        ></FormCardLeftIconSelector> 
-                    </FormRow>*/}
                 </FormControl>
             </FormCard>
         </>

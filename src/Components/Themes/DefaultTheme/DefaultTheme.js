@@ -3,6 +3,8 @@ import login from './Pages/MainPages/Login/Login'
 import administrators from './Pages/MainPages/Administrators/Administrators'
 import addCard from './Pages/MainPages/Administrators/AddCard'
 import editCard from './Pages/MainPages/Administrators/EditCard'
+import delDialog from './Pages/MainPages/Administrators/DelDialog'
+import pageTitleAddSearch from './Pages/MainPages/Administrators/PageTitleAddSearch'
 import customers from './Pages/MainPages/Customers/Customers'
 import dispatch from './Pages/MainPages/Dispatch/Dispatch'
 import dispatchBoard from './Pages/MainPages/DispatchBoard/DispatchBoard'
@@ -44,6 +46,8 @@ export default {
             administrators,
             addCard,
             editCard,
+            delDialog,
+            pageTitleAddSearch,
         },
         customersPage: {
             customers,
