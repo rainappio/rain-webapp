@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import { Context } from '../../Store/store'
-import { BasicContainer } from '../../Components/Containers';
+import { Context } from '../../../Store/store'
+import { BasicContainer } from '../../../Components/Containers';
 
 export const DispatchBoard = (props) => {
 
     const { Theme } = useContext(Context);
-    const { pages: { dispatchBoard } } = Theme;
+    const { pages: { dispatchBoardPage: { dispatchBoard } } } = Theme;
 
 
     return (

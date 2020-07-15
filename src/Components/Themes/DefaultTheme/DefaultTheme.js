@@ -1,15 +1,15 @@
 import orderCards from './OrderCard'
-import login from './Pages/Login'
-import administrators from './Pages/Administrators'
-import customers from './Pages/Customers'
-import dispatch from './Pages/Dispatch'
-import dispatchBoard from './Pages/DispatchBoard'
-import experts from './Pages/Experts'
-import home from './Pages/Home'
-import locations from './Pages/Locations'
-import percentage from './Pages/Percentage'
-import reservationList from './Pages/ReservationList'
-import test from './Pages/Test'
+import login from './Pages/Login/Login'
+import administrators from './Pages/Administrators/Administrators'
+import customers from './Pages/Customers/Customers'
+import dispatch from './Pages/Dispatch/Dispatch'
+import dispatchBoard from './Pages/DispatchBoard/DispatchBoard'
+import experts from './Pages/Experts/Experts'
+import home from './Pages/Home/Home'
+import locations from './Pages/Locations/Locations'
+import percentage from './Pages/Percentage/Percentage'
+import reservationList from './Pages/ReservationList/ReservationList'
+import test from './Pages/Test/Test'
 import error404 from './ErrorPages/Error404'
 import forms from "./Forms";
 import tags from "./Tags";
@@ -35,17 +35,39 @@ export default {
     ...buttons,
     ...formCard,
     pages: {
-        login,
-        administrators,
-        customers,
-        dispatch,
-        dispatchBoard,
-        experts,
-        home,
-        locations,
-        percentage,
-        reservationList,
-        test,
+        loginPage: {
+            login,
+        },
+        administratorsPage: {
+            administrators,
+        },
+        customersPage: {
+            customers,
+        },
+        dispatchPage: {
+            dispatch,
+        },
+        dispatchBoardPage: {
+            dispatchBoard,
+        },
+        expertsPage: {
+            experts,
+        },
+        homePage: {
+            home,
+        },
+        locationsPage: {
+            locations,
+        },
+        percentagePage: {
+            percentage,
+        },
+        reservationListPage: {
+            reservationList,
+        },
+        testPage: {
+            test,
+        },
     },
     errorPages: {
         error404

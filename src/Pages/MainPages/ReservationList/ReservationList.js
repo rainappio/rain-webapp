@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import { Context } from '../../Store/store'
-import { BasicContainer } from '../../Components/Containers';
+import { Context } from '../../../Store/store'
+import { BasicContainer } from '../../../Components/Containers';
 
 export const ReservationList = (props) => {
 
     const { Theme } = useContext(Context);
-    const { pages: { reservationList } } = Theme;
+    const { pages: { reservationListPage: { reservationList } } } = Theme;
 
 
     return (

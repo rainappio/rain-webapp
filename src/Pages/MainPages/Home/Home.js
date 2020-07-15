@@ -1,32 +1,32 @@
 import React, { useContext, useCallback, useState } from 'react';
-import { Context } from '../../Store/store'
-import { BasicContainer, SubContainer, Container } from '../../Components/Containers';
-import { PageTitle } from '../../Components/PageTitle';
-import { PageSubTitle, PageSubTitleMobile } from '../../Components/PageSubTitle';
-import { EasyButton } from '../../Components/Buttons';
+import { Context } from '../../../Store/store'
+import { BasicContainer, SubContainer, Container } from '../../../Components/Containers';
+import { PageTitle } from '../../../Components/PageTitle';
+import { PageSubTitle, PageSubTitleMobile } from '../../../Components/PageSubTitle';
+import { EasyButton } from '../../../Components/Buttons';
 import AddIcon from '@material-ui/icons/Add';
-import { SearchTextInput, FormControl, FormRow } from '../../Components/Forms';
-import { TableBasic } from '../../Components/Tables';
-import { setItemlocalStorage, getItemlocalStorage, clearlocalStorage } from '../../Handlers/LocalStorageHandler'
+import { SearchTextInput, FormControl, FormRow } from '../../../Components/Forms';
+import { TableBasic } from '../../../Components/Tables';
+import { setItemlocalStorage, getItemlocalStorage, clearlocalStorage } from '../../../Handlers/LocalStorageHandler'
 import { useHistory } from 'react-router-dom';
-import { useAsync } from '../../SelfHooks/useAsync';
-import { useForm } from '../../SelfHooks/useForm'
-import { useWindowSize } from '../../SelfHooks/useWindowSize'
-import { Text } from '../../Components/Texts'
+import { useAsync } from '../../../SelfHooks/useAsync';
+import { useForm } from '../../../SelfHooks/useForm'
+import { useWindowSize } from '../../../SelfHooks/useWindowSize'
+import { Text } from '../../../Components/Texts'
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import { CardTable } from '../../Components/CardTable';
-import { OrderCard, OrderCardMobile } from '../../Components/OrderCard';
-import { ReactComponent as LogoDone } from '../../Assets/img/done.svg'
-import { ReactComponent as LogoFail } from '../../Assets/img/fail.svg'
-import { ReactComponent as LogoNew } from '../../Assets/img/new.svg'
-import { ReactComponent as LogoPercentage } from '../../Assets/img/percentage.svg'
-import { ReactComponent as LogoTotal } from '../../Assets/img/total.svg'
+import { CardTable } from '../../../Components/CardTable';
+import { OrderCard, OrderCardMobile } from '../../../Components/OrderCard';
+import { ReactComponent as LogoDone } from '../../../Assets/img/done.svg'
+import { ReactComponent as LogoFail } from '../../../Assets/img/fail.svg'
+import { ReactComponent as LogoNew } from '../../../Assets/img/new.svg'
+import { ReactComponent as LogoPercentage } from '../../../Assets/img/percentage.svg'
+import { ReactComponent as LogoTotal } from '../../../Assets/img/total.svg'
 
 export const Home = (props) => {
 
     const { APIUrl, Theme } = useContext(Context);
-    const { pages: { home } } = Theme;
+    const { pages: { homePage: { home } } } = Theme;
     let history = useHistory();
     const [TableData, setTableData] = useState([]);
     const [orderRes, setorderRes] = useState({});

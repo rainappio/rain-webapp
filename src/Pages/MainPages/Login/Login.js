@@ -1,20 +1,20 @@
 import React, { useContext, useCallback } from 'react';
-import { Context } from '../../Store/store';
-import { Container, BasicContainer } from '../../Components/Containers'
-import { Text } from '../../Components/Texts'
-import { FormControl, FormRow, TextInput } from '../../Components/Forms'
-import { setItemlocalStorage, getItemlocalStorage, clearlocalStorage } from '../../Handlers/LocalStorageHandler'
-import { useForm } from '../../SelfHooks/useForm'
+import { Context } from '../../../Store/store';
+import { Container, BasicContainer } from '../../../Components/Containers'
+import { Text } from '../../../Components/Texts'
+import { FormControl, FormRow, TextInput } from '../../../Components/Forms'
+import { setItemlocalStorage, getItemlocalStorage, clearlocalStorage } from '../../../Handlers/LocalStorageHandler'
+import { useForm } from '../../../SelfHooks/useForm'
 import PersonIcon from '@material-ui/icons/Person';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import { EasyButton } from '../../Components/Buttons';
+import { EasyButton } from '../../../Components/Buttons';
 import { Redirect } from 'react-router-dom';
-import { useLoginAsync } from '../../SelfHooks/useAsync';
+import { useLoginAsync } from '../../../SelfHooks/useAsync';
 
 export const Login = (props) => {
 
     const { APIUrl, Theme, Switch } = useContext(Context);
-    const { pages: { login } } = Theme;
+    const { pages: { loginPage: { login } } } = Theme;
     const [Account, Accounthandler, AccountregExpResult] = useForm("", ["^.{1,}$"], ["必須輸入名稱"]);
     const [Pass, Passhandler, PassregExpResult] = useForm("", ["^.{1,}$"], ["必須輸入名稱"]);
     //let history = useHistory();

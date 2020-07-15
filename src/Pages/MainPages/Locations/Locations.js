@@ -1,29 +1,29 @@
 import React, { useContext, useCallback, useState } from 'react';
-import { Context } from '../../Store/store'
-import { BasicContainer, SubContainer } from '../../Components/Containers';
-import { PageTitle } from '../../Components/PageTitle';
-import { EasyButton, JumpDialogButton } from '../../Components/Buttons';
+import { Context } from '../../../Store/store'
+import { BasicContainer, SubContainer } from '../../../Components/Containers';
+import { PageTitle } from '../../../Components/PageTitle';
+import { EasyButton, JumpDialogButton } from '../../../Components/Buttons';
 import AddIcon from '@material-ui/icons/Add';
-import { SearchTextInput, FormControl, FormRow } from '../../Components/Forms';
-import { TableBasic } from '../../Components/Tables';
-import { setItemlocalStorage, getItemlocalStorage, clearlocalStorage } from '../../Handlers/LocalStorageHandler'
+import { SearchTextInput, FormControl, FormRow } from '../../../Components/Forms';
+import { TableBasic } from '../../../Components/Tables';
+import { setItemlocalStorage, getItemlocalStorage, clearlocalStorage } from '../../../Handlers/LocalStorageHandler'
 import { useHistory } from 'react-router-dom';
-import { useAsync } from '../../SelfHooks/useAsync';
-import { useForm } from '../../SelfHooks/useForm'
-import { useWindowSize } from '../../SelfHooks/useWindowSize'
-import { Text } from '../../Components/Texts'
+import { useAsync } from '../../../SelfHooks/useAsync';
+import { useForm } from '../../../SelfHooks/useForm'
+import { useWindowSize } from '../../../SelfHooks/useWindowSize'
+import { Text } from '../../../Components/Texts'
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import { CardTable } from '../../Components/CardTable';
-import { JumpDialog } from '../../Components/JumpDialog';
+import { CardTable } from '../../../Components/CardTable';
+import { JumpDialog } from '../../../Components/JumpDialog';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import { alertService } from '../../Components/JumpAlerts';
-import { FormCard } from '../../Components/FormCard';
-import { TooltipBasic } from '../../Components/Tooltips';
+import { alertService } from '../../../Components/JumpAlerts';
+import { FormCard } from '../../../Components/FormCard';
+import { TooltipBasic } from '../../../Components/Tooltips';
 export const Locations = (props) => {
 
     const { APIUrl, Theme } = useContext(Context);
-    const { pages: { administrators } } = Theme;
+    const { pages: { administratorsPage: { administrators } } } = Theme;
     let history = useHistory();
     const [TableData, setTableData] = useState([]);
     const [OpenDelJumpDialog, setOpenDelJumpDialog] = useState(false); // 開啟刪除彈窗
