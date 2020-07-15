@@ -11,7 +11,7 @@ import { useAsync } from '../../../SelfHooks/useAsync';
 import { useForm, useSelector } from '../../../SelfHooks/useForm'
 import { alertService } from '../../../Components/JumpAlerts';
 import { FormCard } from '../../../Components/FormCard';
-import { cityAndCountiesLite, Counties } from '../../../Mappings/Mappings'
+import { cityAndCountiesLite, Counties, times } from '../../../Mappings/Mappings'
 
 /* 
    Date   : 2020-07-15 11:16:14
@@ -40,6 +40,22 @@ export const EditCard = (props) => {
     const [lat, lathandler, latregExpResult, latResetValue] = useForm("", ["^.{1,}$"], ["請輸入正確密碼格式"]); // 門市密碼欄位
     const [lon, lonhandler, lonregExpResult, lonResetValue] = useForm("", ["^.{1,}$"], ["請輸入正確密碼格式"]); // 門市密碼欄位
     const [Role, Rolehandler, RoleregExpResult, RoleResetValue] = useSelector([], [(value) => (value.length > 0)], ["請選擇門市身份"]); // 門市身分欄位
+
+    const [MonStart, MonStarthandler, MonStartregExpResult, MonStartResetValue] = useSelector([], [(value) => (value.length > 0)], ["請選擇門市身份"]); // 門市身分欄位
+    const [MonEnd, MonEndhandler, MonEndregExpResult, MonEndResetValue] = useSelector([], [(value) => (value.length > 0)], ["請選擇門市身份"]); // 門市身分欄位
+    const [TueStart, TueStarthandler, TueStartregExpResult, TueStartResetValue] = useSelector([], [(value) => (value.length > 0)], ["請選擇門市身份"]); // 門市身分欄位
+    const [TueEnd, TueEndhandler, TueEndregExpResult, TueEndResetValue] = useSelector([], [(value) => (value.length > 0)], ["請選擇門市身份"]); // 門市身分欄位
+    const [WenStart, WenStarthandler, WenStartregExpResult, WenStartResetValue] = useSelector([], [(value) => (value.length > 0)], ["請選擇門市身份"]); // 門市身分欄位
+    const [WenEnd, WenEndhandler, WenEndregExpResult, WenEndResetValue] = useSelector([], [(value) => (value.length > 0)], ["請選擇門市身份"]); // 門市身分欄位
+    const [ThuStart, ThuStarthandler, ThuStartregExpResult, ThuStartResetValue] = useSelector([], [(value) => (value.length > 0)], ["請選擇門市身份"]); // 門市身分欄位
+    const [ThuEnd, ThuEndhandler, ThuEndregExpResult, ThuEndResetValue] = useSelector([], [(value) => (value.length > 0)], ["請選擇門市身份"]); // 門市身分欄位
+    const [FriStart, FriStarthandler, FriStartregExpResult, FriStartResetValue] = useSelector([], [(value) => (value.length > 0)], ["請選擇門市身份"]); // 門市身分欄位
+    const [FriEnd, FriEndhandler, FriEndregExpResult, FriEndResetValue] = useSelector([], [(value) => (value.length > 0)], ["請選擇門市身份"]); // 門市身分欄位
+    const [SatStart, SatStarthandler, SatStartregExpResult, SatStartResetValue] = useSelector([], [(value) => (value.length > 0)], ["請選擇門市身份"]); // 門市身分欄位
+    const [SatEnd, SatEndhandler, SatEndregExpResult, SatEndResetValue] = useSelector([], [(value) => (value.length > 0)], ["請選擇門市身份"]); // 門市身分欄位
+    const [SunStart, SunStarthandler, SunStartregExpResult, SunStartResetValue] = useSelector([], [(value) => (value.length > 0)], ["請選擇門市身份"]); // 門市身分欄位
+    const [SunEnd, SunEndhandler, SunEndregExpResult, SunEndResetValue] = useSelector([], [(value) => (value.length > 0)], ["請選擇門市身份"]); // 門市身分欄位
+
     const [rowData, setrowData] = useState({});//修改表單的rowItem
     //#endregion
 
@@ -56,6 +72,10 @@ export const EditCard = (props) => {
         //門市地址
         latResetValue(rowData?.lat);
         lonResetValue(rowData?.lon);
+        console.log(rowData?.ShopDate.split(','), rowData?.ShopDate?.split(',')[0]?.split('-'));
+        MonStartResetValue({ value: rowData?.ShopDate?.split(',')[0]?.split('-')[0], label: rowData?.ShopDate?.split(',')[0]?.split('-')[0] });
+        MonEndResetValue({ value: rowData?.ShopDate?.split(',')[0]?.split('-')[1], label: rowData?.ShopDate?.split(',')[0]?.split('-')[1] });
+
 
     }
     //#endregion
@@ -269,7 +289,12 @@ export const EditCard = (props) => {
                         ></FormCardTextInput>
                     </FormRow>
                     <BasicContainer>
-                        <Text  >
+                        <Text style={{
+                            color: "#444",
+                            fontSize: "1rem",
+                            fontWeight: 700,
+                            userSelect: "none"
+                        }} >
                             門市地址
                         </Text>
                     </BasicContainer>
@@ -335,38 +360,24 @@ export const EditCard = (props) => {
                             label={"營業時間"}
                             //hint={""}
                             placeholder={"請選擇時間"}
-                            value={Role}
-                            isMulti
+                            value={MonStart}
+                            //isMulti
                             isSearchable
-                            options={[
-                                { value: '1', label: '選項1' },//isDisabled: true 
-                                { value: '2', label: '選項2' },
-                                { value: '3', label: '選項3' },
-                                { value: '4', label: '選項4' },
-                                { value: '5', label: '選項5' },
-                                { value: '6', label: '選項6' },
-                                { value: '7', label: '選項7' },
-                                { value: '8', label: '選項8' },
-                                { value: '9', label: '選項9' },
-                            ]}
-                            onChange={(values) => { RoleResetValue(values) }}
-                            regExpResult={RoleregExpResult}
+                            options={times?.filter((item) => { return item.value < MonEnd.value })}
+                            onChange={(values) => { MonStartResetValue(values) }}
+                            regExpResult={MonStartregExpResult}
                             theme={editCard.locationFormCardTextInput}
                         ></FormCardLeftIconSelector>
                         <FormCardLeftIconSelector
                             label={""}
                             //hint={"請選擇時間"}
                             placeholder={"請選擇時間"}
-                            value={Role}
-                            isMulti
+                            value={MonEnd}
+                            //isMulti
                             isSearchable
-                            options={[
-                                { value: '1', label: '選項1' },//isDisabled: true 
-                                { value: '2', label: '選項2' },
-                                { value: '3', label: '選項3' }
-                            ]}
-                            onChange={(values) => { RoleResetValue(values) }}
-                            regExpResult={RoleregExpResult}
+                            options={times?.filter((item) => { return item.value > MonStart.value })}
+                            onChange={(values) => { MonEndResetValue(values) }}
+                            regExpResult={MonEndregExpResult}
                             theme={editCard.locationFormCardTextInput}
                         ></FormCardLeftIconSelector>
                     </FormRow>
