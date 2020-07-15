@@ -2,6 +2,7 @@ import React, { useContext, useCallback, useState } from 'react';
 import { Context } from '../../../Store/store'
 import { BasicContainer, SubContainer } from '../../../Components/Containers';
 import { PageTitle } from '../../../Components/PageTitle';
+import { Text } from '../../../Components/Texts';
 import { EasyButton, JumpDialogButton } from '../../../Components/Buttons';
 import { SearchTextInput, FormCardTextInput, FormControl, FormRow, FormCardSelector, FormCardLeftIconSelector } from '../../../Components/Forms';
 import { getItemlocalStorage, clearlocalStorage } from '../../../Handlers/LocalStorageHandler'
@@ -267,10 +268,14 @@ export const EditCard = (props) => {
                             theme={editCard.nameFormCardTextInput}
                         ></FormCardTextInput>
                     </FormRow>
-
+                    <BasicContainer>
+                        <Text  >
+                            門市地址
+                        </Text>
+                    </BasicContainer>
                     <FormRow>
                         <FormCardSelector
-                            label={"門市地址"}
+                            //label={"門市地址"}
                             //hint={""}
                             placeholder={"選擇縣市"}
                             value={County}
@@ -282,7 +287,7 @@ export const EditCard = (props) => {
                             theme={editCard.locationFormCardTextInput}
                         ></FormCardSelector>
                         <FormCardSelector
-                            label={""}
+                            //label={""}
                             //hint={""}
                             placeholder={"選擇行政區"}
                             value={District}
