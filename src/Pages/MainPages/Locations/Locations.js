@@ -20,6 +20,9 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { alertService } from '../../../Components/JumpAlerts';
 import { FormCard } from '../../../Components/FormCard';
 import { TooltipBasic } from '../../../Components/Tooltips';
+import { AddCard } from './AddCard';
+import { EditCard } from './EditCard';
+
 export const Locations = (props) => {
 
     const { APIUrl, Theme } = useContext(Context);
@@ -31,6 +34,8 @@ export const Locations = (props) => {
     const [OpenEditJumpDialog, setOpenEditJumpDialog] = useState(false); // 開啟編輯彈窗
     const [ScrollPage, setScrollPage] = useState(2); // 滾動到底部加載頁面
     const [DelWho, setDelWho] = useState(""); // 刪除彈窗中刪除名字
+    const [EditWho, setEditWho] = useState(""); // 刪除彈窗中刪除名字
+    const [EditAutoFill, setEditAutoFill] = useState({}); // 刪除彈窗中data
     const [SearchWord, SearchWordhandler, SearchWordregExpResult] = useForm("", [""], [""]);
     const [width] = useWindowSize();
 
@@ -407,7 +412,7 @@ export const Locations = (props) => {
                                                 <TooltipBasic key={`${item}1`} title={"編輯"} arrow>
                                                     <CreateIcon
                                                         style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }}
-                                                        onClick={() => { setOpenEditJumpDialog(true) }}
+                                                        onClick={() => { setEditWho(rowItem.Id); setEditAutoFill(rowItem); setOpenEditJumpDialog(true); }}
                                                     />
                                                 </TooltipBasic>,
                                                 <TooltipBasic key={`${item}2`} title={"刪除"} arrow>
@@ -603,7 +608,7 @@ export const Locations = (props) => {
                                                 <CreateIcon
                                                     key={`${item}1`}
                                                     style={{ cursor: "pointer", color: "#964f19", margin: "0 0.5rem 0 0" }}
-                                                    onClick={() => { setOpenEditJumpDialog(true) }}
+                                                    onClick={() => { setEditWho(rowItem.Id); setEditAutoFill(rowItem); setOpenEditJumpDialog(true) }}
                                                 />,
                                                 <DeleteForeverIcon
                                                     key={`${item}2`}
@@ -672,29 +677,9 @@ export const Locations = (props) => {
                 </JumpDialog>
             }
             {/* 新增表單卡片 */}
-            {
-                OpenAddJumpDialog && <FormCard
-                    title={"新增門市帳號"}
-                    yes={() => { }}
-                    yesText={"新增"}
-                    no={() => { setOpenAddJumpDialog(false) }}
-                    noText={"取消"}
-                    close={() => { setOpenAddJumpDialog(false) }}
-                >
-                </FormCard>
-            }
+            {OpenAddJumpDialog && <AddCard execute={(page, key) => { execute(page, key) }} onClose={(isOpen) => { setOpenAddJumpDialog(isOpen) }} />}
             {/* 編輯表單卡片 */}
-            {
-                OpenEditJumpDialog && <FormCard
-                    title={"編輯門市帳號"}
-                    yes={() => { }}
-                    yesText={"新增"}
-                    no={() => { setOpenEditJumpDialog(false) }}
-                    noText={"取消"}
-                    close={() => { setOpenEditJumpDialog(false) }}
-                >
-                </FormCard>
-            }
+            {OpenEditJumpDialog && <EditCard execute={(page, key) => { execute(page, key) }} onClose={(isOpen) => { setOpenEditJumpDialog(isOpen) }} editWhoId={EditWho} editAutoFill={EditAutoFill} />}
         </>
     )
 }

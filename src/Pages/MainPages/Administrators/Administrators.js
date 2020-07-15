@@ -441,7 +441,7 @@ export const Administrators = (props) => {
                                                     key={`${item}1`}
                                                     style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }}
                                                     //onClick={() => { formValueAuto(rowItem); setOpenEditJumpDialog(true); }}
-                                                    onClick={() => { setOpenEditJumpDialog(true); }}
+                                                    onClick={() => { setEditWho(rowItem.uID); setOpenEditJumpDialog(true); }}
                                                 />,
                                                 <DeleteForeverIcon
                                                     key={`${item}2`}
