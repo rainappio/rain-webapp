@@ -21,6 +21,8 @@ import { alertService } from '../../../Components/JumpAlerts';
 import { TooltipBasic } from '../../../Components/Tooltips';
 import { AddCard } from './AddCard';
 import { EditCard } from './EditCard';
+import { DelDialog } from './DelDialog';
+import { PageTitleAddSearch } from './PageTitleAddSearch';
 
 export const Administrators = (props) => {
 
@@ -28,19 +30,15 @@ export const Administrators = (props) => {
     const { pages: { administratorsPage: { administrators } } } = Theme;
     let history = useHistory();
     const [TableData, setTableData] = useState([]);
-    const [ShopListData, setShopListData] = useState([]);
     const [OpenDelJumpDialog, setOpenDelJumpDialog] = useState(false); // 開啟刪除彈窗
     const [OpenAddJumpDialog, setOpenAddJumpDialog] = useState(false); // 開啟新增彈窗
     const [OpenEditJumpDialog, setOpenEditJumpDialog] = useState(false); // 開啟編輯彈窗
     const [ScrollPage, setScrollPage] = useState(2); // 滾動到底部加載頁面
     const [DelWho, setDelWho] = useState(""); // 刪除彈窗中刪除名字
-    const [EditWho, setEditWho] = useState(""); // 刪除彈窗中刪除名字
-    const [SearchWord, SearchWordhandler, SearchWordregExpResult] = useForm("", [""], [""]);
+    const [DelWhoId, setDelWhoId] = useState(""); // 刪除彈窗中刪除id
+    const [EditWho, setEditWho] = useState(""); // 編輯彈窗中編輯id
+    const [SearchWord, setSearchWord] = useState(""); // 儲存關鍵字，供翻頁時的查詢用
     const [width] = useWindowSize();
-
-    //#region 表單狀態管理
-    const [Id, Idhandler, IdregExpResult, IdResetValue] = useForm("", [""], [""]); // Id欄位
-    //#endregion
 
     //#region 查詢列表API
     const getRoleByPageOrkey = useCallback(async (page = 1, key) => {
@@ -310,30 +308,7 @@ export const Administrators = (props) => {
         <>
             {/* 寬度大於等於768時渲染的組件 */}
             {width > 768 && <BasicContainer theme={administrators.basicContainer}>
-                <PageTitle>管理員名單</PageTitle>
-                <FormControl theme={{}} onSubmit={(e) => { e.preventDefault(); execute(1, SearchWord) }}>
-                    <FormRow theme={administrators.addAndSearchFormRow}>
-                        <SubContainer theme={administrators.addButtonSubContainer}>
-                            <EasyButton
-                                onClick={() => { setOpenAddJumpDialog(true) }}
-                                theme={administrators.addButton}
-                                text={"新增帳號"} icon={<AddIcon style={{
-                                    position: "relative",
-                                    top: "0.3rem",
-                                    height: "1.28rem"
-                                }} />}
-                            />
-                        </SubContainer>
-                        <SearchTextInput
-                            value={SearchWord}
-                            onChange={SearchWordhandler}
-                            regExpResult={SearchWordregExpResult}
-                            placeholder={"搜尋姓名、電話、Email"}
-                            theme={administrators.searchInput}
-                            searchOnClick={() => { execute(1, SearchWord); }}
-                        />
-                    </FormRow>
-                </FormControl>
+                <PageTitleAddSearch setOpenAddJumpDialog={setOpenAddJumpDialog} execute={execute} setSearchWord={setSearchWord} />
                 <BasicContainer theme={administrators.tableBasicContainer}>
                     <TableBasic
                         data={TableData} //原始資料
@@ -416,7 +391,7 @@ export const Administrators = (props) => {
                                                 <TooltipBasic key={`${item}2`} title={"刪除"} arrow>
                                                     <DeleteForeverIcon
                                                         style={{ cursor: "pointer", color: "#d25959", margin: "0 1rem 0 0" }}
-                                                        onClick={() => { setOpenDelJumpDialog((o) => (!o)); setDelWho(rowItem.uRealName); IdResetValue(rowItem.uID) }}
+                                                        onClick={() => { setOpenDelJumpDialog((o) => (!o)); setDelWho(rowItem.uRealName); setDelWhoId(rowItem.uID) }}
                                                     />
                                                 </TooltipBasic>
                                             ]}
@@ -443,29 +418,7 @@ export const Administrators = (props) => {
                     }
                 }}
             >
-                <FormControl theme={{}} onSubmit={(e) => { e.preventDefault(); execute(1, SearchWord) }}>
-                    <FormRow theme={administrators.addAndSearchFormRowLessThan768}>
-                        <SearchTextInput
-                            value={SearchWord}
-                            onChange={SearchWordhandler}
-                            regExpResult={SearchWordregExpResult}
-                            placeholder={"搜尋姓名、電話、Email"}
-                            theme={administrators.searchInput}
-                            searchOnClick={() => { execute(1, SearchWord); }}
-                        />
-                        <SubContainer theme={administrators.addButtonSubContainerLessThan768}>
-                            <EasyButton
-                                onClick={() => { setOpenAddJumpDialog(true) }}
-                                theme={administrators.addButtonLessThan768}
-                                text={"新增帳號"} icon={<AddIcon style={{
-                                    position: "relative",
-                                    top: "0.3rem",
-                                    height: "1.28rem"
-                                }} />}
-                            />
-                        </SubContainer>
-                    </FormRow>
-                </FormControl>
+                <PageTitleAddSearch tableBasicContainerLessThan768 setOpenAddJumpDialog={setOpenAddJumpDialog} execute={execute} setSearchWord={setSearchWord} />
                 <BasicContainer theme={administrators.tableBasicContainerLessThan768}>
                     <CardTable data={TableData}
                         title={["管理員姓名", "連絡電話", "Email", "建立日期", ""]} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
@@ -561,12 +514,12 @@ export const Administrators = (props) => {
                                                 <CreateIcon
                                                     key={`${item}1`}
                                                     style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }}
-                                                    onClick={() => { setOpenEditJumpDialog(true); }}
+                                                    onClick={() => { setEditWho(rowItem.uID); setOpenEditJumpDialog(true); }}
                                                 />,
                                                 <DeleteForeverIcon
                                                     key={`${item}2`}
                                                     style={{ cursor: "pointer", color: "#d25959", margin: "0 1rem 0 0" }}
-                                                    onClick={() => { setOpenDelJumpDialog(true); setDelWho(rowItem.uRealName); IdResetValue(rowItem.uID) }}
+                                                    onClick={() => { setOpenDelJumpDialog(true); setDelWho(rowItem.uRealName); setDelWhoId(rowItem.uID) }}
                                                 />
                                             ]}
                                         </BasicContainer>
@@ -579,46 +532,9 @@ export const Administrators = (props) => {
             </BasicContainer>
             }
             {/* 刪除彈窗 */}
-            {OpenDelJumpDialog &&
-                <JumpDialog
-                    switch={[OpenDelJumpDialog, setOpenDelJumpDialog]}
-                    close={() => { setDelWho("") }}
-                    yes={() => {
-                        setDelWho("");
-                        DelAdminUserExecute(Id);
-                    }}
-                    yesText={"是，移除管理員"}
-                    no={() => {
-                        setDelWho("");
-                        alertService.clear();
-                    }}
-                    noText={"否，取消移除"}
-                >
-                    <BasicContainer theme={{ width: "100%", height: "9.375rem", textAlign: "center" }}>
-                        <ErrorOutlineIcon style={{
-                            position: "relative",
-                            top: "-1.5rem",
-                            height: "9.375rem",
-                            width: "6.5rem",
-                            color: "#facea8"
-                        }} />
-                    </BasicContainer>
-                    <Text theme={{
-                        display: "inline-block",
-                        color: "#545454",
-                        fontSize: "1.125em",
-                        fontWeight: 600
-                    }}>
-                        您確定要將 <Text theme={{
-                            color: "#545454",
-                            fontSize: "1.15em",
-                            fontWeight: 600
-                        }}>{DelWho}</Text> 的帳號從管理員名單中移除嗎？
-                        </Text>
-                </JumpDialog>
-            }
+            {OpenDelJumpDialog && <DelDialog execute={(page, key) => { execute(page, key) }} delAdminUserExecute={DelAdminUserExecute} delWhoId={DelWhoId} delWho={DelWho} switch={[OpenDelJumpDialog, (isOpen) => { setOpenDelJumpDialog(isOpen) }]} />}
             {/* 新增表單卡片 */}
-            {OpenAddJumpDialog && <AddCard execute={(page, key) => { execute(page, key) }} addAdminUserExecute={AddAdminUserExecute} onClose={(isOpen) => { setOpenAddJumpDialog(isOpen) }} />}
+            {OpenAddJumpDialog && <AddCard execute={(page, key) => { execute(page, key) }} addAdminUserExecute={AddAdminUserExecute} onClose={setOpenAddJumpDialog} />}
             {/* 編輯表單卡片 */}
             {OpenEditJumpDialog && <EditCard execute={(page, key) => { execute(page, key) }} editAdminUserExecute={EditAdminUserExecute} onClose={(isOpen) => { setOpenEditJumpDialog(isOpen) }} editWhoId={EditWho} />}
         </>

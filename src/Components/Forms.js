@@ -441,7 +441,7 @@ const FormCardSelectorBase = React.memo((props) => {
                         maxMenuHeight={props?.maxMenuHeight ?? "12.5rem"}
                         //onChange={(e, t) => { console.log(e, t) }}
                         onChange={(values, action) => {
-                            console.log(values);
+                            // console.log(values);
                             // console.log(action);
                             (props?.isMulti ?
                                 props?.onChange && props.onChange(values ?? [])
@@ -540,7 +540,10 @@ const FormCardLeftIconSelectorBase = React.memo((props) => {
                         onChange={(values, action) => {
                             // console.log(values);
                             // console.log(action);
-                            props?.onChange && props.onChange(values)
+                            (props?.isMulti ?
+                                props?.onChange && props.onChange(values ?? [])
+                                :
+                                props?.onChange && props.onChange(values))
                         }}
                         components={{ DropdownIndicator }}
                         noOptionsMessage={() => (props?.noOptionsMessage ?? "無符合資料")}
