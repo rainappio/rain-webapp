@@ -43,13 +43,14 @@ export const useSelector = (initialValue, regExp, validError) => {
     let validErrorIndex = 0;
 
     [...(Array.isArray(regExp) ? regExp : [regExp])].forEach((item, index) => {
+        // console.log("Value", Value[index] ?? [])
         if (Value === null) {
             //null的情況跳過檢核
         }
         else if (Value === undefined) {
             //undefined的情況跳過檢核，用於查無資料的情況
         }
-        else if (!item(Value)) {
+        else if (!item(Value?.[index] ?? [])) {
             if (RegExpTest) {
                 RegExpTest = false;
                 validErrorIndex = index;
