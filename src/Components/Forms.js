@@ -448,6 +448,7 @@ const FormCardSelectorBase = React.memo((props) => {
                                 :
                                 props?.onChange && props.onChange(values))
                         }}
+                        menuPosition="fixed"
                         noOptionsMessage={() => (props?.noOptionsMessage ?? "無符合資料")}
                         placeholder={props?.placeholder}
                         styles={props?.theme?.select ?? form.select(props)}></SelectExtend>
