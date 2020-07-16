@@ -17,6 +17,10 @@ import home from './Pages/MainPages/Home/Home'
 import locations from './Pages/MainPages/Locations/Locations'
 import percentage from './Pages/MainPages/Percentage/Percentage'
 import reservationList from './Pages/MainPages/ReservationList/ReservationList'
+import reservationListAddCard from './Pages/MainPages/ReservationList/ReservationListAddCard'
+import reservationListEditCard from './Pages/MainPages/ReservationList/ReservationListEditCard'
+import reservationListDelDialog from './Pages/MainPages/ReservationList/ReservationListDelDialog'
+import reservationListPageTitleAddSearch from './Pages/MainPages/ReservationList/ReservationListPageTitleAddSearch'
 import test from './Pages/MainPages/Test/Test'
 import error404 from './Pages/ErrorPages/Error404'
 import forms from "./Forms";
@@ -80,6 +84,10 @@ export default {
         },
         reservationListPage: {
             reservationList,
+            reservationListAddCard,
+            reservationListEditCard,
+            reservationListDelDialog,
+            reservationListPageTitleAddSearch,
         },
         testPage: {
             test,
