@@ -365,7 +365,7 @@ export const Locations = (props) => {
                                 // width: "40rem", // 調整個別欄寬度
                                 // 提供客製化渲染內容，可使用預設參數 item 與 id，item 為 對應列表資料、id 為對應列表資料的id
                                 // render: (item, id) => (`${item} ${id} sdf`)
-                                width: "15%",
+                                width: "calc( 13% - 2rem )",
 
                                 order: true,// 是否開啟排序，預設為不開啟
 
@@ -394,7 +394,7 @@ export const Locations = (props) => {
                                 // width: "40rem", // 調整個別欄寬度
                                 // 提供客製化渲染內容，可使用預設參數 item 與 id，item 為 對應列表資料、id 為對應列表資料的id
                                 // render: (item, id) => (`${item} ${id} sdf`)
-                                width: "10%",
+                                width: "calc( 13% - 1rem )",
 
                                 order: true,// 是否開啟排序，預設為不開啟
 
@@ -421,7 +421,7 @@ export const Locations = (props) => {
                             },
                             "ShopTel": {
                                 // width: "45rem",
-                                width: "15%",
+                                width: "calc( 18% - 1rem )",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id) => ((item &&
                                     <TooltipBasic title={item} arrow>
@@ -446,7 +446,7 @@ export const Locations = (props) => {
                             },
                             "District": {
                                 // width: "45rem",
-                                width: "25%",
+                                width: "calc( 30% - 1rem )",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id, rowItem) => ((item &&
                                     <TooltipBasic title={`${rowItem?.County ?? ''}${rowItem?.District ?? ''}${rowItem?.Addr ?? ''}`} arrow>
@@ -471,7 +471,7 @@ export const Locations = (props) => {
                             },
                             "ContactName": {
                                 // width: "45rem",
-                                width: "10%",
+                                width: "calc( 13% - 1rem )",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id) => ((item &&
                                     <TooltipBasic title={item.split("T")[0]} arrow>
@@ -496,7 +496,7 @@ export const Locations = (props) => {
                             },
                             "CreateTime": {
                                 // width: "45rem",
-                                width: "10%",
+                                width: "calc( 13% - 1rem )",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id) => ((item &&
                                     <TooltipBasic title={item.split("T")[0]} arrow>
@@ -521,7 +521,7 @@ export const Locations = (props) => {
                             },
                             "controll": {
                                 //width: "20rem",
-                                width: "15%",
+                                width: "7rem",
                                 //order: true,
                                 render: (item, id, rowItem) => {
                                     return (
