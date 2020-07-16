@@ -2,6 +2,7 @@ import React, { useContext, useCallback, useState } from 'react';
 import { Context } from '../../../Store/store'
 import { BasicContainer, SubContainer } from '../../../Components/Containers';
 import { PageTitle } from '../../../Components/PageTitle';
+import { Text } from '../../../Components/Texts';
 import { EasyButton, JumpDialogButton } from '../../../Components/Buttons';
 import { SearchTextInput, FormCardTextInput, FormControl, FormRow, FormCardSelector, FormCardLeftIconSelector } from '../../../Components/Forms';
 import { getItemlocalStorage, clearlocalStorage } from '../../../Handlers/LocalStorageHandler'
@@ -10,7 +11,7 @@ import { useAsync } from '../../../SelfHooks/useAsync';
 import { useForm, useSelector } from '../../../SelfHooks/useForm'
 import { alertService } from '../../../Components/JumpAlerts';
 import { FormCard } from '../../../Components/FormCard';
-import { cityAndCountiesLite, Counties } from '../../../Mappings/Mappings'
+import { cityAndCountiesLite, Counties, times } from '../../../Mappings/Mappings'
 
 /* 
    Date   : 2020-07-15 11:16:14
@@ -23,23 +24,54 @@ import { cityAndCountiesLite, Counties } from '../../../Mappings/Mappings'
 export const EditCard = (props) => {
 
     const { APIUrl, Theme } = useContext(Context);
-    const { pages: { administratorsPage: { editCard } } } = Theme;
+    const { pages: { administratorsPage: { editCard } }, pages: { expertsPage: { expertsAddCard } } } = Theme;
     const [ShopListData, setShopListData] = useState([]); // 儲存分店列表
     let history = useHistory();
 
     //#region 表單狀態管理
     const [Id, Idhandler, IdregExpResult, IdResetValue] = useForm("", [""], [""]); // Id欄位
-    const [Name, Namehandler, NameregExpResult, NameResetValue] = useForm("", ["^[\u4E00-\u9FA5]{1,}$", "^.{1,5}$"], ["請輸入門市中文姓名", "姓名最長為5個中文字"]); // 門市姓名欄位
-    const [ContactName, ContactNamehandler, ContactNameregExpResult, ContactNameResetValue] = useForm("", ["^[\u4E00-\u9FA5]{1,}$", "^.{1,5}$"], ["請輸入門市中文姓名", "姓名最長為5個中文字"]); // 門市姓名欄位
+    const [Name, Namehandler, NameregExpResult, NameResetValue] = useForm("", ["^.{1,}$"], ["請輸入門市名稱"]); // 門市姓名欄位
+    const [ContactName, ContactNamehandler, ContactNameregExpResult, ContactNameResetValue] = useForm("", ["^[\u4E00-\u9FA5]{1,}$", "^.{1,5}$"], ["請輸入店長中文姓名", "姓名最長為5個中文字"]); // 門市姓名欄位
     const [Pass, Passhandler, PassregExpResult, PassResetValue] = useForm("", ["^.{1,}$"], ["請輸入正確密碼格式"]); // 門市密碼欄位
-    const [Phone, Phonehandler, PhoneregExpResult, PhoneResetValue] = useForm("", ["^.{1,}$", "^09[0-9]{8}$"], ["請輸入手機號碼", "請輸入正確手機格式"]); // 門市手機欄位
-    const [County, Countyhandler, CountyregExpResult, CountyResetValue] = useSelector([], [(value) => { console.log(value); return (value?.value ?? "").toString()?.length > 0 }], ["請選擇所在門市"]); // 門市門市欄位
-    const [District, Districthandler, DistrictregExpResult, DistrictResetValue] = useSelector([], [(value) => { console.log(value); return (value?.value ?? "").toString()?.length > 0 }], ["請選擇所在門市"]); // 門市門市欄位
-    const [Addr, Addrhandler, AddrregExpResult, AddrResetValue] = useForm("", ["^[\u4E00-\u9FA5]{1,}$"], ["請輸入地址"]); // 門市手機欄位
+    const [Phone, Phonehandler, PhoneregExpResult, PhoneResetValue] = useForm("", ["^.{1,}$"], ["請輸入門市電話"]); // 門市手機欄位
+    const [County, Countyhandler, CountyregExpResult, CountyResetValue] = useSelector([], [(value) => { console.log(value); return (value?.value ?? "").toString()?.length > 0 }], ["請選擇門市所在縣市"]); // 門市門市欄位
+    const [District, Districthandler, DistrictregExpResult, DistrictResetValue] = useSelector([], [(value) => { console.log(value); return (value?.value ?? "").toString()?.length > 0 }], ["請選擇門市所在行政區"]); // 門市門市欄位
+    const [Addr, Addrhandler, AddrregExpResult, AddrResetValue] = useForm("", ["^.{1,}$"], ["請輸入地址"]); // 門市手機欄位
     const [lat, lathandler, latregExpResult, latResetValue] = useForm("", ["^.{1,}$"], ["請輸入正確密碼格式"]); // 門市密碼欄位
     const [lon, lonhandler, lonregExpResult, lonResetValue] = useForm("", ["^.{1,}$"], ["請輸入正確密碼格式"]); // 門市密碼欄位
     const [Role, Rolehandler, RoleregExpResult, RoleResetValue] = useSelector([], [(value) => (value.length > 0)], ["請選擇門市身份"]); // 門市身分欄位
+
+    const [MonLeft, MonLefthandler, MonLeftregExpResult, MonLeftResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週一開始工作時間"]);  // 週一左邊時間欄位
+    const [MonRight, MonRighthandler, MonRightregExpResult, MonRightResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週一結束工作時間"]);  // 週一右邊時間欄位
+    const [TueLeft, TueLefthandler, TueLeftregExpResult, TueLeftResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週二開始工作時間"]);  // 週二左邊時間欄位
+    const [TueRight, TueRighthandler, TueRightregExpResult, TueRightResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週二結束工作時間"]);  // 週二右邊時間欄位
+    const [WenLeft, WenLefthandler, WenLeftregExpResult, WenLeftResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週三開始工作時間"]);  // 週三左邊時間欄位
+    const [WenRight, WenRighthandler, WenRightregExpResult, WenRightResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週三結束工作時間"]);  // 週三右邊時間欄位
+    const [ThuLeft, ThuLefthandler, ThuLeftregExpResult, ThuLeftResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週四開始工作時間"]);  // 週四左邊時間欄位
+    const [ThuRight, ThuRighthandler, ThuRightregExpResult, ThuRightResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週四結束工作時間"]);  // 週四右邊時間欄位
+    const [FriLeft, FriLefthandler, FriLeftregExpResult, FriLeftResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週五開始工作時間"]);  // 週五左邊時間欄位
+    const [FriRight, FriRighthandler, FriRightregExpResult, FriRightResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週五結束工作時間"]);  // 週五右邊時間欄位
+    const [SatLeft, SatLefthandler, SatLeftregExpResult, SatLeftResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週六開始工作時間"]);  // 週六左邊時間欄位
+    const [SatRight, SatRighthandler, SatRightregExpResult, SatRightResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週六結束工作時間"]);  // 週六右邊時間欄位
+    const [SunLeft, SunLefthandler, SunLeftregExpResult, SunLeftResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週日開始工作時間"]);  // 週日左邊時間欄位
+    const [SunRight, SunRighthandler, SunRightregExpResult, SunRightResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週日結束工作時間"]);  // 週日右邊時間欄位
+
     const [rowData, setrowData] = useState({});//修改表單的rowItem
+    //#endregion
+
+    //#region 時間選單連動
+    const getTimeList = (isLeft, nowTheirSelected) => {
+        if (!!nowTheirSelected?.value) {
+            if (isLeft) {
+                return times.filter((t) => (parseInt(t.value?.replace(":", "")) < parseInt(nowTheirSelected.value?.replace(":", ""))));
+            } else {
+                return times.filter((t) => (parseInt(t.value?.replace(":", "")) > parseInt(nowTheirSelected.value?.replace(":", ""))));
+            }
+        } else {
+            // nowTheirSelected===""
+            return times;
+        }
+    }
     //#endregion
 
     //#region 重置表單欄位的State值
@@ -55,73 +87,27 @@ export const EditCard = (props) => {
         //門市地址
         latResetValue(rowData?.lat);
         lonResetValue(rowData?.lon);
+        //console.log(rowData?.ShopDate.split(','), rowData?.ShopDate?.split(',')[0]?.split('-'));
+        MonLeftResetValue({ value: rowData?.ShopDate?.split(',')[0]?.split('-')[0], label: rowData?.ShopDate?.split(',')[0]?.split('-')[0] });
+        MonRightResetValue({ value: rowData?.ShopDate?.split(',')[0]?.split('-')[1], label: rowData?.ShopDate?.split(',')[0]?.split('-')[1] });
+        TueLeftResetValue({ value: rowData?.ShopDate?.split(',')[1]?.split('-')[0], label: rowData?.ShopDate?.split(',')[1]?.split('-')[0] });
+        TueRightResetValue({ value: rowData?.ShopDate?.split(',')[1]?.split('-')[1], label: rowData?.ShopDate?.split(',')[1]?.split('-')[1] });
+        WenLeftResetValue({ value: rowData?.ShopDate?.split(',')[2]?.split('-')[0], label: rowData?.ShopDate?.split(',')[2]?.split('-')[0] });
+        WenRightResetValue({ value: rowData?.ShopDate?.split(',')[2]?.split('-')[1], label: rowData?.ShopDate?.split(',')[2]?.split('-')[1] });
+        ThuLeftResetValue({ value: rowData?.ShopDate?.split(',')[3]?.split('-')[0], label: rowData?.ShopDate?.split(',')[3]?.split('-')[0] });
+        ThuRightResetValue({ value: rowData?.ShopDate?.split(',')[3]?.split('-')[1], label: rowData?.ShopDate?.split(',')[3]?.split('-')[1] });
+        FriLeftResetValue({ value: rowData?.ShopDate?.split(',')[4]?.split('-')[0], label: rowData?.ShopDate?.split(',')[4]?.split('-')[0] });
+        FriRightResetValue({ value: rowData?.ShopDate?.split(',')[4]?.split('-')[1], label: rowData?.ShopDate?.split(',')[4]?.split('-')[1] });
+        SatLeftResetValue({ value: rowData?.ShopDate?.split(',')[5]?.split('-')[0], label: rowData?.ShopDate?.split(',')[5]?.split('-')[0] });
+        SatRightResetValue({ value: rowData?.ShopDate?.split(',')[5]?.split('-')[1], label: rowData?.ShopDate?.split(',')[5]?.split('-')[1] });
+        SunLeftResetValue({ value: rowData?.ShopDate?.split(',')[6]?.split('-')[0], label: rowData?.ShopDate?.split(',')[6]?.split('-')[0] });
+        SunRightResetValue({ value: rowData?.ShopDate?.split(',')[6]?.split('-')[1], label: rowData?.ShopDate?.split(',')[6]?.split('-')[1] });
+
 
     }
     //#endregion
 
-    //#region 修改用戶API
-    const putAdminShops = useCallback(async (rowData, name, phone, County, role) => {
-        formValueReset();
-        props?.onClose && props.onClose(false);
 
-        return await fetch(`${APIUrl}api/Shops/Put`,
-            {
-                method: "PUT",
-                headers: {
-                    'content-type': 'application/json',
-                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
-                },
-                body: JSON.stringify({
-                    ...rowData,
-                    age: 0,
-                    uStatus: 0,
-                    sex: 0,
-                    tdIsDelete: false,
-                    uUpdateTime: new Date(),
-                    name: name,
-                    uRealName: name,
-                    //uLoginName: account,
-                    //uLoginPWD: pass,
-                    phone: phone,
-                    //ShopIds: location?.value,
-                    RIDs: (role ?? []).map((item) => (item.value)),
-                })
-            }
-        )//查詢角色、表格翻頁
-            .then(Result => {
-                const ResultJson = Result.clone().json();//Respone.clone()
-                return ResultJson;
-            })
-            .then((PreResult) => {
-                //console.log(PreResult)
-                if (PreResult.Status === 401) {
-                    //Token過期 強制登出
-                    clearlocalStorage();
-                    history.push("/Login");
-                    throw new Error("Token過期 強制登出");
-                }
-
-                if (PreResult.success) {
-                    alertService.normal("修改門市成功", { autoClose: true });
-                    return "修改門市成功"
-                } else {
-                    alertService.warn(PreResult.msg, { autoClose: true });
-                    throw new Error("修改門市失敗");
-                }
-            })
-            .catch((Error) => {
-                throw Error;
-            })
-            .finally(() => {
-                props?.execute && props.execute(1);
-            });
-
-        // 這裡要接著打refresh 延長Token存活期
-
-    }, [APIUrl, history])
-
-    const [PutAdminShopsExecute, PutAdminShopsPending] = useAsync(putAdminShops, false);
-    //#endregion
 
     //#region 查詢對應ID的門市資料、全部分店資料
     const getAdministratorsById = useCallback(async (id = props.editWhoId, editAutoFill = props.editAutoFill) => {
@@ -207,12 +193,14 @@ export const EditCard = (props) => {
                 yes={() => {
                     //全部通過檢核才可放行
 
-                    (PassregExpResult ? alertService.warn(PassregExpResult, { autoClose: true })
-                        : (NameregExpResult ? alertService.warn(NameregExpResult, { autoClose: true })
-                            : (PhoneregExpResult ? alertService.warn(PhoneregExpResult, { autoClose: true })
+                    (ContactNameregExpResult ? alertService.warn(ContactNameregExpResult, { autoClose: true })
+                        : (PhoneregExpResult ? alertService.warn(PhoneregExpResult, { autoClose: true })
+                            : (NameregExpResult ? alertService.warn(NameregExpResult, { autoClose: true })
                                 : (CountyregExpResult ? alertService.warn(CountyregExpResult, { autoClose: true })
-                                    : (RoleregExpResult ? alertService.warn(RoleregExpResult, { autoClose: true })
-                                        : PutAdminShopsExecute(rowData, Name, Phone, County, Role)
+                                    : (DistrictregExpResult ? alertService.warn(DistrictregExpResult, { autoClose: true })
+                                        : (AddrregExpResult ? alertService.warn(AddrregExpResult, { autoClose: true })
+                                            : props.editAdminUserExecute(rowData, ContactName, Phone, Name, County, District, Addr, lat, lon, MonLeft, MonRight, TueLeft, TueRight, WenLeft, WenRight, ThuLeft, ThuRight, FriLeft, FriRight, SatLeft, SatRight, SunLeft, SunRight)
+                                        )
                                     )
                                 )
                             )
@@ -267,22 +255,31 @@ export const EditCard = (props) => {
                             theme={editCard.nameFormCardTextInput}
                         ></FormCardTextInput>
                     </FormRow>
-
+                    <BasicContainer>
+                        <Text style={{
+                            color: "#444",
+                            fontSize: "1rem",
+                            fontWeight: 700,
+                            userSelect: "none"
+                        }} >
+                            門市地址
+                        </Text>
+                    </BasicContainer>
                     <FormRow>
                         <FormCardSelector
-                            label={"門市地址"}
+                            //label={"門市地址"}
                             //hint={""}
                             placeholder={"選擇縣市"}
                             value={County}
                             isSearchable
-                            options={Counties.counties.map((item) => { return { value: item, label: item } })}
+                            options={Counties}
                             //defaultValue={ { value: '1', label: 'Chocolate' }}
                             onChange={(value) => { CountyResetValue(value); console.log(value); DistrictResetValue('') }}
                             regExpResult={CountyregExpResult}
                             theme={editCard.locationFormCardTextInput}
                         ></FormCardSelector>
                         <FormCardSelector
-                            label={""}
+                            //label={""}
                             //hint={""}
                             placeholder={"選擇行政區"}
                             value={District}
@@ -301,7 +298,7 @@ export const EditCard = (props) => {
                             value={Addr}
                             onChange={Addrhandler}
                             regExpResult={AddrregExpResult}
-                            placeholder={"請輸入店長姓名"}
+                            placeholder={"忠孝東路四段100號3樓"}
                             theme={editCard.nameFormCardTextInput}
                         ></FormCardTextInput>
                     </FormRow>
@@ -326,43 +323,232 @@ export const EditCard = (props) => {
                         ></FormCardTextInput>
                     </FormRow>
                     <FormRow>
+                        <SubContainer theme={expertsAddCard.workTimeSubContainer}>
+                            <Text theme={expertsAddCard.workTimeText}>工作時間</Text>
+                        </SubContainer>
+                    </FormRow>
+                    <FormRow>
+                        <SubContainer theme={expertsAddCard.daySubContainer}>
+                            <Text theme={expertsAddCard.dayText}>週一</Text>
+                        </SubContainer>
                         <FormCardLeftIconSelector
-                            label={"營業時間"}
-                            //hint={""}
-                            placeholder={"請選擇時間"}
-                            value={Role}
-                            isMulti
+                            //label={""}
+                            //hint={"開始工作時間"}
+                            placeholder={"開始工作時間"}
+                            value={MonLeft}
                             isSearchable
-                            options={[
-                                { value: '1', label: '選項1' },//isDisabled: true 
-                                { value: '2', label: '選項2' },
-                                { value: '3', label: '選項3' },
-                                { value: '4', label: '選項4' },
-                                { value: '5', label: '選項5' },
-                                { value: '6', label: '選項6' },
-                                { value: '7', label: '選項7' },
-                                { value: '8', label: '選項8' },
-                                { value: '9', label: '選項9' },
-                            ]}
-                            onChange={(values) => { RoleResetValue(values) }}
-                            regExpResult={RoleregExpResult}
-                            theme={editCard.locationFormCardTextInput}
+                            isClearable
+                            options={getTimeList(true, MonRight)}
+                            onChange={(values) => { MonLeftResetValue(values) }}
+                            regExpResult={MonLeftregExpResult}
+                            theme={expertsAddCard.locationFormCardTextInput}
                         ></FormCardLeftIconSelector>
+                        <SubContainer theme={expertsAddCard.splitSubContainer}>
+                            <Text theme={expertsAddCard.dayText}>~</Text>
+                        </SubContainer>
                         <FormCardLeftIconSelector
-                            label={""}
-                            //hint={"請選擇時間"}
-                            placeholder={"請選擇時間"}
-                            value={Role}
-                            isMulti
+                            //label={""}
+                            //hint={"開始工作時間"}
+                            placeholder={"開始工作時間"}
+                            value={MonRight}
                             isSearchable
-                            options={[
-                                { value: '1', label: '選項1' },//isDisabled: true 
-                                { value: '2', label: '選項2' },
-                                { value: '3', label: '選項3' }
-                            ]}
-                            onChange={(values) => { RoleResetValue(values) }}
-                            regExpResult={RoleregExpResult}
-                            theme={editCard.locationFormCardTextInput}
+                            isClearable
+                            options={getTimeList(false, MonLeft)}
+                            onChange={(values) => { MonRightResetValue(values) }}
+                            regExpResult={MonRightregExpResult}
+                            theme={expertsAddCard.locationFormCardTextInput}
+                        ></FormCardLeftIconSelector>
+                    </FormRow>
+                    <FormRow>
+                        <SubContainer theme={expertsAddCard.daySubContainer}>
+                            <Text theme={expertsAddCard.dayText}>週二</Text>
+                        </SubContainer>
+                        <FormCardLeftIconSelector
+                            //label={""}
+                            //hint={"開始工作時間"}
+                            placeholder={"開始工作時間"}
+                            value={TueLeft}
+                            isSearchable
+                            isClearable
+                            options={getTimeList(true, TueRight)}
+                            onChange={(values) => { TueLeftResetValue(values) }}
+                            regExpResult={TueLeftregExpResult}
+                            theme={expertsAddCard.locationFormCardTextInput}
+                        ></FormCardLeftIconSelector>
+                        <SubContainer theme={expertsAddCard.splitSubContainer}>
+                            <Text theme={expertsAddCard.dayText}>~</Text>
+                        </SubContainer>
+                        <FormCardLeftIconSelector
+                            //label={""}
+                            //hint={"開始工作時間"}
+                            placeholder={"開始工作時間"}
+                            value={TueRight}
+                            isSearchable
+                            isClearable
+                            options={getTimeList(false, TueLeft)}
+                            onChange={(values) => { TueRightResetValue(values) }}
+                            regExpResult={TueRightregExpResult}
+                            theme={expertsAddCard.locationFormCardTextInput}
+                        ></FormCardLeftIconSelector>
+                    </FormRow>
+                    <FormRow>
+                        <SubContainer theme={expertsAddCard.daySubContainer}>
+                            <Text theme={expertsAddCard.dayText}>週三</Text>
+                        </SubContainer>
+                        <FormCardLeftIconSelector
+                            //label={""}
+                            //hint={"開始工作時間"}
+                            placeholder={"開始工作時間"}
+                            value={WenLeft}
+                            isSearchable
+                            isClearable
+                            options={getTimeList(true, WenRight)}
+                            onChange={(values) => { WenLeftResetValue(values) }}
+                            regExpResult={WenLeftregExpResult}
+                            theme={expertsAddCard.locationFormCardTextInput}
+                        ></FormCardLeftIconSelector>
+                        <SubContainer theme={expertsAddCard.splitSubContainer}>
+                            <Text theme={expertsAddCard.dayText}>~</Text>
+                        </SubContainer>
+                        <FormCardLeftIconSelector
+                            //label={""}
+                            //hint={"開始工作時間"}
+                            placeholder={"開始工作時間"}
+                            value={WenRight}
+                            isSearchable
+                            isClearable
+                            options={getTimeList(false, WenLeft)}
+                            onChange={(values) => { WenRightResetValue(values) }}
+                            regExpResult={WenRightregExpResult}
+                            theme={expertsAddCard.locationFormCardTextInput}
+                        ></FormCardLeftIconSelector>
+                    </FormRow>
+                    <FormRow>
+                        <SubContainer theme={expertsAddCard.daySubContainer}>
+                            <Text theme={expertsAddCard.dayText}>週四</Text>
+                        </SubContainer>
+                        <FormCardLeftIconSelector
+                            //label={""}
+                            //hint={"開始工作時間"}
+                            placeholder={"開始工作時間"}
+                            value={ThuLeft}
+                            isSearchable
+                            isClearable
+                            options={getTimeList(true, ThuRight)}
+                            onChange={(values) => { ThuLeftResetValue(values) }}
+                            regExpResult={ThuLeftregExpResult}
+                            theme={expertsAddCard.locationFormCardTextInput}
+                        ></FormCardLeftIconSelector>
+                        <SubContainer theme={expertsAddCard.splitSubContainer}>
+                            <Text theme={expertsAddCard.dayText}>~</Text>
+                        </SubContainer>
+                        <FormCardLeftIconSelector
+                            //label={""}
+                            //hint={"開始工作時間"}
+                            placeholder={"開始工作時間"}
+                            value={ThuRight}
+                            isSearchable
+                            isClearable
+                            options={getTimeList(false, ThuLeft)}
+                            onChange={(values) => { ThuRightResetValue(values) }}
+                            regExpResult={ThuRightregExpResult}
+                            theme={expertsAddCard.locationFormCardTextInput}
+                        ></FormCardLeftIconSelector>
+                    </FormRow>
+                    <FormRow>
+                        <SubContainer theme={expertsAddCard.daySubContainer}>
+                            <Text theme={expertsAddCard.dayText}>週五</Text>
+                        </SubContainer>
+                        <FormCardLeftIconSelector
+                            //label={""}
+                            //hint={"開始工作時間"}
+                            placeholder={"開始工作時間"}
+                            value={FriLeft}
+                            isSearchable
+                            isClearable
+                            options={getTimeList(true, FriRight)}
+                            onChange={(values) => { FriLeftResetValue(values) }}
+                            regExpResult={FriLeftregExpResult}
+                            theme={expertsAddCard.locationFormCardTextInput}
+                        ></FormCardLeftIconSelector>
+                        <SubContainer theme={expertsAddCard.splitSubContainer}>
+                            <Text theme={expertsAddCard.dayText}>~</Text>
+                        </SubContainer>
+                        <FormCardLeftIconSelector
+                            //label={""}
+                            //hint={"開始工作時間"}
+                            placeholder={"開始工作時間"}
+                            value={FriRight}
+                            isSearchable
+                            isClearable
+                            options={getTimeList(false, FriLeft)}
+                            onChange={(values) => { FriRightResetValue(values) }}
+                            regExpResult={FriRightregExpResult}
+                            theme={expertsAddCard.locationFormCardTextInput}
+                        ></FormCardLeftIconSelector>
+                    </FormRow>
+                    <FormRow>
+                        <SubContainer theme={expertsAddCard.daySubContainer}>
+                            <Text theme={expertsAddCard.dayText}>週六</Text>
+                        </SubContainer>
+                        <FormCardLeftIconSelector
+                            //label={""}
+                            //hint={"開始工作時間"}
+                            placeholder={"開始工作時間"}
+                            value={SatLeft}
+                            isSearchable
+                            isClearable
+                            options={getTimeList(true, SatRight)}
+                            onChange={(values) => { SatLeftResetValue(values) }}
+                            regExpResult={SatLeftregExpResult}
+                            theme={expertsAddCard.locationFormCardTextInput}
+                        ></FormCardLeftIconSelector>
+                        <SubContainer theme={expertsAddCard.splitSubContainer}>
+                            <Text theme={expertsAddCard.dayText}>~</Text>
+                        </SubContainer>
+                        <FormCardLeftIconSelector
+                            //label={""}
+                            //hint={"開始工作時間"}
+                            placeholder={"開始工作時間"}
+                            value={SatRight}
+                            isSearchable
+                            isClearable
+                            options={getTimeList(false, SatLeft)}
+                            onChange={(values) => { SatRightResetValue(values) }}
+                            regExpResult={SatRightregExpResult}
+                            theme={expertsAddCard.locationFormCardTextInput}
+                        ></FormCardLeftIconSelector>
+                    </FormRow>
+                    <FormRow>
+                        <SubContainer theme={expertsAddCard.daySubContainer}>
+                            <Text theme={expertsAddCard.dayText}>週日</Text>
+                        </SubContainer>
+                        <FormCardLeftIconSelector
+                            //label={""}
+                            //hint={"開始工作時間"}
+                            placeholder={"開始工作時間"}
+                            value={SunLeft}
+                            isSearchable
+                            isClearable
+                            options={getTimeList(true, SunRight)}
+                            onChange={(values) => { SunLeftResetValue(values) }}
+                            regExpResult={SunLeftregExpResult}
+                            theme={expertsAddCard.locationFormCardTextInput}
+                        ></FormCardLeftIconSelector>
+                        <SubContainer theme={expertsAddCard.splitSubContainer}>
+                            <Text theme={expertsAddCard.dayText}>~</Text>
+                        </SubContainer>
+                        <FormCardLeftIconSelector
+                            //label={""}
+                            //hint={"開始工作時間"}
+                            placeholder={"開始工作時間"}
+                            value={SunRight}
+                            isSearchable
+                            isClearable
+                            options={getTimeList(false, SunLeft)}
+                            onChange={(values) => { SunRightResetValue(values) }}
+                            regExpResult={SunRightregExpResult}
+                            theme={expertsAddCard.locationFormCardTextInput}
                         ></FormCardLeftIconSelector>
                     </FormRow>
                 </FormControl>

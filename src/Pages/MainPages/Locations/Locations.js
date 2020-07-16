@@ -186,6 +186,131 @@ export const Locations = (props) => {
     const [DelAdminUserExecute, DelAdminUserPending] = useAsync(delAdminUser, false);
     //#endregion
 
+    //#region 新增用戶API
+    const addAdminShops = useCallback(async (ContactName, Phone, Name, County, District, Addr, lat, lon, MonLeft, MonRight, TueLeft, TueRight, WenLeft, WenRight, ThuLeft, ThuRight, FriLeft, FriRight, SatLeft, SatRight, SunLeft, SunRight) => {
+        props?.onClose && props.onClose(false);
+        return await fetch(`${APIUrl}api/Shops/Post`,
+            {
+                method: "POST",
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
+                },
+                body: JSON.stringify({
+                    IsDeleted: false,
+                    //ModifyTime: new Date(),
+                    ContactName: ContactName,
+                    ShopTel: Phone,
+                    ShopName: Name,
+                    ShopDate: `${MonLeft?.value ?? ''}-${MonRight?.value ?? ''},${TueLeft?.value ?? ''}-${TueRight?.value ?? ''},${WenLeft?.value ?? ''}-${WenRight?.value ?? ''},${ThuLeft?.value ?? ''}-${ThuRight?.value ?? ''},${FriLeft?.value ?? ''}-${FriRight?.value ?? ''},${SatLeft?.value ?? ''}-${SatRight?.value ?? ''},${SunLeft?.value ?? ''}-${SunRight?.value ?? ''},`,
+                    County: County?.value,
+                    District: District?.value,
+                    Addr: Addr,
+                    lat: lat,
+                    lon: lon,
+                })
+            }
+        )//查詢角色、表格翻頁
+            .then(Result => {
+                const ResultJson = Result.clone().json();//Respone.clone()
+                return ResultJson;
+            })
+            .then((PreResult) => {
+                //console.log(PreResult)
+                if (PreResult.Status === 401) {
+                    //Token過期 強制登出
+                    clearlocalStorage();
+                    history.push("/Login");
+                    throw new Error("Token過期 強制登出");
+                }
+
+                if (PreResult.success) {
+                    alertService.normal("新增門市成功", { autoClose: true });
+                    return "新增門市成功"
+                } else {
+                    alertService.warn(PreResult.msg, { autoClose: true });
+                    throw new Error("新增門市失敗");
+                }
+            })
+            .catch((Error) => {
+                throw Error;
+            })
+            .finally(() => {
+                execute(1);
+                setOpenAddJumpDialog(false);
+            });
+
+        // 這裡要接著打refresh 延長Token存活期
+
+    }, [APIUrl, history])
+
+    const [AddAdminShopsExecute, AddAdminShopsPending] = useAsync(addAdminShops, false);
+    //#endregion
+
+    //#region 修改用戶API
+    const putAdminShops = useCallback(async (rowData, ContactName, Phone, Name, County, District, Addr, lat, lon, MonLeft, MonRight, TueLeft, TueRight, WenLeft, WenRight, ThuLeft, ThuRight, FriLeft, FriRight, SatLeft, SatRight, SunLeft, SunRight) => {
+
+
+        return await fetch(`${APIUrl}api/Shops/Put`,
+            {
+                method: "PUT",
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
+                },
+                body: JSON.stringify({
+                    ...rowData,
+                    IsDeleted: false,
+                    ModifyTime: new Date(),
+                    ContactName: ContactName,
+                    ShopTel: Phone,
+                    ShopName: Name,
+                    ShopDate: `${MonLeft?.value ?? ''}-${MonRight?.value ?? ''},${TueLeft?.value ?? ''}-${TueRight?.value ?? ''},${WenLeft?.value ?? ''}-${WenRight?.value ?? ''},${ThuLeft?.value ?? ''}-${ThuRight?.value ?? ''},${FriLeft?.value ?? ''}-${FriRight?.value ?? ''},${SatLeft?.value ?? ''}-${SatRight?.value ?? ''},${SunLeft?.value ?? ''}-${SunRight?.value ?? ''},`,
+                    County: County?.value,
+                    District: District?.value,
+                    Addr: Addr,
+                    lat: lat,
+                    lon: lon,
+
+                })
+            }
+        )//查詢角色、表格翻頁
+            .then(Result => {
+                const ResultJson = Result.clone().json();//Respone.clone()
+                return ResultJson;
+            })
+            .then((PreResult) => {
+                //console.log(PreResult)
+                if (PreResult.Status === 401) {
+                    //Token過期 強制登出
+                    clearlocalStorage();
+                    history.push("/Login");
+                    throw new Error("Token過期 強制登出");
+                }
+
+                if (PreResult.success) {
+                    alertService.normal("修改門市成功", { autoClose: true });
+                    return "修改門市成功"
+                } else {
+                    alertService.warn(PreResult.msg, { autoClose: true });
+                    throw new Error("修改門市失敗");
+                }
+            })
+            .catch((Error) => {
+                throw Error;
+            })
+            .finally(() => {
+                setOpenEditJumpDialog(false);
+                execute(1);
+            });
+
+        // 這裡要接著打refresh 延長Token存活期
+
+    }, [APIUrl, history])
+
+    const [PutAdminShopsExecute, PutAdminShopsPending] = useAsync(putAdminShops, false);
+    //#endregion
+
     return (
         <>
             {/* 寬度大於等於768時渲染的組件 */}
@@ -677,9 +802,9 @@ export const Locations = (props) => {
                 </JumpDialog>
             }
             {/* 新增表單卡片 */}
-            {OpenAddJumpDialog && <AddCard execute={(page, key) => { execute(page, key) }} onClose={(isOpen) => { setOpenAddJumpDialog(isOpen) }} />}
+            {OpenAddJumpDialog && <AddCard execute={(page, key) => { execute(page, key) }} addAdminUserExecute={AddAdminShopsExecute} onClose={(isOpen) => { setOpenAddJumpDialog(isOpen) }} />}
             {/* 編輯表單卡片 */}
-            {OpenEditJumpDialog && <EditCard execute={(page, key) => { execute(page, key) }} onClose={(isOpen) => { setOpenEditJumpDialog(isOpen) }} editWhoId={EditWho} editAutoFill={EditAutoFill} />}
+            {OpenEditJumpDialog && <EditCard execute={(page, key) => { execute(page, key) }} editAdminUserExecute={PutAdminShopsExecute} onClose={(isOpen) => { setOpenEditJumpDialog(isOpen) }} editWhoId={EditWho} editAutoFill={EditAutoFill} />}
         </>
     )
 }
