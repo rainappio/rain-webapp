@@ -13,7 +13,7 @@ import { Text } from '../../../Components/Texts';
 
 //#region 時間選單連動
 const getTimeList = (isLeft, nowTheirSelected) => {
-    if (!!nowTheirSelected) {
+    if (!!nowTheirSelected?.value) {
         if (isLeft) {
             return times.filter((t) => (parseInt(t.value.replace(":", "")) < parseInt(nowTheirSelected.value.replace(":", ""))));
         } else {
@@ -85,7 +85,21 @@ export const ExpertsEditCard = (props) => {
         AddrResetValue(props?.editAutoFill?.CommAddr ?? '');
         NowServiceAddrResetValue(props?.editAutoFill?.NowServiceAddr ?? '');
         ServiceAreaResetValue(props?.editAutoFill?.ServiceArea?.split(',')?.map((item) => { return { value: item, label: item.slice(3) } }));
-        console.log(props?.editAutoFill?.ServiceArea?.split(',')?.map((item) => { return { value: item, label: item.slice(3) } }));
+        //console.log(props?.editAutoFill?.ServiceArea?.split(',')?.map((item) => { return { value: item, label: item.slice(3) } }));
+        MonLeftResetValue({ value: props?.editAutoFill?.MondayService?.split('-')[0], label: props?.editAutoFill?.MondayService?.split('-')[0] });
+        MonRightResetValue({ value: props?.editAutoFill?.MondayService?.split('-')[1], label: props?.editAutoFill?.MondayService?.split('-')[1] });
+        TueLeftResetValue({ value: props?.editAutoFill?.TuesdayService?.split('-')[0], label: props?.editAutoFill?.TuesdayService?.split('-')[0] });
+        TueRightResetValue({ value: props?.editAutoFill?.TuesdayService?.split('-')[1], label: props?.editAutoFill?.TuesdayService?.split('-')[1] });
+        WenLeftResetValue({ value: props?.editAutoFill?.WednesdayService?.split('-')[0], label: props?.editAutoFill?.WednesdayService?.split('-')[0] });
+        WenRightResetValue({ value: props?.editAutoFill?.WednesdayService?.split('-')[1], label: props?.editAutoFill?.WednesdayService?.split('-')[1] });
+        ThuLeftResetValue({ value: props?.editAutoFill?.ThursdayService?.split('-')[0], label: props?.editAutoFill?.ThursdayService?.split('-')[0] });
+        ThuRightResetValue({ value: props?.editAutoFill?.ThursdayService?.split('-')[1], label: props?.editAutoFill?.ThursdayService?.split('-')[1] });
+        FriLeftResetValue({ value: props?.editAutoFill?.FridayService?.split('-')[0], label: props?.editAutoFill?.FridayService?.split('-')[0] });
+        FriRightResetValue({ value: props?.editAutoFill?.FridayService?.split('-')[1], label: props?.editAutoFill?.FridayService?.split('-')[1] });
+        SatLeftResetValue({ value: props?.editAutoFill?.SaturdayService?.split('-')[0], label: props?.editAutoFill?.SaturdayService?.split('-')[0] });
+        SatRightResetValue({ value: props?.editAutoFill?.SaturdayService?.split('-')[1], label: props?.editAutoFill?.SaturdayService?.split('-')[1] });
+        SunLeftResetValue({ value: props?.editAutoFill?.SundayService?.split('-')[0], label: props?.editAutoFill?.SundayService?.split('-')[0] });
+        SunRightResetValue({ value: props?.editAutoFill?.SundayService?.split('-')[1], label: props?.editAutoFill?.SundayService?.split('-')[1] });
 
     }, [])
     //#endregion
@@ -151,25 +165,21 @@ export const ExpertsEditCard = (props) => {
     return (
         <>
             <FormCard
-                title={"新增足健師帳號"}
+                title={"修改足健師帳號"}
                 yes={() => {
                     //全部通過檢核才可放行
-                    (MasterNoregExpResult ? alertService.warn(MasterNoregExpResult, { autoClose: true })
-                        : (NameregExpResult ? alertService.warn(NameregExpResult, { autoClose: true })
-                            : (SexregExpResult ? alertService.warn(SexregExpResult, { autoClose: true })
-                                : (PhoneregExpResult ? alertService.warn(PhoneregExpResult, { autoClose: true })
-                                    : (EmailregExpResult ? alertService.warn(EmailregExpResult, { autoClose: true })
-                                        : (BirthYearregExpResult ? alertService.warn(BirthYearregExpResult, { autoClose: true })
-                                            : (BirthMonthregExpResult ? alertService.warn(BirthMonthregExpResult, { autoClose: true })
-                                                : (BirthDayregExpResult ? alertService.warn(BirthDayregExpResult, { autoClose: true })
-                                                    : (CountyregExpResult ? alertService.warn(CountyregExpResult, { autoClose: true })
-                                                        : (DistrictregExpResult ? alertService.warn(DistrictregExpResult, { autoClose: true })
-                                                            : (AddrregExpResult ? alertService.warn(AddrregExpResult, { autoClose: true })
-                                                                : (NowServiceAddrregExpResult ? alertService.warn(NowServiceAddrregExpResult, { autoClose: true })
-                                                                    : (ServiceArearegExpResult ? alertService.warn(ServiceArearegExpResult, { autoClose: true })
-                                                                        : props.addAdminUserExecute(MasterNo, Name, Sex, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr, NowServiceAddr, ServiceArea, MonLeft, MonRight, TueLeft, TueRight, WenLeft, WenRight, ThuLeft, ThuRight, FriLeft, FriRight, SatLeft, SatRight, SunLeft, SunRight)
-                                                                    )
-                                                                )
+                    (NameregExpResult ? alertService.warn(NameregExpResult, { autoClose: true })
+                        : (PhoneregExpResult ? alertService.warn(PhoneregExpResult, { autoClose: true })
+                            : (EmailregExpResult ? alertService.warn(EmailregExpResult, { autoClose: true })
+                                : (BirthYearregExpResult ? alertService.warn(BirthYearregExpResult, { autoClose: true })
+                                    : (BirthMonthregExpResult ? alertService.warn(BirthMonthregExpResult, { autoClose: true })
+                                        : (BirthDayregExpResult ? alertService.warn(BirthDayregExpResult, { autoClose: true })
+                                            : (CountyregExpResult ? alertService.warn(CountyregExpResult, { autoClose: true })
+                                                : (DistrictregExpResult ? alertService.warn(DistrictregExpResult, { autoClose: true })
+                                                    : (AddrregExpResult ? alertService.warn(AddrregExpResult, { autoClose: true })
+                                                        : (NowServiceAddrregExpResult ? alertService.warn(NowServiceAddrregExpResult, { autoClose: true })
+                                                            : (ServiceArearegExpResult ? alertService.warn(ServiceArearegExpResult, { autoClose: true })
+                                                                : props.editAdminUserExecute(props.editAutoFill, Name, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr, NowServiceAddr, ServiceArea, MonLeft, MonRight, TueLeft, TueRight, WenLeft, WenRight, ThuLeft, ThuRight, FriLeft, FriRight, SatLeft, SatRight, SunLeft, SunRight)
                                                             )
                                                         )
                                                     )
@@ -181,10 +191,11 @@ export const ExpertsEditCard = (props) => {
                             )
                         )
                     )
+
                 }}
-                yesText={"新增"}
+                yesText={"儲存"}
                 no={() => { props?.onClose && props.onClose(false); }}
-                noText={"取消"}
+                noText={"放棄"}
                 close={() => { props?.onClose && props.onClose(false); }}
                 theme={expertsAddCard.addformCard}
             >
@@ -199,87 +210,86 @@ export const ExpertsEditCard = (props) => {
                         margin: "20px 0 0 0"
                     }}>
                     <FormRow>
-                        <FormCardTextInput
-                            label={"工號"}
-                            hint={"工號將作為足健師的登入帳號"}
-                            value={MasterNo}
-                            onChange={MasterNohandler}
-                            regExpResult={MasterNoregExpResult}
-                            placeholder={"請在此輸入工號(數字)"}
-                            theme={expertsAddCard.masterNoFormCardTextInput()}
-                        ></FormCardTextInput>
+
                         <FormCardTextInput
                             label={"姓名"}
-                            hint={"請填寫真實姓名"}
+                            hint={""}
                             value={Name}
                             onChange={Namehandler}
                             regExpResult={NameregExpResult}
                             placeholder={"請在此輸入中文姓名"}
-                            theme={expertsAddCard.masterNoFormCardTextInput()}
+                            theme={expertsAddCard.passFormCardTextInput(0)}
                         ></FormCardTextInput>
-                        <FormCardSelector
-                            label={"性別"}
+
+                    </FormRow>
+                    <FormRow>
+
+                        <FormCardTextInput
+                            label={"登入帳號"}
                             hint={""}
-                            placeholder={"請選擇性別"}
-                            value={Sex}
-                            isSearchable
-                            options={[
-                                { value: 1, label: '男' },//isDisabled: true 
-                                { value: 0, label: '女' }
-                            ]}
-                            //defaultValue={ { value: '1', label: 'Chocolate' }}
-                            onChange={(value) => { SexResetValue(value) }}
-                            regExpResult={SexregExpResult}
-                            theme={expertsAddCard.sexFormCardSelector}
-                        ></FormCardSelector>
+                            value={MasterNo}
+                            disabled
+                            onChange={MasterNohandler}
+                            regExpResult={MasterNoregExpResult}
+                            placeholder={"請在此輸入工號(數字)"}
+                            theme={expertsAddCard.passFormCardTextInput(0)}
+                        ></FormCardTextInput>
+
                     </FormRow>
                     <FormRow>
                         <FormCardTextInput
-                            label={"手機"}
+                            label={"聯絡電話"}
                             hint={""}
                             value={Phone}
                             onChange={Phonehandler}
                             regExpResult={PhoneregExpResult}
                             placeholder={"0966888168"}
-                            theme={expertsAddCard.phoneFormCardTextInput}
+                            theme={expertsAddCard.passFormCardTextInput(0)}
                         ></FormCardTextInput>
+                    </FormRow>
+                    <FormRow>
                         <FormCardTextInput
-                            label={"Email"}
+                            label={"電子信箱 Email"}
                             hint={""}
                             value={Email}
                             onChange={Emailhandler}
                             regExpResult={EmailregExpResult}
                             placeholder={"aso_service@gmail.com"}
-                            theme={expertsAddCard.phoneFormCardTextInput}
+                            theme={expertsAddCard.passFormCardTextInput(0)}
                         ></FormCardTextInput>
                     </FormRow>
                     <FormRow>
+                        <SubContainer theme={expertsAddCard.workTimeSubContainer}>
+                            <Text theme={expertsAddCard.workTimeText}>出生年月日</Text>
+                        </SubContainer>
+                    </FormRow>
+                    <FormRow>
                         <FormCardSelector
-                            label={"出生年月日"}
+                            //label={"出生年月日"}
                             hint={""}
                             placeholder={"西元年"}
                             value={BirthYear}
                             isSearchable
                             options={YearFrom1930to(2020)}
                             //defaultValue={ { value: '1', label: 'Chocolate' }}
-                            onChange={(value) => { BirthYearResetValue(value) }}
+                            onChange={(value) => { BirthYearResetValue(value); BirthMonthResetValue(''); BirthDayResetValue('') }}
                             regExpResult={BirthYearregExpResult}
                             theme={expertsAddCard.sexFormCardSelector}
                         ></FormCardSelector>
                         <FormCardSelector
-                            label={""}
+                            //label={""}
                             hint={""}
                             placeholder={"月份"}
                             value={BirthMonth}
                             isSearchable
                             options={month}
                             //defaultValue={ { value: '1', label: 'Chocolate' }}
-                            onChange={(value) => { BirthMonthResetValue(value) }}
+                            onChange={(value) => { BirthMonthResetValue(value); BirthDayResetValue('') }}
                             regExpResult={BirthMonthregExpResult}
                             theme={expertsAddCard.sexFormCardSelector}
                         ></FormCardSelector>
                         <FormCardSelector
-                            label={""}
+                            //label={""}
                             hint={""}
                             placeholder={"日期"}
                             value={BirthDay}
@@ -292,20 +302,25 @@ export const ExpertsEditCard = (props) => {
                         ></FormCardSelector>
                     </FormRow>
                     <FormRow>
+                        <SubContainer theme={expertsAddCard.workTimeSubContainer}>
+                            <Text theme={expertsAddCard.workTimeText}>通訊地址</Text>
+                        </SubContainer>
+                    </FormRow>
+                    <FormRow>
                         <FormCardSelector
-                            label={"通訊地址"}
+                            //label={"通訊地址"}
                             //hint={""}
                             placeholder={"請選擇縣市"}
                             value={County}
                             isSearchable
                             options={Counties}
                             //defaultValue={ { value: '1', label: 'Chocolate' }}
-                            onChange={(value) => { CountyResetValue(value) }}
+                            onChange={(value) => { CountyResetValue(value); DistrictResetValue('') }}
                             regExpResult={CountyregExpResult}
                             theme={expertsAddCard.sexFormCardSelector}
                         ></FormCardSelector>
                         <FormCardSelector
-                            label={""}
+                            //label={""}
                             //hint={""}
                             placeholder={"請選擇行政區"}
                             value={District}
@@ -331,7 +346,7 @@ export const ExpertsEditCard = (props) => {
                     <FormRow>
                         <FormCardTextInput
                             label={"現職單位"}
-                            hint={""}
+                            hint={"請輸入您的現職單位地址，如 台北市大安區忠孝東路四段 100 號 3 樓"}
                             value={NowServiceAddr}
                             onChange={NowServiceAddrhandler}
                             regExpResult={NowServiceAddrregExpResult}
@@ -362,6 +377,7 @@ export const ExpertsEditCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={MonLeft}
                             isSearchable
+                            isClearable
                             options={getTimeList(true, MonRight)}
                             onChange={(values) => { MonLeftResetValue(values) }}
                             regExpResult={MonLeftregExpResult}
@@ -376,6 +392,7 @@ export const ExpertsEditCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={MonRight}
                             isSearchable
+                            isClearable
                             options={getTimeList(false, MonLeft)}
                             onChange={(values) => { MonRightResetValue(values) }}
                             regExpResult={MonRightregExpResult}
@@ -392,6 +409,7 @@ export const ExpertsEditCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={TueLeft}
                             isSearchable
+                            isClearable
                             options={getTimeList(true, TueRight)}
                             onChange={(values) => { TueLeftResetValue(values) }}
                             regExpResult={TueLeftregExpResult}
@@ -406,6 +424,7 @@ export const ExpertsEditCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={TueRight}
                             isSearchable
+                            isClearable
                             options={getTimeList(false, TueLeft)}
                             onChange={(values) => { TueRightResetValue(values) }}
                             regExpResult={TueRightregExpResult}
@@ -422,6 +441,7 @@ export const ExpertsEditCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={WenLeft}
                             isSearchable
+                            isClearable
                             options={getTimeList(true, WenRight)}
                             onChange={(values) => { WenLeftResetValue(values) }}
                             regExpResult={WenLeftregExpResult}
@@ -436,6 +456,7 @@ export const ExpertsEditCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={WenRight}
                             isSearchable
+                            isClearable
                             options={getTimeList(false, WenLeft)}
                             onChange={(values) => { WenRightResetValue(values) }}
                             regExpResult={WenRightregExpResult}
@@ -452,6 +473,7 @@ export const ExpertsEditCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={ThuLeft}
                             isSearchable
+                            isClearable
                             options={getTimeList(true, ThuRight)}
                             onChange={(values) => { ThuLeftResetValue(values) }}
                             regExpResult={ThuLeftregExpResult}
@@ -466,6 +488,7 @@ export const ExpertsEditCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={ThuRight}
                             isSearchable
+                            isClearable
                             options={getTimeList(false, ThuLeft)}
                             onChange={(values) => { ThuRightResetValue(values) }}
                             regExpResult={ThuRightregExpResult}
@@ -482,6 +505,7 @@ export const ExpertsEditCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={FriLeft}
                             isSearchable
+                            isClearable
                             options={getTimeList(true, FriRight)}
                             onChange={(values) => { FriLeftResetValue(values) }}
                             regExpResult={FriLeftregExpResult}
@@ -496,6 +520,7 @@ export const ExpertsEditCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={FriRight}
                             isSearchable
+                            isClearable
                             options={getTimeList(false, FriLeft)}
                             onChange={(values) => { FriRightResetValue(values) }}
                             regExpResult={FriRightregExpResult}
@@ -504,7 +529,7 @@ export const ExpertsEditCard = (props) => {
                     </FormRow>
                     <FormRow>
                         <SubContainer theme={expertsAddCard.daySubContainer}>
-                            <Text theme={expertsAddCard.dayText}>週二</Text>
+                            <Text theme={expertsAddCard.dayText}>週六</Text>
                         </SubContainer>
                         <FormCardLeftIconSelector
                             //label={""}
@@ -512,6 +537,7 @@ export const ExpertsEditCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={SatLeft}
                             isSearchable
+                            isClearable
                             options={getTimeList(true, SatRight)}
                             onChange={(values) => { SatLeftResetValue(values) }}
                             regExpResult={SatLeftregExpResult}
@@ -526,6 +552,7 @@ export const ExpertsEditCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={SatRight}
                             isSearchable
+                            isClearable
                             options={getTimeList(false, SatLeft)}
                             onChange={(values) => { SatRightResetValue(values) }}
                             regExpResult={SatRightregExpResult}
@@ -534,7 +561,7 @@ export const ExpertsEditCard = (props) => {
                     </FormRow>
                     <FormRow>
                         <SubContainer theme={expertsAddCard.daySubContainer}>
-                            <Text theme={expertsAddCard.dayText}>週二</Text>
+                            <Text theme={expertsAddCard.dayText}>週日</Text>
                         </SubContainer>
                         <FormCardLeftIconSelector
                             //label={""}
@@ -542,6 +569,7 @@ export const ExpertsEditCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={SunLeft}
                             isSearchable
+                            isClearable
                             options={getTimeList(true, SunRight)}
                             onChange={(values) => { SunLeftResetValue(values) }}
                             regExpResult={SunLeftregExpResult}

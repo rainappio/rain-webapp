@@ -239,11 +239,11 @@ export const Experts = (props) => {
                 }
 
                 if (PreResult.success) {
-                    alertService.normal("新增管理員成功", { autoClose: true });
-                    return "新增管理員成功"
+                    alertService.normal("成功新增足健師資訊", { autoClose: true });
+                    return "成功新增足健師資訊"
                 } else {
                     alertService.warn(PreResult.msg, { autoClose: true });
-                    throw new Error("新增管理員失敗");
+                    throw new Error("新增足健師資訊失敗");
                 }
             })
             .catch((Error) => {
@@ -262,9 +262,9 @@ export const Experts = (props) => {
     //#endregion
 
     //#region 編輯足健師API 
-    const editExpert = useCallback(async (MasterNo, Name, Sex, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr, NowServiceAddr, ServiceArea, MonLeft, MonRight, TueLeft, TueRight, WenLeft, WenRight, ThuLeft, ThuRight, FriLeft, FriRight, SatLeft, SatRight, SunLeft, SunRight) => {
+    const editExpert = useCallback(async (oldData, Name, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr, NowServiceAddr, ServiceArea, MonLeft, MonRight, TueLeft, TueRight, WenLeft, WenRight, ThuLeft, ThuRight, FriLeft, FriRight, SatLeft, SatRight, SunLeft, SunRight) => {
         //return console.log(`${BirthYear?.value}-${BirthMonth?.value}-${BirthDay?.value}`, `${ServiceArea.map((item) => { return item?.value })?.join()}`);
-        return console.log(MasterNo, Name, Sex, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr, NowServiceAddr, ServiceArea, MonLeft, MonRight, TueLeft, TueRight, WenLeft, WenRight, ThuLeft, ThuRight, FriLeft, FriRight, SatLeft, SatRight, SunLeft, SunRight)
+        //return console.log(Name, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr, NowServiceAddr, ServiceArea, MonLeft, MonRight, TueLeft, TueRight, WenLeft, WenRight, ThuLeft, ThuRight, FriLeft, FriRight, SatLeft, SatRight, SunLeft, SunRight)
         return await fetch(`${APIUrl}api/FootMaster/Put`,
             {
                 method: "Put",
@@ -273,15 +273,16 @@ export const Experts = (props) => {
                     'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
                 },
                 body: JSON.stringify({
+                    ...oldData,
                     CommAddr: Addr,
                     CommCounty: County?.value,
                     CommDistrict: District?.value,
-                    CreateTime: new Date(),
+                    ModifyTime: new Date(),
                     DeviceId: "",
                     FridayService: `${FriLeft?.value ?? ''}-${FriRight?.value ?? ''}`,
                     //Id: 0,
                     IsDeleted: false,
-                    MasterNo: MasterNo,
+                    //MasterNo: MasterNo,
                     MondayService: `${MonLeft?.value ?? ''}-${MonRight?.value ?? ''}`,
                     NowServiceAddr: NowServiceAddr,
                     //Remark: "0",
@@ -293,11 +294,11 @@ export const Experts = (props) => {
                     WednesdayService: `${WenLeft?.value ?? ''}-${WenRight?.value ?? ''}`,
                     mBirthDay: `${BirthYear?.value}-${BirthMonth?.value}-${BirthDay?.value}`,
                     mEmail: Email,
-                    mLoginName: MasterNo,
+                    //mLoginName: MasterNo,
                     mLoginPWD: `${BirthYear?.value}${BirthMonth?.value}${BirthDay?.value}`,
                     mRealName: Name,
                     mTel: Phone,
-                    mSex: Sex?.value,
+                    //mSex: Sex?.value,
                 })
             }
         )//查詢角色、表格翻頁
@@ -315,11 +316,11 @@ export const Experts = (props) => {
                 }
 
                 if (PreResult.success) {
-                    alertService.normal("新增管理員成功", { autoClose: true });
-                    return "新增管理員成功"
+                    alertService.normal("成功修改足健師資訊", { autoClose: true });
+                    return "成功修改足健師資訊"
                 } else {
                     alertService.warn(PreResult.msg, { autoClose: true });
-                    throw new Error("新增管理員失敗");
+                    throw new Error("修改足健師資訊失敗");
                 }
             })
             .catch((Error) => {
@@ -327,7 +328,7 @@ export const Experts = (props) => {
             })
             .finally(() => {
                 execute(1);
-                setOpenAddJumpDialog(false);
+                setOpenEditJumpDialog(false);
             });
 
         // 這裡要接著打refresh 延長Token存活期

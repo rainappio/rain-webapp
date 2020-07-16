@@ -244,7 +244,7 @@ export const ExpertsAddCard = (props) => {
                             isSearchable
                             options={YearFrom1930to(2020)}
                             //defaultValue={ { value: '1', label: 'Chocolate' }}
-                            onChange={(value) => { BirthYearResetValue(value) }}
+                            onChange={(value) => { BirthYearResetValue(value); BirthMonthResetValue(''); BirthDayResetValue('') }}
                             regExpResult={BirthYearregExpResult}
                             theme={expertsAddCard.sexFormCardSelector}
                         ></FormCardSelector>
@@ -256,7 +256,7 @@ export const ExpertsAddCard = (props) => {
                             isSearchable
                             options={month}
                             //defaultValue={ { value: '1', label: 'Chocolate' }}
-                            onChange={(value) => { BirthMonthResetValue(value) }}
+                            onChange={(value) => { BirthMonthResetValue(value); BirthDayResetValue('') }}
                             regExpResult={BirthMonthregExpResult}
                             theme={expertsAddCard.sexFormCardSelector}
                         ></FormCardSelector>
@@ -282,7 +282,7 @@ export const ExpertsAddCard = (props) => {
                             isSearchable
                             options={Counties}
                             //defaultValue={ { value: '1', label: 'Chocolate' }}
-                            onChange={(value) => { CountyResetValue(value) }}
+                            onChange={(value) => { CountyResetValue(value); DistrictResetValue('') }}
                             regExpResult={CountyregExpResult}
                             theme={expertsAddCard.sexFormCardSelector}
                         ></FormCardSelector>
@@ -344,6 +344,7 @@ export const ExpertsAddCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={MonLeft}
                             isSearchable
+                            isClearable
                             options={getTimeList(true, MonRight)}
                             onChange={(values) => { MonLeftResetValue(values) }}
                             regExpResult={MonLeftregExpResult}
@@ -358,6 +359,7 @@ export const ExpertsAddCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={MonRight}
                             isSearchable
+                            isClearable
                             options={getTimeList(false, MonLeft)}
                             onChange={(values) => { MonRightResetValue(values) }}
                             regExpResult={MonRightregExpResult}
@@ -374,6 +376,7 @@ export const ExpertsAddCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={TueLeft}
                             isSearchable
+                            isClearable
                             options={getTimeList(true, TueRight)}
                             onChange={(values) => { TueLeftResetValue(values) }}
                             regExpResult={TueLeftregExpResult}
@@ -388,6 +391,7 @@ export const ExpertsAddCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={TueRight}
                             isSearchable
+                            isClearable
                             options={getTimeList(false, TueLeft)}
                             onChange={(values) => { TueRightResetValue(values) }}
                             regExpResult={TueRightregExpResult}
@@ -404,6 +408,7 @@ export const ExpertsAddCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={WenLeft}
                             isSearchable
+                            isClearable
                             options={getTimeList(true, WenRight)}
                             onChange={(values) => { WenLeftResetValue(values) }}
                             regExpResult={WenLeftregExpResult}
@@ -418,6 +423,7 @@ export const ExpertsAddCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={WenRight}
                             isSearchable
+                            isClearable
                             options={getTimeList(false, WenLeft)}
                             onChange={(values) => { WenRightResetValue(values) }}
                             regExpResult={WenRightregExpResult}
@@ -434,6 +440,7 @@ export const ExpertsAddCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={ThuLeft}
                             isSearchable
+                            isClearable
                             options={getTimeList(true, ThuRight)}
                             onChange={(values) => { ThuLeftResetValue(values) }}
                             regExpResult={ThuLeftregExpResult}
@@ -448,6 +455,7 @@ export const ExpertsAddCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={ThuRight}
                             isSearchable
+                            isClearable
                             options={getTimeList(false, ThuLeft)}
                             onChange={(values) => { ThuRightResetValue(values) }}
                             regExpResult={ThuRightregExpResult}
@@ -464,6 +472,7 @@ export const ExpertsAddCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={FriLeft}
                             isSearchable
+                            isClearable
                             options={getTimeList(true, FriRight)}
                             onChange={(values) => { FriLeftResetValue(values) }}
                             regExpResult={FriLeftregExpResult}
@@ -478,6 +487,7 @@ export const ExpertsAddCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={FriRight}
                             isSearchable
+                            isClearable
                             options={getTimeList(false, FriLeft)}
                             onChange={(values) => { FriRightResetValue(values) }}
                             regExpResult={FriRightregExpResult}
@@ -486,7 +496,7 @@ export const ExpertsAddCard = (props) => {
                     </FormRow>
                     <FormRow>
                         <SubContainer theme={expertsAddCard.daySubContainer}>
-                            <Text theme={expertsAddCard.dayText}>週二</Text>
+                            <Text theme={expertsAddCard.dayText}>週六</Text>
                         </SubContainer>
                         <FormCardLeftIconSelector
                             //label={""}
@@ -494,6 +504,7 @@ export const ExpertsAddCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={SatLeft}
                             isSearchable
+                            isClearable
                             options={getTimeList(true, SatRight)}
                             onChange={(values) => { SatLeftResetValue(values) }}
                             regExpResult={SatLeftregExpResult}
@@ -508,6 +519,7 @@ export const ExpertsAddCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={SatRight}
                             isSearchable
+                            isClearable
                             options={getTimeList(false, SatLeft)}
                             onChange={(values) => { SatRightResetValue(values) }}
                             regExpResult={SatRightregExpResult}
@@ -516,7 +528,7 @@ export const ExpertsAddCard = (props) => {
                     </FormRow>
                     <FormRow>
                         <SubContainer theme={expertsAddCard.daySubContainer}>
-                            <Text theme={expertsAddCard.dayText}>週二</Text>
+                            <Text theme={expertsAddCard.dayText}>週日</Text>
                         </SubContainer>
                         <FormCardLeftIconSelector
                             //label={""}
@@ -524,6 +536,7 @@ export const ExpertsAddCard = (props) => {
                             placeholder={"開始工作時間"}
                             value={SunLeft}
                             isSearchable
+                            isClearable
                             options={getTimeList(true, SunRight)}
                             onChange={(values) => { SunLeftResetValue(values) }}
                             regExpResult={SunLeftregExpResult}
