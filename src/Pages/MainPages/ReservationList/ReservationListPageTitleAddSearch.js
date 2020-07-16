@@ -88,7 +88,7 @@ const ReservationListPageTitleAddSearchBase = (props) => {
     else {
         return (
             <>
-                <BasicContainer className={props.className} >
+                <BasicContainer className={props.className} theme={{padding:"0 0 0 0.5rem"}} >
                     <BasicContainer onClick={() => { setIsExpand(e => !e) }} theme={{ cursor: "pointer" }}>
                         <ExpandMoreIcon style={{
                             width: "1rem",
