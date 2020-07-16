@@ -22,6 +22,7 @@ import { FormCard } from '../../../Components/FormCard';
 import { TooltipBasic } from '../../../Components/Tooltips';
 import { ExpertsPageTitleAddSearch } from './ExpertsPageTitleAddSearch';
 import { ExpertsAddCard } from './ExpertsAddCard';
+import { ExpertsEditCard } from './ExpertsEditCard';
 export const Experts = (props) => {
 
     const { APIUrl, Theme } = useContext(Context);
@@ -33,6 +34,7 @@ export const Experts = (props) => {
     const [OpenEditJumpDialog, setOpenEditJumpDialog] = useState(false); // 開啟編輯彈窗
     const [ScrollPage, setScrollPage] = useState(2); // 滾動到底部加載頁面
     const [DelWho, setDelWho] = useState(""); // 刪除彈窗中刪除名字
+    const [EditAutoFill, setEditAutoFill] = useState({}); // 編輯彈窗中data
     const [SearchWord, setSearchWord] = useState(""); // 儲存關鍵字，供翻頁時的查詢用
     const [width] = useWindowSize();
 
@@ -183,8 +185,10 @@ export const Experts = (props) => {
     const [DelAdminUserExecute, DelAdminUserPending] = useAsync(delAdminUser, false);
     //#endregion
 
-    //#region 新增足健師API 未核實資料格式
-    const addExpert = useCallback(async (name, account, pass, phone, location, role) => {
+    //#region 新增足健師API 
+    const addExpert = useCallback(async (MasterNo, Name, Sex, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr, NowServiceAddr, ServiceArea, MonLeft, MonRight, TueLeft, TueRight, WenLeft, WenRight, ThuLeft, ThuRight, FriLeft, FriRight, SatLeft, SatRight, SunLeft, SunRight) => {
+        //return console.log(`${BirthYear?.value}-${BirthMonth?.value}-${BirthDay?.value}`, `${ServiceArea.map((item) => { return item?.value })?.join()}`);
+        //return console.log(MasterNo, Name, Sex, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr, NowServiceAddr, ServiceArea, MonLeft, MonRight, TueLeft, TueRight, WenLeft, WenRight, ThuLeft, ThuRight, FriLeft, FriRight, SatLeft, SatRight, SunLeft, SunRight)
         return await fetch(`${APIUrl}api/FootMaster/Post`,
             {
                 method: "POST",
@@ -193,18 +197,31 @@ export const Experts = (props) => {
                     'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
                 },
                 body: JSON.stringify({
-                    age: 0,
-                    uStatus: 0,
-                    sex: 0,
-                    tdIsDelete: false,
-                    uCreateTime: new Date(),
-                    name: name,
-                    uRealName: name,
-                    uLoginName: account,
-                    uLoginPWD: pass,
-                    phone: phone,
-                    ShopIds: location?.value,
-                    RIDs: (role ?? []).map((item) => (item.value)),
+                    CommAddr: Addr,
+                    CommCounty: County?.value,
+                    CommDistrict: District?.value,
+                    CreateTime: new Date(),
+                    DeviceId: "",
+                    FridayService: `${FriLeft?.value ?? ''}-${FriRight?.value ?? ''}`,
+                    //Id: 0,
+                    IsDeleted: false,
+                    MasterNo: MasterNo,
+                    MondayService: `${MonLeft?.value ?? ''}-${MonRight?.value ?? ''}`,
+                    NowServiceAddr: NowServiceAddr,
+                    //Remark: "0",
+                    SaturdayService: `${SatLeft?.value ?? ''}-${SatRight?.value ?? ''}`,
+                    ServiceArea: `${ServiceArea.map((item) => { return item?.value })?.join()}`,
+                    SundayService: `${SunLeft?.value ?? ''}-${SunRight?.value ?? ''}`,
+                    ThursdayService: `${ThuLeft?.value ?? ''}-${ThuRight?.value ?? ''}`,
+                    TuesdayService: `${TueLeft?.value ?? ''}-${TueRight?.value ?? ''}`,
+                    WednesdayService: `${WenLeft?.value ?? ''}-${WenRight?.value ?? ''}`,
+                    mBirthDay: `${BirthYear?.value}-${BirthMonth?.value}-${BirthDay?.value}`,
+                    mEmail: Email,
+                    mLoginName: MasterNo,
+                    mLoginPWD: `${BirthYear?.value}${BirthMonth?.value}${BirthDay?.value}`,
+                    mRealName: Name,
+                    mTel: Phone,
+                    mSex: Sex?.value,
                 })
             }
         )//查詢角色、表格翻頁
@@ -222,11 +239,11 @@ export const Experts = (props) => {
                 }
 
                 if (PreResult.success) {
-                    alertService.normal("新增管理員成功", { autoClose: true });
-                    return "新增管理員成功"
+                    alertService.normal("成功新增足健師資訊", { autoClose: true });
+                    return "成功新增足健師資訊"
                 } else {
                     alertService.warn(PreResult.msg, { autoClose: true });
-                    throw new Error("新增管理員失敗");
+                    throw new Error("新增足健師資訊失敗");
                 }
             })
             .catch((Error) => {
@@ -244,6 +261,82 @@ export const Experts = (props) => {
     const [AddExpertExecute, AddExpertPending] = useAsync(addExpert, false);
     //#endregion
 
+    //#region 編輯足健師API 
+    const editExpert = useCallback(async (oldData, Name, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr, NowServiceAddr, ServiceArea, MonLeft, MonRight, TueLeft, TueRight, WenLeft, WenRight, ThuLeft, ThuRight, FriLeft, FriRight, SatLeft, SatRight, SunLeft, SunRight) => {
+        //return console.log(`${BirthYear?.value}-${BirthMonth?.value}-${BirthDay?.value}`, `${ServiceArea.map((item) => { return item?.value })?.join()}`);
+        //return console.log(Name, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr, NowServiceAddr, ServiceArea, MonLeft, MonRight, TueLeft, TueRight, WenLeft, WenRight, ThuLeft, ThuRight, FriLeft, FriRight, SatLeft, SatRight, SunLeft, SunRight)
+        return await fetch(`${APIUrl}api/FootMaster/Put`,
+            {
+                method: "Put",
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
+                },
+                body: JSON.stringify({
+                    ...oldData,
+                    CommAddr: Addr,
+                    CommCounty: County?.value,
+                    CommDistrict: District?.value,
+                    ModifyTime: new Date(),
+                    DeviceId: "",
+                    FridayService: `${FriLeft?.value ?? ''}-${FriRight?.value ?? ''}`,
+                    //Id: 0,
+                    IsDeleted: false,
+                    //MasterNo: MasterNo,
+                    MondayService: `${MonLeft?.value ?? ''}-${MonRight?.value ?? ''}`,
+                    NowServiceAddr: NowServiceAddr,
+                    //Remark: "0",
+                    SaturdayService: `${SatLeft?.value ?? ''}-${SatRight?.value ?? ''}`,
+                    ServiceArea: `${ServiceArea.map((item) => { return item?.value })?.join()}`,
+                    SundayService: `${SunLeft?.value ?? ''}-${SunRight?.value ?? ''}`,
+                    ThursdayService: `${ThuLeft?.value ?? ''}-${ThuRight?.value ?? ''}`,
+                    TuesdayService: `${TueLeft?.value ?? ''}-${TueRight?.value ?? ''}`,
+                    WednesdayService: `${WenLeft?.value ?? ''}-${WenRight?.value ?? ''}`,
+                    mBirthDay: `${BirthYear?.value}-${BirthMonth?.value}-${BirthDay?.value}`,
+                    mEmail: Email,
+                    //mLoginName: MasterNo,
+                    mLoginPWD: `${BirthYear?.value}${BirthMonth?.value}${BirthDay?.value}`,
+                    mRealName: Name,
+                    mTel: Phone,
+                    //mSex: Sex?.value,
+                })
+            }
+        )//查詢角色、表格翻頁
+            .then(Result => {
+                const ResultJson = Result.clone().json();//Respone.clone()
+                return ResultJson;
+            })
+            .then((PreResult) => {
+                //console.log(PreResult)
+                if (PreResult.Status === 401) {
+                    //Token過期 強制登出
+                    clearlocalStorage();
+                    history.push("/Login");
+                    throw new Error("Token過期 強制登出");
+                }
+
+                if (PreResult.success) {
+                    alertService.normal("成功修改足健師資訊", { autoClose: true });
+                    return "成功修改足健師資訊"
+                } else {
+                    alertService.warn(PreResult.msg, { autoClose: true });
+                    throw new Error("修改足健師資訊失敗");
+                }
+            })
+            .catch((Error) => {
+                throw Error;
+            })
+            .finally(() => {
+                execute(1);
+                setOpenEditJumpDialog(false);
+            });
+
+        // 這裡要接著打refresh 延長Token存活期
+
+    }, [APIUrl, history])
+
+    const [EditExpertExecute, EditExpertPending] = useAsync(editExpert, false);
+    //#endregion
     return (
         <>
             {/* 寬度大於等於768時渲染的組件 */}
@@ -472,7 +565,7 @@ export const Experts = (props) => {
                                                 <TooltipBasic key={`${item}1`} title={"編輯"} arrow>
                                                     <CreateIcon
                                                         style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }}
-                                                        onClick={() => { setOpenEditJumpDialog(true) }}
+                                                        onClick={() => { setEditAutoFill(rowItem); setOpenEditJumpDialog(true); }}
                                                     />
                                                 </TooltipBasic>,
                                                 <TooltipBasic key={`${item}2`} title={"刪除"} arrow>
@@ -662,7 +755,7 @@ export const Experts = (props) => {
                                                 <CreateIcon
                                                     key={`${item}1`}
                                                     style={{ cursor: "pointer", color: "#964f19", margin: "0 0.5rem 0 0" }}
-                                                    onClick={() => { setOpenEditJumpDialog(true) }}
+                                                    onClick={() => { setEditAutoFill(rowItem); setOpenEditJumpDialog(true); }}
                                                 />,
                                                 <DeleteForeverIcon
                                                     key={`${item}2`}
@@ -721,15 +814,7 @@ export const Experts = (props) => {
             {/* 新增表單卡片 */}
             {OpenAddJumpDialog && <ExpertsAddCard execute={(page, key) => { execute(page, key) }} addAdminUserExecute={AddExpertExecute} onClose={setOpenAddJumpDialog} />}
             {/* 編輯表單卡片 */}
-            {OpenEditJumpDialog && <FormCard
-                title={"編輯足健師帳號"}
-                yes={() => { }}
-                yesText={"新增"}
-                no={() => { setOpenEditJumpDialog(false) }}
-                noText={"取消"}
-                close={() => { setOpenEditJumpDialog(false) }}
-            >
-            </FormCard>}
+            {OpenEditJumpDialog && <ExpertsEditCard execute={(page, key) => { execute(page, key) }} editAdminUserExecute={EditExpertExecute} onClose={(isOpen) => { setOpenEditJumpDialog(isOpen) }} editAutoFill={EditAutoFill} />}
         </>
     )
 }

@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useState } from 'react';
+import React, { useContext, useCallback, useState, useEffect } from 'react';
 import { Context } from '../../../Store/store'
 import { FormCardTextInput, FormControl, FormRow, FormCardSelector, CityCheckBoxGroup, FormCardLeftIconSelector } from '../../../Components/Forms';
 import { getItemlocalStorage, clearlocalStorage } from '../../../Handlers/LocalStorageHandler'
@@ -7,13 +7,13 @@ import { useAsync } from '../../../SelfHooks/useAsync';
 import { useForm, useSelector } from '../../../SelfHooks/useForm'
 import { alertService } from '../../../Components/JumpAlerts';
 import { FormCard } from '../../../Components/FormCard';
-import { month, getDayByYearAndMonth, YearFrom1930to, Counties, cityAndCountiesLite, times } from '../../../Mappings/Mappings';
+import { month, getDayByYearAndMonth, YearFrom1930to, Counties, cityAndCountiesLite, times, day, cityAndCounties } from '../../../Mappings/Mappings';
 import { SubContainer } from '../../../Components/Containers';
 import { Text } from '../../../Components/Texts';
 
 //#region 時間選單連動
 const getTimeList = (isLeft, nowTheirSelected) => {
-    if (!!nowTheirSelected) {
+    if (!!nowTheirSelected?.value) {
         if (isLeft) {
             return times.filter((t) => (parseInt(t.value.replace(":", "")) < parseInt(nowTheirSelected.value.replace(":", ""))));
         } else {
@@ -34,7 +34,8 @@ const getTimeList = (isLeft, nowTheirSelected) => {
                 execute : execute={(page, key) => { execute(page, key) }} // 重新查詢管理員名單頁面表單內容函數
                 onClose : onClose={(isOpen) => { setOpenAddJumpDialog(isOpen); ...其他動作 }} // 控制關閉新增管理員帳號表單卡片的父組件狀態
 */
-export const ExpertsAddCard = (props) => {
+export const ExpertsEditCard = (props) => {
+    console.log("row", props.editAutoFill);
 
     const { APIUrl, Theme } = useContext(Context);
     const { pages: { expertsPage: { expertsAddCard } } } = Theme;
@@ -70,6 +71,37 @@ export const ExpertsAddCard = (props) => {
     const [SunLeft, SunLefthandler, SunLeftregExpResult, SunLeftResetValue] = useSelector("", [], []);  // 週日左邊時間欄位 "請選擇週日開始工作時間"
     const [SunRight, SunRighthandler, SunRightregExpResult, SunRightResetValue] = useSelector("", [], []);  // 週日右邊時間欄位 "請選擇週日結束工作時間"
 
+    useEffect(() => {
+        let date = props?.editAutoFill?.mBirthDay ? new Date(props?.editAutoFill?.mBirthDay) : new Date();
+        MasterNoResetValue(props?.editAutoFill?.MasterNo ?? '');
+        NameResetValue(props?.editAutoFill?.mRealName ?? '');
+        PhoneResetValue(props?.editAutoFill?.mTel ?? '');
+        EmailResetValue(props?.editAutoFill?.mEmail ?? '');
+        BirthYearResetValue({ value: date.getFullYear(), label: `西元 ${date.getFullYear()} 年` });
+        BirthMonthResetValue(month[date.getMonth()]);
+        BirthDayResetValue(day[date.getDate() - 1]);
+        CountyResetValue({ value: props?.editAutoFill?.CommCounty, label: props?.editAutoFill?.CommCounty });
+        DistrictResetValue({ value: props?.editAutoFill?.CommDistrict, label: props?.editAutoFill?.CommDistrict });
+        AddrResetValue(props?.editAutoFill?.CommAddr ?? '');
+        NowServiceAddrResetValue(props?.editAutoFill?.NowServiceAddr ?? '');
+        ServiceAreaResetValue(props?.editAutoFill?.ServiceArea?.split(',')?.map((item) => { return { value: item, label: item.slice(3) } }));
+        //console.log(props?.editAutoFill?.ServiceArea?.split(',')?.map((item) => { return { value: item, label: item.slice(3) } }));
+        MonLeftResetValue({ value: props?.editAutoFill?.MondayService?.split('-')[0], label: props?.editAutoFill?.MondayService?.split('-')[0] });
+        MonRightResetValue({ value: props?.editAutoFill?.MondayService?.split('-')[1], label: props?.editAutoFill?.MondayService?.split('-')[1] });
+        TueLeftResetValue({ value: props?.editAutoFill?.TuesdayService?.split('-')[0], label: props?.editAutoFill?.TuesdayService?.split('-')[0] });
+        TueRightResetValue({ value: props?.editAutoFill?.TuesdayService?.split('-')[1], label: props?.editAutoFill?.TuesdayService?.split('-')[1] });
+        WenLeftResetValue({ value: props?.editAutoFill?.WednesdayService?.split('-')[0], label: props?.editAutoFill?.WednesdayService?.split('-')[0] });
+        WenRightResetValue({ value: props?.editAutoFill?.WednesdayService?.split('-')[1], label: props?.editAutoFill?.WednesdayService?.split('-')[1] });
+        ThuLeftResetValue({ value: props?.editAutoFill?.ThursdayService?.split('-')[0], label: props?.editAutoFill?.ThursdayService?.split('-')[0] });
+        ThuRightResetValue({ value: props?.editAutoFill?.ThursdayService?.split('-')[1], label: props?.editAutoFill?.ThursdayService?.split('-')[1] });
+        FriLeftResetValue({ value: props?.editAutoFill?.FridayService?.split('-')[0], label: props?.editAutoFill?.FridayService?.split('-')[0] });
+        FriRightResetValue({ value: props?.editAutoFill?.FridayService?.split('-')[1], label: props?.editAutoFill?.FridayService?.split('-')[1] });
+        SatLeftResetValue({ value: props?.editAutoFill?.SaturdayService?.split('-')[0], label: props?.editAutoFill?.SaturdayService?.split('-')[0] });
+        SatRightResetValue({ value: props?.editAutoFill?.SaturdayService?.split('-')[1], label: props?.editAutoFill?.SaturdayService?.split('-')[1] });
+        SunLeftResetValue({ value: props?.editAutoFill?.SundayService?.split('-')[0], label: props?.editAutoFill?.SundayService?.split('-')[0] });
+        SunRightResetValue({ value: props?.editAutoFill?.SundayService?.split('-')[1], label: props?.editAutoFill?.SundayService?.split('-')[1] });
+
+    }, [])
     //#endregion
     // CommAddr: "我說"
     // CommCounty: "臺北市"
@@ -133,25 +165,21 @@ export const ExpertsAddCard = (props) => {
     return (
         <>
             <FormCard
-                title={"新增足健師帳號"}
+                title={"修改足健師帳號"}
                 yes={() => {
                     //全部通過檢核才可放行
-                    (MasterNoregExpResult ? alertService.warn(MasterNoregExpResult, { autoClose: true })
-                        : (NameregExpResult ? alertService.warn(NameregExpResult, { autoClose: true })
-                            : (SexregExpResult ? alertService.warn(SexregExpResult, { autoClose: true })
-                                : (PhoneregExpResult ? alertService.warn(PhoneregExpResult, { autoClose: true })
-                                    : (EmailregExpResult ? alertService.warn(EmailregExpResult, { autoClose: true })
-                                        : (BirthYearregExpResult ? alertService.warn(BirthYearregExpResult, { autoClose: true })
-                                            : (BirthMonthregExpResult ? alertService.warn(BirthMonthregExpResult, { autoClose: true })
-                                                : (BirthDayregExpResult ? alertService.warn(BirthDayregExpResult, { autoClose: true })
-                                                    : (CountyregExpResult ? alertService.warn(CountyregExpResult, { autoClose: true })
-                                                        : (DistrictregExpResult ? alertService.warn(DistrictregExpResult, { autoClose: true })
-                                                            : (AddrregExpResult ? alertService.warn(AddrregExpResult, { autoClose: true })
-                                                                : (NowServiceAddrregExpResult ? alertService.warn(NowServiceAddrregExpResult, { autoClose: true })
-                                                                    : (ServiceArearegExpResult ? alertService.warn(ServiceArearegExpResult, { autoClose: true })
-                                                                        : props.addAdminUserExecute(MasterNo, Name, Sex, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr, NowServiceAddr, ServiceArea, MonLeft, MonRight, TueLeft, TueRight, WenLeft, WenRight, ThuLeft, ThuRight, FriLeft, FriRight, SatLeft, SatRight, SunLeft, SunRight)
-                                                                    )
-                                                                )
+                    (NameregExpResult ? alertService.warn(NameregExpResult, { autoClose: true })
+                        : (PhoneregExpResult ? alertService.warn(PhoneregExpResult, { autoClose: true })
+                            : (EmailregExpResult ? alertService.warn(EmailregExpResult, { autoClose: true })
+                                : (BirthYearregExpResult ? alertService.warn(BirthYearregExpResult, { autoClose: true })
+                                    : (BirthMonthregExpResult ? alertService.warn(BirthMonthregExpResult, { autoClose: true })
+                                        : (BirthDayregExpResult ? alertService.warn(BirthDayregExpResult, { autoClose: true })
+                                            : (CountyregExpResult ? alertService.warn(CountyregExpResult, { autoClose: true })
+                                                : (DistrictregExpResult ? alertService.warn(DistrictregExpResult, { autoClose: true })
+                                                    : (AddrregExpResult ? alertService.warn(AddrregExpResult, { autoClose: true })
+                                                        : (NowServiceAddrregExpResult ? alertService.warn(NowServiceAddrregExpResult, { autoClose: true })
+                                                            : (ServiceArearegExpResult ? alertService.warn(ServiceArearegExpResult, { autoClose: true })
+                                                                : props.editAdminUserExecute(props.editAutoFill, Name, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr, NowServiceAddr, ServiceArea, MonLeft, MonRight, TueLeft, TueRight, WenLeft, WenRight, ThuLeft, ThuRight, FriLeft, FriRight, SatLeft, SatRight, SunLeft, SunRight)
                                                             )
                                                         )
                                                     )
@@ -163,10 +191,11 @@ export const ExpertsAddCard = (props) => {
                             )
                         )
                     )
+
                 }}
-                yesText={"新增"}
+                yesText={"儲存"}
                 no={() => { props?.onClose && props.onClose(false); }}
-                noText={"取消"}
+                noText={"放棄"}
                 close={() => { props?.onClose && props.onClose(false); }}
                 theme={expertsAddCard.addformCard}
             >
@@ -181,63 +210,62 @@ export const ExpertsAddCard = (props) => {
                         margin: "20px 0 0 0"
                     }}>
                     <FormRow>
-                        <FormCardTextInput
-                            label={"工號"}
-                            hint={"工號將作為足健師的登入帳號"}
-                            value={MasterNo}
-                            onChange={MasterNohandler}
-                            regExpResult={MasterNoregExpResult}
-                            placeholder={"請在此輸入工號(數字)"}
-                            theme={expertsAddCard.masterNoFormCardTextInput()}
-                        ></FormCardTextInput>
+
                         <FormCardTextInput
                             label={"姓名"}
-                            hint={"請填寫真實姓名"}
+                            hint={""}
                             value={Name}
                             onChange={Namehandler}
                             regExpResult={NameregExpResult}
                             placeholder={"請在此輸入中文姓名"}
-                            theme={expertsAddCard.masterNoFormCardTextInput()}
+                            theme={expertsAddCard.passFormCardTextInput(0)}
                         ></FormCardTextInput>
-                        <FormCardSelector
-                            label={"性別"}
+
+                    </FormRow>
+                    <FormRow>
+
+                        <FormCardTextInput
+                            label={"登入帳號"}
                             hint={""}
-                            placeholder={"請選擇性別"}
-                            value={Sex}
-                            isSearchable
-                            options={[
-                                { value: 1, label: '男' },//isDisabled: true 
-                                { value: 0, label: '女' }
-                            ]}
-                            //defaultValue={ { value: '1', label: 'Chocolate' }}
-                            onChange={(value) => { SexResetValue(value) }}
-                            regExpResult={SexregExpResult}
-                            theme={expertsAddCard.sexFormCardSelector}
-                        ></FormCardSelector>
+                            value={MasterNo}
+                            disabled
+                            onChange={MasterNohandler}
+                            regExpResult={MasterNoregExpResult}
+                            placeholder={"請在此輸入工號(數字)"}
+                            theme={expertsAddCard.passFormCardTextInput(0)}
+                        ></FormCardTextInput>
+
                     </FormRow>
                     <FormRow>
                         <FormCardTextInput
-                            label={"手機"}
+                            label={"聯絡電話"}
                             hint={""}
                             value={Phone}
                             onChange={Phonehandler}
                             regExpResult={PhoneregExpResult}
                             placeholder={"0966888168"}
-                            theme={expertsAddCard.phoneFormCardTextInput}
+                            theme={expertsAddCard.passFormCardTextInput(0)}
                         ></FormCardTextInput>
+                    </FormRow>
+                    <FormRow>
                         <FormCardTextInput
-                            label={"Email"}
+                            label={"電子信箱 Email"}
                             hint={""}
                             value={Email}
                             onChange={Emailhandler}
                             regExpResult={EmailregExpResult}
                             placeholder={"aso_service@gmail.com"}
-                            theme={expertsAddCard.phoneFormCardTextInput}
+                            theme={expertsAddCard.passFormCardTextInput(0)}
                         ></FormCardTextInput>
                     </FormRow>
                     <FormRow>
+                        <SubContainer theme={expertsAddCard.workTimeSubContainer}>
+                            <Text theme={expertsAddCard.workTimeText}>出生年月日</Text>
+                        </SubContainer>
+                    </FormRow>
+                    <FormRow>
                         <FormCardSelector
-                            label={"出生年月日"}
+                            //label={"出生年月日"}
                             hint={""}
                             placeholder={"西元年"}
                             value={BirthYear}
@@ -249,7 +277,7 @@ export const ExpertsAddCard = (props) => {
                             theme={expertsAddCard.sexFormCardSelector}
                         ></FormCardSelector>
                         <FormCardSelector
-                            label={""}
+                            //label={""}
                             hint={""}
                             placeholder={"月份"}
                             value={BirthMonth}
@@ -261,7 +289,7 @@ export const ExpertsAddCard = (props) => {
                             theme={expertsAddCard.sexFormCardSelector}
                         ></FormCardSelector>
                         <FormCardSelector
-                            label={""}
+                            //label={""}
                             hint={""}
                             placeholder={"日期"}
                             value={BirthDay}
@@ -274,8 +302,13 @@ export const ExpertsAddCard = (props) => {
                         ></FormCardSelector>
                     </FormRow>
                     <FormRow>
+                        <SubContainer theme={expertsAddCard.workTimeSubContainer}>
+                            <Text theme={expertsAddCard.workTimeText}>通訊地址</Text>
+                        </SubContainer>
+                    </FormRow>
+                    <FormRow>
                         <FormCardSelector
-                            label={"通訊地址"}
+                            //label={"通訊地址"}
                             //hint={""}
                             placeholder={"請選擇縣市"}
                             value={County}
@@ -287,7 +320,7 @@ export const ExpertsAddCard = (props) => {
                             theme={expertsAddCard.sexFormCardSelector}
                         ></FormCardSelector>
                         <FormCardSelector
-                            label={""}
+                            //label={""}
                             //hint={""}
                             placeholder={"請選擇行政區"}
                             value={District}
@@ -313,7 +346,7 @@ export const ExpertsAddCard = (props) => {
                     <FormRow>
                         <FormCardTextInput
                             label={"現職單位"}
-                            hint={""}
+                            hint={"請輸入您的現職單位地址，如 台北市大安區忠孝東路四段 100 號 3 樓"}
                             value={NowServiceAddr}
                             onChange={NowServiceAddrhandler}
                             regExpResult={NowServiceAddrregExpResult}
