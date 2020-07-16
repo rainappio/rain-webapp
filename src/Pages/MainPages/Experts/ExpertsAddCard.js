@@ -168,11 +168,12 @@ export const ExpertsAddCard = (props) => {
                 no={() => { props?.onClose && props.onClose(false); }}
                 noText={"取消"}
                 close={() => { props?.onClose && props.onClose(false); }}
+                theme={expertsAddCard.addformCard}
             >
                 <FormControl
                     sumbit={false}
                     theme={{
-                        maxHeight: "38rem",
+                        maxHeight: "calc( 100% - 3.25rem )",
                         overflowY: "scroll",// 註解後關閉滾動
                         overflowX: "hidden",// 註解後關閉滾動
                         minWidth: "0",

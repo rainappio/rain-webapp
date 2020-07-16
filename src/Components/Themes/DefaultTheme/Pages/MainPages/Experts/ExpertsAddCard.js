@@ -106,6 +106,21 @@ export default {
         occupy: 1,
         padding: "0.38rem 0 0 0.3rem",
     },
-    
+    addformCard:{
+        formCard: {
+            zIndex: "1001",
+            padding: "1.25rem 0rem 1.25rem 1.25rem",
+            boxShadow: "0 2px 4px #0000001a",
+            borderRadius: "4px",
+            backgroundColor: "#fff",
+            border: "1px solid #eee",
+            minWidth: "0",
+            width: "35rem",
+            height: "calc( 100% - 16rem )",
+            tablet: {
+                borderRadius: "16px",
+            }
+        }
+    }
 }
 
