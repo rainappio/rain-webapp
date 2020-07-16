@@ -149,7 +149,7 @@ export const ExpertsAddCard = (props) => {
                                                             : (AddrregExpResult ? alertService.warn(AddrregExpResult, { autoClose: true })
                                                                 : (NowServiceAddrregExpResult ? alertService.warn(NowServiceAddrregExpResult, { autoClose: true })
                                                                     : (ServiceArearegExpResult ? alertService.warn(ServiceArearegExpResult, { autoClose: true })
-                                                                        : props.addAdminUserExecute()
+                                                                        : props.addAdminUserExecute(MasterNo, Name, Sex, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr, NowServiceAddr, ServiceArea, MonLeft, MonRight, TueLeft, TueRight, WenLeft, WenRight, ThuLeft, ThuRight, FriLeft, FriRight, SatLeft, SatRight, SunLeft, SunRight)
                                                                     )
                                                                 )
                                                             )

@@ -184,7 +184,7 @@ export const Experts = (props) => {
     //#endregion
 
     //#region 新增足健師API 未核實資料格式
-    const addExpert = useCallback(async (name, account, pass, phone, location, role) => {
+    const addExpert = useCallback(async (MasterNo, Name, Sex, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr, NowServiceAddr, ServiceArea, MonLeft, MonRight, TueLeft, TueRight, WenLeft, WenRight, ThuLeft, ThuRight, FriLeft, FriRight, SatLeft, SatRight, SunLeft, SunRight) => {
         return await fetch(`${APIUrl}api/FootMaster/Post`,
             {
                 method: "POST",
@@ -193,18 +193,30 @@ export const Experts = (props) => {
                     'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
                 },
                 body: JSON.stringify({
-                    age: 0,
-                    uStatus: 0,
-                    sex: 0,
-                    tdIsDelete: false,
-                    uCreateTime: new Date(),
-                    name: name,
-                    uRealName: name,
-                    uLoginName: account,
-                    uLoginPWD: pass,
-                    phone: phone,
-                    ShopIds: location?.value,
-                    RIDs: (role ?? []).map((item) => (item.value)),
+                    CommAddr: "我說",
+                    CommCounty: "臺北市",
+                    CommDistrict: "大同區",
+                    CreateTime: "2020-07-15T10:26:41.553Z",
+                    DeviceId: "",
+                    FridayService: "13,14",
+                    Id: 0,
+                    IsDeleted: false,
+                    MasterNo: "0122",
+                    MondayService: "12,13",
+                    NowServiceAddr: "拉拉拉",
+                    Remark: "0",
+                    SaturdayService: "13,14,15,16,17,18,19,20,21,22",
+                    ServiceArea: "臺北市中正區,臺北市大同區,新北市新莊區,新北市泰山區",
+                    SundayService: "10,11,12,13,14,15,16,17,18,19,20,21",
+                    ThursdayService: "11,12",
+                    TuesdayService: "11,12",
+                    WednesdayService: "12,13,14",
+                    mBirthDay: "1931-02-02",
+                    mEmail: "sdfsdf@ashdf.cas",
+                    mLoginName: "0122",
+                    mLoginPWD: "19310202",
+                    mRealName: "我",
+                    mTel: "0985445211",
                 })
             }
         )//查詢角色、表格翻頁
