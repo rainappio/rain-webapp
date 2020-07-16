@@ -158,7 +158,7 @@ export const ExpertsAddCard = (props) => {
                 <FormControl
                     sumbit={false}
                     theme={{
-                        maxHeight: "40rem",
+                        maxHeight: "38rem",
                         overflowY: "scroll",// 註解後關閉滾動
                         overflowX: "hidden",// 註解後關閉滾動
                         minWidth: "0",

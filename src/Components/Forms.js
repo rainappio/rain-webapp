@@ -546,7 +546,7 @@ const FormCardLeftIconSelectorBase = React.memo((props) => {
                                 :
                                 props?.onChange && props.onChange(values))
                         }}
-                        // menuPosition="fixed"
+                        menuPosition="fixed"
                         components={{ DropdownIndicator }}
                         noOptionsMessage={() => (props?.noOptionsMessage ?? "無符合資料")}
                         placeholder={props?.placeholder}
