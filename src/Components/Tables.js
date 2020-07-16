@@ -47,7 +47,7 @@ const ArrowDropUpIconTrans = styled(ArrowDropUpIcon).attrs((props) => ({}))`
 //#endregion
 
 //#region 一般列表基底
-const TableBase = React.memo((props) => {
+const TableBase = (props) => {
 
     const { Theme } = useContext(Context);
     const { tables } = Theme;
@@ -357,7 +357,7 @@ const TableBase = React.memo((props) => {
             </BasicContainer>
         </>
     )
-})
+}
 //#endregion
 
 //#region 一般列表

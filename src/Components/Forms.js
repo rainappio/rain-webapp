@@ -412,7 +412,7 @@ const SelectExtend = styled(Select).attrs((props) => ({}))`
    Author : Arhua Ho
    Content: FormCard表單卡片內的 選擇框 基底
 */
-const FormCardSelectorBase = React.memo((props) => {
+const FormCardSelectorBase = (props) => {
     //console.log(props)
     const { Theme } = useContext(Context);
     const { form } = Theme;
@@ -461,7 +461,7 @@ const FormCardSelectorBase = React.memo((props) => {
             </SubContainer>
         </>
     )
-})
+}
 //#endregion
 //#region FormCard表單卡片內的 選擇框，請搭配useSelector使用
 /* 
@@ -510,7 +510,7 @@ const DropdownIndicator = (props: ElementConfig<typeof components.DropdownIndica
    Author : Arhua Ho
    Content: FormCard表單卡片內的 時間選擇框 (icon 在左方)
 */
-const FormCardLeftIconSelectorBase = React.memo((props) => {
+const FormCardLeftIconSelectorBase = (props) => {
     //console.log(props)
     const { Theme } = useContext(Context);
     const { form } = Theme;
@@ -561,7 +561,7 @@ const FormCardLeftIconSelectorBase = React.memo((props) => {
             </SubContainer>
         </>
     )
-})
+}
 //#endregion
 //#region FormCard表單卡片內的 時間選擇框 (icon 在左方)，請搭配useSelector使用
 /* 
