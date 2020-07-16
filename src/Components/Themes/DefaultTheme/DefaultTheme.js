@@ -9,6 +9,10 @@ import customers from './Pages/MainPages/Customers/Customers'
 import dispatch from './Pages/MainPages/Dispatch/Dispatch'
 import dispatchBoard from './Pages/MainPages/DispatchBoard/DispatchBoard'
 import experts from './Pages/MainPages/Experts/Experts'
+import expertsAddCard from './Pages/MainPages/Experts/ExpertsAddCard'
+import expertsEditCard from './Pages/MainPages/Experts/ExpertsEditCard'
+import expertsDelDialog from './Pages/MainPages/Experts/ExpertsDelDialog'
+import expertsPageTitleAddSearch from './Pages/MainPages/Experts/ExpertsPageTitleAddSearch'
 import home from './Pages/MainPages/Home/Home'
 import locations from './Pages/MainPages/Locations/Locations'
 import percentage from './Pages/MainPages/Percentage/Percentage'
@@ -60,6 +64,10 @@ export default {
         },
         expertsPage: {
             experts,
+            expertsAddCard,
+            expertsEditCard,
+            expertsDelDialog,
+            expertsPageTitleAddSearch,
         },
         homePage: {
             home,

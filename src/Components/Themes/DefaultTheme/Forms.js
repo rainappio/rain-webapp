@@ -77,6 +77,7 @@ export default {
             padding: props.hint === "" ? "0 0 0 2px" : "initial",
             color: props.hint === "" ? "#00000000" : "#d25959",
             fontSize: "0.75rem",
+            userSelect: "none"
         }),
         formCardHowManyCheckedText: (props) => ({
             padding: props.hint === "" ? "0 0 0 2px" : "initial",

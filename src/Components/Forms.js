@@ -448,6 +448,7 @@ const FormCardSelectorBase = React.memo((props) => {
                                 :
                                 props?.onChange && props.onChange(values))
                         }}
+                        menuPosition="fixed"
                         noOptionsMessage={() => (props?.noOptionsMessage ?? "無符合資料")}
                         placeholder={props?.placeholder}
                         styles={props?.theme?.select ?? form.select(props)}></SelectExtend>
@@ -529,6 +530,7 @@ const FormCardLeftIconSelectorBase = React.memo((props) => {
                     props?.theme?.selectBasicContainer
                 }>
                     <SelectExtend
+                        className={"selector"}
                         isSearchable={props?.isSearchable ?? false}
                         isClearable={props?.isClearable ?? false}
                         isMulti={props?.isMulti ?? false}
@@ -545,6 +547,7 @@ const FormCardLeftIconSelectorBase = React.memo((props) => {
                                 :
                                 props?.onChange && props.onChange(values))
                         }}
+                        menuPosition="fixed"
                         components={{ DropdownIndicator }}
                         noOptionsMessage={() => (props?.noOptionsMessage ?? "無符合資料")}
                         placeholder={props?.placeholder}
@@ -577,6 +580,7 @@ const FormCardLeftIconSelectorBase = React.memo((props) => {
                 noOptionsMessage : 當無選項或搜尋無選項時要顯示的訊息
                 placeholder : 提示字元
                 maxMenuHeight : "rem" //選單最高高度
+                clearIconLeft : "rem" //清除按鈕位置 (absolute,left)
                 theme: {
                     selectSubContainer : {}, //SubContainer容器樣式
                     formCardSelectLabel : {}, //標題樣式
@@ -587,6 +591,17 @@ const FormCardLeftIconSelectorBase = React.memo((props) => {
                 }
 */
 export const FormCardLeftIconSelector = styled(FormCardLeftIconSelectorBase).attrs((props) => ({}))`
+    .selector {
+
+            [class*="IndicatorsContainer"] {
+                color: red;
+                div:first-child {
+                    position: absolute;
+                    left: ${props => props?.clearIconLeft ?? "11rem"};//必須因應寬度不同調整
+                }
+            }   
+
+    }
 `
 //#endregion
 //#endregion

@@ -20,6 +20,8 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { alertService } from '../../../Components/JumpAlerts';
 import { FormCard } from '../../../Components/FormCard';
 import { TooltipBasic } from '../../../Components/Tooltips';
+import { ExpertsPageTitleAddSearch } from './ExpertsPageTitleAddSearch';
+import { ExpertsAddCard } from './ExpertsAddCard';
 export const Experts = (props) => {
 
     const { APIUrl, Theme } = useContext(Context);
@@ -31,7 +33,7 @@ export const Experts = (props) => {
     const [OpenEditJumpDialog, setOpenEditJumpDialog] = useState(false); // 開啟編輯彈窗
     const [ScrollPage, setScrollPage] = useState(2); // 滾動到底部加載頁面
     const [DelWho, setDelWho] = useState(""); // 刪除彈窗中刪除名字
-    const [SearchWord, SearchWordhandler, SearchWordregExpResult] = useForm("", [""], [""]);
+    const [SearchWord, setSearchWord] = useState(""); // 儲存關鍵字，供翻頁時的查詢用
     const [width] = useWindowSize();
 
     const [Id, Idhandler, IdregExpResult, IdResetValue] = useForm("", [""], [""]); // Id欄位
@@ -181,34 +183,72 @@ export const Experts = (props) => {
     const [DelAdminUserExecute, DelAdminUserPending] = useAsync(delAdminUser, false);
     //#endregion
 
+    //#region 新增足健師API 未核實資料格式
+    const addExpert = useCallback(async (name, account, pass, phone, location, role) => {
+        return await fetch(`${APIUrl}api/FootMaster/Post`,
+            {
+                method: "POST",
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
+                },
+                body: JSON.stringify({
+                    age: 0,
+                    uStatus: 0,
+                    sex: 0,
+                    tdIsDelete: false,
+                    uCreateTime: new Date(),
+                    name: name,
+                    uRealName: name,
+                    uLoginName: account,
+                    uLoginPWD: pass,
+                    phone: phone,
+                    ShopIds: location?.value,
+                    RIDs: (role ?? []).map((item) => (item.value)),
+                })
+            }
+        )//查詢角色、表格翻頁
+            .then(Result => {
+                const ResultJson = Result.clone().json();//Respone.clone()
+                return ResultJson;
+            })
+            .then((PreResult) => {
+                //console.log(PreResult)
+                if (PreResult.Status === 401) {
+                    //Token過期 強制登出
+                    clearlocalStorage();
+                    history.push("/Login");
+                    throw new Error("Token過期 強制登出");
+                }
+
+                if (PreResult.success) {
+                    alertService.normal("新增管理員成功", { autoClose: true });
+                    return "新增管理員成功"
+                } else {
+                    alertService.warn(PreResult.msg, { autoClose: true });
+                    throw new Error("新增管理員失敗");
+                }
+            })
+            .catch((Error) => {
+                throw Error;
+            })
+            .finally(() => {
+                execute(1);
+                setOpenAddJumpDialog(false);
+            });
+
+        // 這裡要接著打refresh 延長Token存活期
+
+    }, [APIUrl, history])
+
+    const [AddExpertExecute, AddExpertPending] = useAsync(addExpert, false);
+    //#endregion
+
     return (
         <>
             {/* 寬度大於等於768時渲染的組件 */}
             {width > 768 && <BasicContainer theme={experts.basicContainer}>
-                <PageTitle>足健師名單</PageTitle>
-                <FormControl theme={{}} onSubmit={(e) => { e.preventDefault(); execute(1, SearchWord) }}>
-                    <FormRow theme={experts.addAndSearchFormRow}>
-                        <SubContainer theme={experts.addButtonSubContainer}>
-                            <EasyButton
-                                onClick={() => { setOpenAddJumpDialog(true) }}
-                                theme={experts.addButton}
-                                text={"新增帳號"} icon={<AddIcon style={{
-                                    position: "relative",
-                                    top: "0.3rem",
-                                    height: "1.28rem"
-                                }} />}
-                            />
-                        </SubContainer>
-                        <SearchTextInput
-                            value={SearchWord}
-                            onChange={SearchWordhandler}
-                            regExpResult={SearchWordregExpResult}
-                            placeholder={"搜尋姓名、電話、Email"}
-                            theme={experts.searchInput}
-                            searchOnClick={() => { execute(1, SearchWord); }}
-                        />
-                    </FormRow>
-                </FormControl>
+                <ExpertsPageTitleAddSearch setOpenAddJumpDialog={setOpenAddJumpDialog} execute={execute} setSearchWord={setSearchWord} />
                 <BasicContainer theme={experts.tableBasicContainer}>
                     <TableBasic
                         data={TableData} //原始資料
@@ -465,29 +505,7 @@ export const Experts = (props) => {
                     }
                 }}
             >
-                <FormControl theme={{}} onSubmit={(e) => { e.preventDefault(); execute(1, SearchWord) }}>
-                    <FormRow theme={experts.addAndSearchFormRowLessThan768}>
-                        <SearchTextInput
-                            value={SearchWord}
-                            onChange={SearchWordhandler}
-                            regExpResult={SearchWordregExpResult}
-                            placeholder={"搜尋姓名、電話、Email"}
-                            theme={experts.searchInput}
-                            searchOnClick={() => { execute(1, SearchWord); }}
-                        />
-                        <SubContainer theme={experts.addButtonSubContainerLessThan768}>
-                            <EasyButton
-                                onClick={() => { setOpenAddJumpDialog(true) }}
-                                theme={experts.addButtonLessThan768}
-                                text={"新增帳號"} icon={<AddIcon style={{
-                                    position: "relative",
-                                    top: "0.3rem",
-                                    height: "1.28rem"
-                                }} />}
-                            />
-                        </SubContainer>
-                    </FormRow>
-                </FormControl>
+                <ExpertsPageTitleAddSearch tableBasicContainerLessThan768 setOpenAddJumpDialog={setOpenAddJumpDialog} execute={execute} setSearchWord={setSearchWord} />
                 <BasicContainer theme={experts.tableBasicContainerLessThan768}>
                     <CardTable data={TableData}
                         title={["工號", "足健師姓名", "連絡電話", "通訊地址", "生日", 'Email', '加入日期', '']} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
@@ -701,15 +719,7 @@ export const Experts = (props) => {
                 </JumpDialog>
             }
             {/* 新增表單卡片 */}
-            {OpenAddJumpDialog && <FormCard
-                title={"新增足健師帳號"}
-                yes={() => { }}
-                yesText={"新增"}
-                no={() => { setOpenAddJumpDialog(false) }}
-                noText={"取消"}
-                close={() => { setOpenAddJumpDialog(false) }}
-            >
-            </FormCard>}
+            {OpenAddJumpDialog && <ExpertsAddCard execute={(page, key) => { execute(page, key) }} addAdminUserExecute={AddExpertExecute} onClose={setOpenAddJumpDialog} />}
             {/* 編輯表單卡片 */}
             {OpenEditJumpDialog && <FormCard
                 title={"編輯足健師帳號"}

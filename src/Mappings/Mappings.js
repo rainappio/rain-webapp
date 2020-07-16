@@ -566,32 +566,30 @@ export const cityAndCounties = {
 };
 //#endregion
 //#region 地區
-export const Counties = {
-   counties: [
-      "臺北市",
-      "新北市",
-      "基隆市",
-      "桃園市",
-      "新竹縣",
-      "新竹市",
-      "苗栗縣",
-      "臺中市",
-      "南投縣",
-      "彰化縣",
-      "雲林縣",
-      "嘉義縣",
-      "嘉義市",
-      "臺南市",
-      "高雄市",
-      "屏東縣",
-      "宜蘭縣",
-      "花蓮縣",
-      "臺東縣",
-      "澎湖縣",
-      "金門縣",
-      "連江縣"
-   ]
-};
+export const Counties = [
+   { value: "臺北市", label: "臺北市" },
+   { value: "新北市", label: "新北市" },
+   { value: "基隆市", label: "基隆市" },
+   { value: "桃園市", label: "桃園市" },
+   { value: "新竹縣", label: "新竹縣" },
+   { value: "新竹市", label: "新竹市" },
+   { value: "苗栗縣", label: "苗栗縣" },
+   { value: "臺中市", label: "臺中市" },
+   { value: "南投縣", label: "南投縣" },
+   { value: "彰化縣", label: "彰化縣" },
+   { value: "雲林縣", label: "雲林縣" },
+   { value: "嘉義縣", label: "嘉義縣" },
+   { value: "嘉義市", label: "嘉義市" },
+   { value: "臺南市", label: "臺南市" },
+   { value: "高雄市", label: "高雄市" },
+   { value: "屏東縣", label: "屏東縣" },
+   { value: "宜蘭縣", label: "宜蘭縣" },
+   { value: "花蓮縣", label: "花蓮縣" },
+   { value: "臺東縣", label: "臺東縣" },
+   { value: "澎湖縣", label: "澎湖縣" },
+   { value: "金門縣", label: "金門縣" },
+   { value: "連江縣", label: "連江縣" },
+];
 //#endregion
 
 //#region 15分鐘分隔時間表
@@ -1155,4 +1153,85 @@ export const cityAndCountiesLite = {
    ]
    //#endregion
 };
+//#endregion
+
+//#region 從1930至傳入年間西元年份
+export const YearFrom1930to = (year) => ([...Array(year - 1929).keys()].map((item, index) => ({ value: 1930 + index, label: `西元 ${1930 + index} 年` })))
+//#endregion
+
+//#region 1-12月
+export const month = [
+   { value: "01", label: "1 月" },
+   { value: "02", label: "2 月" },
+   { value: "03", label: "3 月" },
+   { value: "04", label: "4 月" },
+   { value: "05", label: "5 月" },
+   { value: "06", label: "6 月" },
+   { value: "07", label: "7 月" },
+   { value: "08", label: "8 月" },
+   { value: "09", label: "9 月" },
+   { value: "10", label: "10 月" },
+   { value: "11", label: "11 月" },
+   { value: "12", label: "12 月" },
+]
+//#endregion
+
+//#region 對應各月份日期
+export const day = [
+   { value: "01", label: "1 日" },
+   { value: "02", label: "2 日" },
+   { value: "03", label: "3 日" },
+   { value: "04", label: "4 日" },
+   { value: "05", label: "5 日" },
+   { value: "06", label: "6 日" },
+   { value: "07", label: "7 日" },
+   { value: "08", label: "8 日" },
+   { value: "09", label: "9 日" },
+   { value: "10", label: "10 日" },
+   { value: "11", label: "11 日" },
+   { value: "12", label: "12 日" },
+   { value: "13", label: "13 日" },
+   { value: "14", label: "14 日" },
+   { value: "15", label: "15 日" },
+   { value: "16", label: "16 日" },
+   { value: "17", label: "17 日" },
+   { value: "18", label: "18 日" },
+   { value: "19", label: "19 日" },
+   { value: "20", label: "20 日" },
+   { value: "21", label: "21 日" },
+   { value: "22", label: "22 日" },
+   { value: "23", label: "23 日" },
+   { value: "24", label: "24 日" },
+   { value: "25", label: "25 日" },
+   { value: "26", label: "26 日" },
+   { value: "27", label: "27 日" },
+   { value: "28", label: "28 日" },
+   { value: "29", label: "29 日" },
+   { value: "30", label: "30 日" },
+   { value: "31", label: "31 日" },
+]
+//#endregion
+//#region 取透過年月取日期列表
+export const getDayByYearAndMonth = (year, month) => {
+   switch (month) {
+      case "02":
+         if (year % 4 === 0 && year % 100 !== 0) {
+            return day.slice(0, 29); // 1-29 閏二月
+         } else if (year % 400 === 0) {
+            return day.slice(0, 29); // 1-29 閏二月
+         } else {
+            return day.slice(0, 28); // 1-28 平二月
+         }
+      case "04":
+         return day.slice(0, 30); // 1-30 小月
+      case "06":
+         return day.slice(0, 30); // 1-30 小月
+      case "09":
+         return day.slice(0, 30); // 1-30 小月
+      case "11":
+         return day.slice(0, 30); // 1-30 小月
+      default:
+         return day;
+   }
+}
 //#endregion
