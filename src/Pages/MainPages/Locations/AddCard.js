@@ -156,8 +156,8 @@ export const AddCard = (props) => {
                     sumbit={false}
                     theme={{
                         maxHeight: "38rem",
-                        // overflowY: "scroll",// 註解後關閉滾動
-                        // overflowX: "hidden",// 註解後關閉滾動
+                        overflowY: "scroll",// 註解後關閉滾動
+                        overflowX: "hidden",// 註解後關閉滾動
                         minWidth: "0",
                         padding: "0 1.25rem 0 0",
                         margin: "20px 0 0 0"
