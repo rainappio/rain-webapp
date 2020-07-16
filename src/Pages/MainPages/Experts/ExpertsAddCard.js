@@ -42,8 +42,8 @@ export const ExpertsAddCard = (props) => {
     let history = useHistory();
 
     //#region 表單狀態管理
-    const [MasterNo, MasterNohandler, MasterNoregExpResult, MasterNoResetValue] = useForm("", ["^[0-9]{1,}$", "^.{1,999}$"], ["工號限使用數字", "最長為999個數字"]); //足健師工號欄位
-    const [Name, Namehandler, NameregExpResult, NameResetValue] = useForm("", ["^[\u4E00-\u9FA5]{1,}$", "^.{1,5}$"], ["請輸入管理員中文姓名", "姓名最長為5個中文字"]); // 足健師姓名欄位
+    const [MasterNo, MasterNohandler, MasterNoregExpResult, MasterNoResetValue] = useForm("", ["^.{1,}$", "^[0-9]{1,}$", "^.{1,999}$"], ["請輸入工號", "工號限使用數字", "最長為999個數字"]); //足健師工號欄位
+    const [Name, Namehandler, NameregExpResult, NameResetValue] = useForm("", ["^[\u4E00-\u9FA5]{1,}$", "^.{1,5}$"], ["請輸入足健師中文姓名", "姓名最長為5個中文字"]); // 足健師姓名欄位
     const [Sex, Sexhandler, SexregExpResult, SexResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇性別"]); // 足健師性別欄位
     const [Phone, Phonehandler, PhoneregExpResult, PhoneResetValue] = useForm("", ["^.{1,}$", "^09[0-9]{8}$"], ["請輸入手機號碼", "請輸入正確手機格式"]); // 管理員手機欄位
     const [Email, Emailhandler, EmailregExpResult, EmailResetValue] = useForm("", ["^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z]+$"], ["請輸入正確E-mail格式"]); // Email欄位
@@ -54,21 +54,21 @@ export const ExpertsAddCard = (props) => {
     const [District, Districthandler, DistrictregExpResult, DistrictResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇行政區"]); // 直轄地區欄位
     const [Addr, Addrhandler, AddrregExpResult, AddrResetValue] = useForm("", ["^.{1,}$"], ["請輸入詳細地址"]); // 地址欄位
     const [NowServiceAddr, NowServiceAddrhandler, NowServiceAddrregExpResult, NowServiceAddrResetValue] = useForm("", ["^.{1,}$"], ["請輸入現職單位"]); // 現職單位欄位
-    const [ServiceArea, ServiceAreahandler, ServiceArearegExpResult, ServiceAreaResetValue] = useSelector(null, [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇縣市"]); // 服務地區勾選欄位
-    const [MonLeft, MonLefthandler, MonLeftregExpResult, MonLeftResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週一開始工作時間"]);  // 週一左邊時間欄位
-    const [MonRight, MonRighthandler, MonRightregExpResult, MonRightResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週一結束工作時間"]);  // 週一右邊時間欄位
-    const [TueLeft, TueLefthandler, TueLeftregExpResult, TueLeftResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週二開始工作時間"]);  // 週二左邊時間欄位
-    const [TueRight, TueRighthandler, TueRightregExpResult, TueRightResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週二結束工作時間"]);  // 週二右邊時間欄位
-    const [WenLeft, WenLefthandler, WenLeftregExpResult, WenLeftResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週三開始工作時間"]);  // 週三左邊時間欄位
-    const [WenRight, WenRighthandler, WenRightregExpResult, WenRightResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週三結束工作時間"]);  // 週三右邊時間欄位
-    const [ThuLeft, ThuLefthandler, ThuLeftregExpResult, ThuLeftResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週四開始工作時間"]);  // 週四左邊時間欄位
-    const [ThuRight, ThuRighthandler, ThuRightregExpResult, ThuRightResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週四結束工作時間"]);  // 週四右邊時間欄位
-    const [FriLeft, FriLefthandler, FriLeftregExpResult, FriLeftResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週五開始工作時間"]);  // 週五左邊時間欄位
-    const [FriRight, FriRighthandler, FriRightregExpResult, FriRightResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週五結束工作時間"]);  // 週五右邊時間欄位
-    const [SatLeft, SatLefthandler, SatLeftregExpResult, SatLeftResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週六開始工作時間"]);  // 週六左邊時間欄位
-    const [SatRight, SatRighthandler, SatRightregExpResult, SatRightResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週六結束工作時間"]);  // 週六右邊時間欄位
-    const [SunLeft, SunLefthandler, SunLeftregExpResult, SunLeftResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週日開始工作時間"]);  // 週日左邊時間欄位
-    const [SunRight, SunRighthandler, SunRightregExpResult, SunRightResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇週日結束工作時間"]);  // 週日右邊時間欄位
+    const [ServiceArea, ServiceAreahandler, ServiceArearegExpResult, ServiceAreaResetValue] = useSelector("", [(value) => { /*console.log(value);*/ return (value ? value.length > 0 : false) }], ["請勾選服務地區"]); // 服務地區勾選欄位
+    const [MonLeft, MonLefthandler, MonLeftregExpResult, MonLeftResetValue] = useSelector("", [], []);  // 週一左邊時間欄位  "請選擇週一開始工作時間"
+    const [MonRight, MonRighthandler, MonRightregExpResult, MonRightResetValue] = useSelector("", [], []);  // 週一右邊時間欄位 "請選擇週一結束工作時間"
+    const [TueLeft, TueLefthandler, TueLeftregExpResult, TueLeftResetValue] = useSelector("", [], []);  // 週二左邊時間欄位 "請選擇週二開始工作時間"
+    const [TueRight, TueRighthandler, TueRightregExpResult, TueRightResetValue] = useSelector("", [], []);  // 週二右邊時間欄位 "請選擇週二結束工作時間"
+    const [WenLeft, WenLefthandler, WenLeftregExpResult, WenLeftResetValue] = useSelector("", [], []);  // 週三左邊時間欄位 "請選擇週三開始工作時間"
+    const [WenRight, WenRighthandler, WenRightregExpResult, WenRightResetValue] = useSelector("", [], []);  // 週三右邊時間欄位 "請選擇週三結束工作時間"
+    const [ThuLeft, ThuLefthandler, ThuLeftregExpResult, ThuLeftResetValue] = useSelector("", [], []);  // 週四左邊時間欄位 "請選擇週四開始工作時間"
+    const [ThuRight, ThuRighthandler, ThuRightregExpResult, ThuRightResetValue] = useSelector("", [], []);  // 週四右邊時間欄位 "請選擇週四結束工作時間"
+    const [FriLeft, FriLefthandler, FriLeftregExpResult, FriLeftResetValue] = useSelector("", [], []);  // 週五左邊時間欄位 "請選擇週五開始工作時間"
+    const [FriRight, FriRighthandler, FriRightregExpResult, FriRightResetValue] = useSelector("", [], []);  // 週五右邊時間欄位 "請選擇週五結束工作時間"
+    const [SatLeft, SatLefthandler, SatLeftregExpResult, SatLeftResetValue] = useSelector("", [], []);  // 週六左邊時間欄位 "請選擇週六開始工作時間"
+    const [SatRight, SatRighthandler, SatRightregExpResult, SatRightResetValue] = useSelector("", [], []);  // 週六右邊時間欄位 "請選擇週六結束工作時間"
+    const [SunLeft, SunLefthandler, SunLeftregExpResult, SunLeftResetValue] = useSelector("", [], []);  // 週日左邊時間欄位 "請選擇週日開始工作時間"
+    const [SunRight, SunRighthandler, SunRightregExpResult, SunRightResetValue] = useSelector("", [], []);  // 週日右邊時間欄位 "請選擇週日結束工作時間"
 
     //#endregion
     // CommAddr: "我說"
@@ -136,19 +136,33 @@ export const ExpertsAddCard = (props) => {
                 title={"新增足健師帳號"}
                 yes={() => {
                     //全部通過檢核才可放行
-                    // (AccountregExpResult ? alertService.warn(AccountregExpResult, { autoClose: true })
-                    //     : (PassregExpResult ? alertService.warn(PassregExpResult, { autoClose: true })
-                    //         : (NameregExpResult ? alertService.warn(NameregExpResult, { autoClose: true })
-                    //             : (PhoneregExpResult ? alertService.warn(PhoneregExpResult, { autoClose: true })
-                    //                 : (LocationregExpResult ? alertService.warn(LocationregExpResult, { autoClose: true })
-                    //                     : (RoleregExpResult ? alertService.warn(RoleregExpResult, { autoClose: true })
-                    //                         : props.addAdminUserExecute(Name, Account, Pass, Phone, Location, Role)
-                    //                     )
-                    //                 )
-                    //             )
-                    //         )
-                    //     )
-                    // )
+                    (MasterNoregExpResult ? alertService.warn(MasterNoregExpResult, { autoClose: true })
+                        : (NameregExpResult ? alertService.warn(NameregExpResult, { autoClose: true })
+                            : (SexregExpResult ? alertService.warn(SexregExpResult, { autoClose: true })
+                                : (PhoneregExpResult ? alertService.warn(PhoneregExpResult, { autoClose: true })
+                                    : (EmailregExpResult ? alertService.warn(EmailregExpResult, { autoClose: true })
+                                        : (BirthYearregExpResult ? alertService.warn(BirthYearregExpResult, { autoClose: true })
+                                            : (BirthMonthregExpResult ? alertService.warn(BirthMonthregExpResult, { autoClose: true })
+                                                : (BirthDayregExpResult ? alertService.warn(BirthDayregExpResult, { autoClose: true })
+                                                    : (CountyregExpResult ? alertService.warn(CountyregExpResult, { autoClose: true })
+                                                        : (DistrictregExpResult ? alertService.warn(DistrictregExpResult, { autoClose: true })
+                                                            : (AddrregExpResult ? alertService.warn(AddrregExpResult, { autoClose: true })
+                                                                : (NowServiceAddrregExpResult ? alertService.warn(NowServiceAddrregExpResult, { autoClose: true })
+                                                                    : (ServiceArearegExpResult ? alertService.warn(ServiceArearegExpResult, { autoClose: true })
+                                                                        : props.addAdminUserExecute()
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
                 }}
                 yesText={"新增"}
                 no={() => { props?.onClose && props.onClose(false); }}

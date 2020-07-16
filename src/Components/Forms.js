@@ -650,7 +650,7 @@ const CityCheckBoxGroupBase = (props) => {
     const { Theme } = useContext(Context);
     const { form } = Theme;
     const [WhichExpand, setWhichExpand] = useState("");
-    const [Checked, setChecked] = useState(props.value ?? []);
+    const [Checked, setChecked] = useState(props.value === "" ? [] : props.value);
 
     return (
         <>
