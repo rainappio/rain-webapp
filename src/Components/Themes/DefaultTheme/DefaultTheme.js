@@ -17,6 +17,10 @@ import expertsPageTitleAddSearch from './Pages/MainPages/Experts/ExpertsPageTitl
 import home from './Pages/MainPages/Home/Home'
 import locations from './Pages/MainPages/Locations/Locations'
 import percentage from './Pages/MainPages/Percentage/Percentage'
+import percentageAddCard from './Pages/MainPages/Percentage/PercentageAddCard'
+import percentageEditCard from './Pages/MainPages/Percentage/PercentageEditCard'
+import percentageDelDialog from './Pages/MainPages/Percentage/PercentageDelDialog'
+import percentagePageTitleAddSearch from './Pages/MainPages/Percentage/PercentagePageTitleAddSearch'
 import reservationList from './Pages/MainPages/ReservationList/ReservationList'
 import reservationListAddCard from './Pages/MainPages/ReservationList/ReservationListAddCard'
 import reservationListEditCard from './Pages/MainPages/ReservationList/ReservationListEditCard'
@@ -83,6 +87,10 @@ export default {
         },
         percentagePage: {
             percentage,
+            percentageAddCard,
+            percentageDelDialog,
+            percentageEditCard,
+            percentagePageTitleAddSearch
         },
         reservationListPage: {
             reservationList,
