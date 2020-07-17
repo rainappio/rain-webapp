@@ -44,7 +44,7 @@ const PercentagePageTitleAddSearchBase = (props) => {
                         <SubContainer theme={{ padding: "0 2.5rem 0 0" }}>
                             <FormRow theme={percentagePageTitleAddSearch.addAndSearchFormRow}>
                                 <SubContainer theme={percentagePageTitleAddSearch.addButtonSubContainer}>
-                                    <DatePicker></DatePicker>
+                                    <DatePicker value={props.searchDate} getDate={props.searchDateeResetValue}></DatePicker>
                                 </SubContainer>
                                 <SearchTextInput
                                     value={SearchWord}
@@ -57,40 +57,40 @@ const PercentagePageTitleAddSearchBase = (props) => {
                             </FormRow>
                         </SubContainer>
                     </Container>
-                    {/* 狀態選單、匯出問券按鈕 */}
-                    <FormRow theme={{ justify: "flex-start", padding: "0px 0 0px 40px", }}>
-
-                        <SubContainer theme={{ padding: "0 0.75rem 0 0" }}>
-                            <EasyButton
-                                onClick={() => {
-                                    // props.setOpenAddJumpDialog(true) 
-                                    setChoosenTag(1);
-                                }}
-                                theme={percentagePageTitleAddSearch.tagButton(ChoosenTag === 1)}
-                                text={"門市預約率"}
-                            />
-                        </SubContainer>
-                        <SubContainer theme={{ padding: "0 0.75rem 0 0" }}>
-                            <EasyButton
-                                onClick={() => {
-                                    // props.setOpenAddJumpDialog(true) 
-                                    setChoosenTag(2);
-                                }}
-                                theme={percentagePageTitleAddSearch.tagButton(ChoosenTag === 2)}
-                                text={"區域預約率"}
-                            />
-                        </SubContainer>
-                        <SubContainer theme={{ padding: "0 0rem 0 0" }}>
-                            <EasyButton
-                                onClick={() => {
-                                    // props.setOpenAddJumpDialog(true) 
-                                    setChoosenTag(3);
-                                }}
-                                theme={percentagePageTitleAddSearch.tagButton(ChoosenTag === 3)}
-                                text={"足健師預約率"}
-                            />
-                        </SubContainer>
-                    </FormRow>
+                    <BasicContainer theme={{ margin: '0 3rem 0 40px', }}>
+                        <FormRow theme={{ justify: "flex-start", borderBottom: "1px solid #964f19" }}>
+                            <SubContainer theme={{ padding: "0 0.75rem 0 0" }}>
+                                <EasyButton
+                                    onClick={() => {
+                                        // props.setOpenAddJumpDialog(true) 
+                                        props.setTag(1);
+                                    }}
+                                    theme={percentagePageTitleAddSearch.tagButton(props.tag === 1)}
+                                    text={"門市預約率"}
+                                />
+                            </SubContainer>
+                            <SubContainer theme={{ padding: "0 0.75rem 0 0" }}>
+                                <EasyButton
+                                    onClick={() => {
+                                        // props.setOpenAddJumpDialog(true) 
+                                        props.setTag(2);
+                                    }}
+                                    theme={percentagePageTitleAddSearch.tagButton(props.tag === 2)}
+                                    text={"區域預約率"}
+                                />
+                            </SubContainer>
+                            <SubContainer theme={{ padding: "0 0rem 0 0" }}>
+                                <EasyButton
+                                    onClick={() => {
+                                        // props.setOpenAddJumpDialog(true) 
+                                        props.setTag(3);
+                                    }}
+                                    theme={percentagePageTitleAddSearch.tagButton(props.tag === 3)}
+                                    text={"足健師預約率"}
+                                />
+                            </SubContainer>
+                        </FormRow>
+                    </BasicContainer>
                 </FormControl >
             </>
         )
@@ -111,9 +111,9 @@ const PercentagePageTitleAddSearchBase = (props) => {
                                 <EasyButton
                                     onClick={() => {
                                         // props.setOpenAddJumpDialog(true) 
-                                        setChoosenTag(1);
+                                        props.setTag(1);
                                     }}
-                                    theme={percentagePageTitleAddSearch.smTagButton(ChoosenTag === 1)}
+                                    theme={percentagePageTitleAddSearch.smTagButton(props.tag === 1)}
                                     text={"門市預約率"}
                                 />
                             </SubContainer>
@@ -121,9 +121,9 @@ const PercentagePageTitleAddSearchBase = (props) => {
                                 <EasyButton
                                     onClick={() => {
                                         // props.setOpenAddJumpDialog(true) 
-                                        setChoosenTag(2);
+                                        props.setTag(2);
                                     }}
-                                    theme={percentagePageTitleAddSearch.smTagButton(ChoosenTag === 2)}
+                                    theme={percentagePageTitleAddSearch.smTagButton(props.tag === 2)}
                                     text={"區域預約率"}
                                 />
                             </SubContainer>
@@ -131,9 +131,9 @@ const PercentagePageTitleAddSearchBase = (props) => {
                                 <EasyButton
                                     onClick={() => {
                                         // props.setOpenAddJumpDialog(true) 
-                                        setChoosenTag(3);
+                                        props.setTag(3);
                                     }}
-                                    theme={percentagePageTitleAddSearch.smTagButton(ChoosenTag === 3)}
+                                    theme={percentagePageTitleAddSearch.smTagButton(props.tag === 3)}
                                     text={"足健師預約率"}
                                 />
                             </SubContainer>
