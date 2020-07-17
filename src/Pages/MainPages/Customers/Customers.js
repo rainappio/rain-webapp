@@ -312,7 +312,7 @@ export const Customers = (props) => {
                                 // width: "40rem", // 調整個別欄寬度
                                 // 提供客製化渲染內容，可使用預設參數 item 與 id，item 為 對應列表資料、id 為對應列表資料的id
                                 // render: (item, id) => (`${item} ${id} sdf`)
-                                width: "10%",
+                                width: "calc( 13% - 1rem )",
 
                                 order: true,// 是否開啟排序，預設為不開啟
 
@@ -339,7 +339,7 @@ export const Customers = (props) => {
                             },
                             "cTel": {
                                 // width: "45rem",
-                                width: "10%",
+                                width: "calc( 15% - 1rem )",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id) => ((item &&
                                     <TooltipBasic title={item} arrow>
@@ -364,7 +364,7 @@ export const Customers = (props) => {
                             },
                             "CommCounty": {
                                 // width: "45rem",
-                                width: "20%",
+                                width: "calc( 25% - 2rem )",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id, rowItem) => ((item &&
                                     <TooltipBasic title={`${item ?? ''}${rowItem?.CommDistrict ?? ''}${rowItem?.CommAddr ?? ''}`} arrow>
@@ -389,7 +389,7 @@ export const Customers = (props) => {
                             },
                             "cBirthDay": {
                                 // width: "45rem",
-                                width: "10%",
+                                width: "calc( 15% - 1rem )",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id) => ((item &&
                                     <TooltipBasic title={item} arrow>
@@ -414,7 +414,7 @@ export const Customers = (props) => {
                             },
                             "cEmail": {
                                 // width: "45rem",
-                                width: "20%",
+                                width: "calc( 20% - 1rem )",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id) => ((item &&
                                     <TooltipBasic title={item} arrow>
@@ -439,7 +439,7 @@ export const Customers = (props) => {
                             },
                             "CreateTime": {
                                 // width: "45rem",
-                                width: "10%",
+                                width: "calc( 12% - 1rem )",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id) => ((item &&
                                     <TooltipBasic title={item} arrow>
@@ -464,7 +464,7 @@ export const Customers = (props) => {
                             },
                             "controll": {
                                 //width: "20rem",
-                                width: "20%",
+                                width: "7rem",
                                 //order: true,
                                 render: (item, id, rowItem) => {
                                     return (

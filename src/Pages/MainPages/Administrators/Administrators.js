@@ -348,7 +348,7 @@ export const Administrators = (props) => {
                             },
                             "phone": {
                                 // width: "45rem",
-                                width: "20%",
+                                width: "25%",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id) => ((item &&
                                     <TooltipBasic title={item} arrow>
@@ -362,7 +362,7 @@ export const Administrators = (props) => {
                             },
                             "uCreateTime": {
                                 // width: "20rem",
-                                width: "20%",
+                                width: "25%",
                                 order: true,
                                 render: (item, id) => ((item &&
                                     <TooltipBasic title={item.split("T")[0]} arrow>
@@ -376,7 +376,7 @@ export const Administrators = (props) => {
                             },
                             "controll": {
                                 // width: "20rem",
-                                width: "40%",
+                                width: "30%",
                                 //order: true,
                                 render: (item, id, rowItem) => {
                                     return (

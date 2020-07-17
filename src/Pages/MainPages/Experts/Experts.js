@@ -368,7 +368,7 @@ export const Experts = (props) => {
                                 // width: "40rem", // 調整個別欄寬度
                                 // 提供客製化渲染內容，可使用預設參數 item 與 id，item 為 對應列表資料、id 為對應列表資料的id
                                 // render: (item, id) => (`${item} ${id} sdf`)
-                                width: "10%",
+                                width: "calc( 15% - 1rem )",
 
                                 order: true,// 是否開啟排序，預設為不開啟
 
@@ -397,7 +397,7 @@ export const Experts = (props) => {
                                 // width: "40rem", // 調整個別欄寬度
                                 // 提供客製化渲染內容，可使用預設參數 item 與 id，item 為 對應列表資料、id 為對應列表資料的id
                                 // render: (item, id) => (`${item} ${id} sdf`)
-                                width: "10%",
+                                width: "calc( 15% - 0.5rem )",
 
                                 order: true,// 是否開啟排序，預設為不開啟
 
@@ -424,7 +424,7 @@ export const Experts = (props) => {
                             },
                             "mTel": {
                                 // width: "45rem",
-                                width: "10%",
+                                width: "calc( 12% - 1rem )",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id) => ((item &&
                                     <TooltipBasic title={item} arrow>
@@ -449,7 +449,7 @@ export const Experts = (props) => {
                             },
                             "CommCounty": {
                                 // width: "45rem",
-                                width: "20%",
+                                width: "calc( 24% - 1.5rem )",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id, rowItem) => ((item &&
                                     <TooltipBasic title={`${item ?? ''}${rowItem?.CommDistrict ?? ''}${rowItem?.CommAddr ?? ''}`} arrow>
@@ -474,7 +474,7 @@ export const Experts = (props) => {
                             },
                             "mBirthDay": {
                                 // width: "45rem",
-                                width: "10%",
+                                width: "calc( 12% - 1rem )",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id) => ((item &&
                                     <TooltipBasic title={item.split("T")[0]} arrow>
@@ -499,7 +499,7 @@ export const Experts = (props) => {
                             },
                             "mEmail": {
                                 // width: "45rem",
-                                width: "20%",
+                                width: "calc( 20% - 1rem )",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id) => ((item &&
                                     <TooltipBasic title={item} arrow>
@@ -524,7 +524,7 @@ export const Experts = (props) => {
                             },
                             "CreateTime": {
                                 // width: "45rem",
-                                width: "10%",
+                                width: "calc( 12% - 1rem)",
                                 order: true,// 是否開啟排序，預設為不開啟
                                 render: (item, id) => ((item &&
                                     <TooltipBasic title={item.split("T")[0]} arrow>
@@ -549,7 +549,7 @@ export const Experts = (props) => {
                             },
                             "controll": {
                                 //width: "20rem",
-                                width: "10%",
+                                width: "7rem",
                                 //order: true,
                                 render: (item, id, rowItem) => {
                                     return (

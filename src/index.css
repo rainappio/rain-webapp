@@ -11,3 +11,28 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@media screen and  (max-width: 550px) and (min-width: 0px) {
+  div[class$="el-picker-panel el-date-range-picker"] {
+    width: 260px !important;
+    min-width: 260px;
+  }
+
+  div[class$="el-picker-panel__body-wrapper"] {
+    width: 260px;
+  }
+
+  div[class$="el-picker-panel__body"] {
+    display: grid;
+    width: 260px !important;
+    min-width: 260px !important;
+  }
+
+  div[class$="el-picker-panel__content el-date-range-picker__content is-left"] {
+    width: 100%;
+  }
+
+  div[class$="el-picker-panel__content el-date-range-picker__content is-right"] {
+    width: 100%;
+  }
+}
