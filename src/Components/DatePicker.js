@@ -14,13 +14,15 @@ import DateRangeIcon from '@material-ui/icons/DateRange';
    Author : GGGODLIN
    Content: 可傳入props
                 getDate (function) : 請塞useForm的第四個參數
+                startDate={new Date('2020-07-01')}//不塞的話預設今天
+                endDate={new Date('2020-07-30')}//不塞的話預設今天
             對外開放樣式 theme = {  }
 */
 
 export const DatePicker = (props) => {
 
 
-    const [value, setvalue] = useState([new Date(), new Date()]);
+    const [value, setvalue] = useState([(props.startDate ?? new Date()), (props.endDate ?? new Date())]);
 
     return (
         <>
