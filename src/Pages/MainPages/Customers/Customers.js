@@ -21,6 +21,7 @@ import { alertService } from '../../../Components/JumpAlerts';
 import { FormCard } from '../../../Components/FormCard';
 import { TooltipBasic } from '../../../Components/Tooltips';
 import { CustomersAddCard } from './CustomersAddCard';
+import { CustomersEditCard } from './CustomersEditCard';
 export const Customers = (props) => {
 
     const { APIUrl, Theme } = useContext(Context);
@@ -32,6 +33,7 @@ export const Customers = (props) => {
     const [OpenEditJumpDialog, setOpenEditJumpDialog] = useState(false); // 開啟編輯彈窗
     const [ScrollPage, setScrollPage] = useState(2); // 滾動到底部加載頁面
     const [DelWho, setDelWho] = useState(""); // 刪除彈窗中刪除名字
+    const [EditAutoFill, setEditAutoFill] = useState({}); // 編輯彈窗中data
     const [SearchWord, SearchWordhandler, SearchWordregExpResult] = useForm("", [""], [""]);
     const [width] = useWindowSize();
 
@@ -183,10 +185,10 @@ export const Customers = (props) => {
     //#endregion
 
     //#region 新增顧客API 
-    const addUser = useCallback(async (MasterNo, Name, Sex, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr, NowServiceAddr, ServiceArea, MonLeft, MonRight, TueLeft, TueRight, WenLeft, WenRight, ThuLeft, ThuRight, FriLeft, FriRight, SatLeft, SatRight, SunLeft, SunRight) => {
+    const addUser = useCallback(async (Name, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr) => {
         //return console.log(`${BirthYear?.value}-${BirthMonth?.value}-${BirthDay?.value}`, `${ServiceArea.map((item) => { return item?.value })?.join()}`);
-        //return console.log(MasterNo, Name, Sex, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr, NowServiceAddr, ServiceArea, MonLeft, MonRight, TueLeft, TueRight, WenLeft, WenRight, ThuLeft, ThuRight, FriLeft, FriRight, SatLeft, SatRight, SunLeft, SunRight)
-        return await fetch(`${APIUrl}api/User/Post`,
+        //return console.log(Name, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr)
+        return await fetch(`${APIUrl}api/UserInfo/Post`,
             {
                 method: "POST",
                 headers: {
@@ -194,31 +196,17 @@ export const Customers = (props) => {
                     'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
                 },
                 body: JSON.stringify({
+                    cLoginName: Email,
+                    cLoginPWD: Phone,
+                    cRealName: Name,
+                    cBirthDay: `${BirthYear?.value}-${BirthMonth?.value}-${BirthDay?.value}`,
+                    CreateTime: new Date(),
+                    IsDeleted: false,
                     CommAddr: Addr,
                     CommCounty: County?.value,
                     CommDistrict: District?.value,
-                    CreateTime: new Date(),
-                    DeviceId: "",
-                    FridayService: `${FriLeft?.value ?? ''}-${FriRight?.value ?? ''}`,
-                    //Id: 0,
-                    IsDeleted: false,
-                    MasterNo: MasterNo,
-                    MondayService: `${MonLeft?.value ?? ''}-${MonRight?.value ?? ''}`,
-                    NowServiceAddr: NowServiceAddr,
-                    //Remark: "0",
-                    SaturdayService: `${SatLeft?.value ?? ''}-${SatRight?.value ?? ''}`,
-                    ServiceArea: `${ServiceArea.map((item) => { return item?.value })?.join()}`,
-                    SundayService: `${SunLeft?.value ?? ''}-${SunRight?.value ?? ''}`,
-                    ThursdayService: `${ThuLeft?.value ?? ''}-${ThuRight?.value ?? ''}`,
-                    TuesdayService: `${TueLeft?.value ?? ''}-${TueRight?.value ?? ''}`,
-                    WednesdayService: `${WenLeft?.value ?? ''}-${WenRight?.value ?? ''}`,
-                    mBirthDay: `${BirthYear?.value}-${BirthMonth?.value}-${BirthDay?.value}`,
-                    mEmail: Email,
-                    mLoginName: MasterNo,
-                    mLoginPWD: `${BirthYear?.value}${BirthMonth?.value}${BirthDay?.value}`,
-                    mRealName: Name,
-                    mTel: Phone,
-                    mSex: Sex?.value,
+                    cEmail: Email,
+                    cTel: Phone,
                 })
             }
         )//查詢角色、表格翻頁
@@ -256,6 +244,69 @@ export const Customers = (props) => {
     }, [APIUrl, history])
 
     const [AddUserExecute, AddUserPending] = useAsync(addUser, false);
+    //#endregion
+
+    //#region 編輯顧客API 
+    const editUser = useCallback(async (oldData, Name, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr) => {
+        //return console.log(`${BirthYear?.value}-${BirthMonth?.value}-${BirthDay?.value}`, `${ServiceArea.map((item) => { return item?.value })?.join()}`);
+        //return console.log(Name, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr)
+        return await fetch(`${APIUrl}api/UserInfo/Put`,
+            {
+                method: "PUT",
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
+                },
+                body: JSON.stringify({
+                    ...oldData,
+                    //cLoginName: Email,
+                    //cLoginPWD: Phone,
+                    cRealName: Name,
+                    cBirthDay: `${BirthYear?.value}-${BirthMonth?.value}-${BirthDay?.value}`,
+                    ModifyTime: new Date(),
+                    IsDeleted: false,
+                    CommAddr: Addr,
+                    CommCounty: County?.value,
+                    CommDistrict: District?.value,
+                    cEmail: Email,
+                    cTel: Phone,
+                })
+            }
+        )//查詢角色、表格翻頁
+            .then(Result => {
+                const ResultJson = Result.clone().json();//Respone.clone()
+                return ResultJson;
+            })
+            .then((PreResult) => {
+                //console.log(PreResult)
+                if (PreResult.Status === 401) {
+                    //Token過期 強制登出
+                    clearlocalStorage();
+                    history.push("/Login");
+                    throw new Error("Token過期 強制登出");
+                }
+
+                if (PreResult.success) {
+                    alertService.normal("成功新增顧客資訊", { autoClose: true });
+                    return "成功新增顧客資訊"
+                } else {
+                    alertService.warn(PreResult.msg, { autoClose: true });
+                    throw new Error("新增顧客資訊失敗");
+                }
+            })
+            .catch((Error) => {
+                throw Error;
+            })
+            .finally(() => {
+                execute(1);
+                setOpenEditJumpDialog(false);
+            });
+
+        // 這裡要接著打refresh 延長Token存活期
+
+    }, [APIUrl, history])
+
+    const [EditUserExecute, EditUserPending] = useAsync(editUser, false);
     //#endregion
 
     return (
@@ -480,7 +531,7 @@ export const Customers = (props) => {
                                                 <TooltipBasic key={`${item}1`} title={"編輯"} arrow>
                                                     <CreateIcon
                                                         style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }}
-                                                        onClick={() => { setOpenEditJumpDialog(true) }}
+                                                        onClick={() => { setEditAutoFill(rowItem); setOpenEditJumpDialog(true); }}
                                                     />
                                                 </TooltipBasic>,
                                                 <TooltipBasic key={`${item}2`} title={"刪除"} arrow>
@@ -669,7 +720,7 @@ export const Customers = (props) => {
                                                 <CreateIcon
                                                     key={`${item}1`}
                                                     style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }}
-                                                    onClick={() => { setOpenEditJumpDialog(true) }}
+                                                    onClick={() => { setEditAutoFill(rowItem); setOpenEditJumpDialog(true); }}
                                                 />,
                                                 <DeleteForeverIcon
                                                     key={`${item}2`}
@@ -728,15 +779,7 @@ export const Customers = (props) => {
             {/* 新增表單卡片 */}
             {OpenAddJumpDialog && <CustomersAddCard execute={(page, key) => { execute(page, key) }} addAdminUserExecute={AddUserExecute} onClose={setOpenAddJumpDialog} />}
             {/* 編輯表單卡片 */}
-            {OpenEditJumpDialog && <FormCard
-                title={"編輯顧客帳號"}
-                yes={() => { }}
-                yesText={"新增"}
-                no={() => { setOpenEditJumpDialog(false) }}
-                noText={"取消"}
-                close={() => { setOpenEditJumpDialog(false) }}
-            >
-            </FormCard>}
+            {OpenEditJumpDialog && <CustomersEditCard execute={(page, key) => { execute(page, key) }} editAdminUserExecute={EditUserExecute} onClose={(isOpen) => { setOpenEditJumpDialog(isOpen) }} editAutoFill={EditAutoFill} />}
         </>
     )
 }

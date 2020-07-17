@@ -6,6 +6,7 @@ import editCard from './Pages/MainPages/Administrators/EditCard'
 import delDialog from './Pages/MainPages/Administrators/DelDialog'
 import pageTitleAddSearch from './Pages/MainPages/Administrators/PageTitleAddSearch'
 import customers from './Pages/MainPages/Customers/Customers'
+import customersAddCard from './Pages/MainPages/Customers/CustomersAddCard'
 import dispatch from './Pages/MainPages/Dispatch/Dispatch'
 import dispatchBoard from './Pages/MainPages/DispatchBoard/DispatchBoard'
 import experts from './Pages/MainPages/Experts/Experts'
@@ -59,6 +60,7 @@ export default {
         },
         customersPage: {
             customers,
+            customersAddCard,
         },
         dispatchPage: {
             dispatch,
