@@ -18,6 +18,7 @@ const ReservationListPageTitleAddSearchBase = (props) => {
     const [IsExpand, setIsExpand] = useState(false);
 
     const [SearchWord, SearchWordhandler, SearchWordregExpResult] = useForm("", [""], [""]);
+    const [Date, Datehandler, DateregExpResult, DateResetValue] = useForm("", [""], [""]);//日期區間欄位
     const [Mode, Modehandler, ModeregExpResult, ModeResetValue] = useSelector([], [], []); // 狀態欄位
 
     if (!props.tableBasicContainerLessThan768) {
@@ -43,7 +44,8 @@ const ReservationListPageTitleAddSearchBase = (props) => {
                         <SubContainer theme={{ padding: "0 2.5rem 0 0" }}>
                             <FormRow theme={reservationListPageTitleAddSearch.addAndSearchFormRow}>
                                 <SubContainer theme={reservationListPageTitleAddSearch.addButtonSubContainer}>
-                                    <DatePicker></DatePicker>
+                                    <DatePicker getDate={DateResetValue}></DatePicker>
+                                    {console.log(Date)}
                                 </SubContainer>
                                 <SearchTextInput
                                     value={SearchWord}
@@ -62,10 +64,17 @@ const ReservationListPageTitleAddSearchBase = (props) => {
                             < FormCardSelector
                                 //label={""}
                                 //hint={""}
-                                placeholder={"選擇行政區"}
-                                value={Mode}
+                                placeholder={"Mode狀態"}
+                                //value={Mode}
+                                value={{ value: "all", label: "全部" }}
                                 isSearchable
-                                options={[]}
+                                options={[
+                                    { value: "all", label: "全部" },
+                                    { value: "undone", label: "即將到來" },
+                                    { value: "overtime", label: "逾時未完成" },
+                                    { value: "done", label: "已完成" },
+                                    { value: "cancle", label: "已取消" },
+                                ]}
                                 onChange={(values) => { ModeResetValue(values) }}
                                 regExpResult={ModeregExpResult}
                                 theme={reservationListPageTitleAddSearch.modeSelector}
@@ -88,7 +97,7 @@ const ReservationListPageTitleAddSearchBase = (props) => {
     else {
         return (
             <>
-                <BasicContainer className={props.className} theme={{padding:"0 0 0 0.5rem"}} >
+                <BasicContainer className={props.className} theme={{ padding: "0 0 0 0.5rem" }} >
                     <BasicContainer onClick={() => { setIsExpand(e => !e) }} theme={{ cursor: "pointer" }}>
                         <ExpandMoreIcon style={{
                             width: "1rem",
@@ -124,10 +133,17 @@ const ReservationListPageTitleAddSearchBase = (props) => {
                                 < FormCardSelector
                                     //label={""}
                                     //hint={""}
-                                    placeholder={"選擇行政區"}
-                                    value={Mode}
+                                    placeholder={"Mode狀態"}
+                                    //value={Mode}
+                                    value={{ value: "all", label: "全部" }}
                                     isSearchable
-                                    options={[]}
+                                    options={[
+                                        { value: "all", label: "全部" },
+                                        { value: "undone", label: "即將到來" },
+                                        { value: "overtime", label: "逾時未完成" },
+                                        { value: "done", label: "已完成" },
+                                        { value: "cancle", label: "已取消" },
+                                    ]}
                                     onChange={(values) => { ModeResetValue(values) }}
                                     regExpResult={ModeregExpResult}
                                     theme={reservationListPageTitleAddSearch.modeSelector}

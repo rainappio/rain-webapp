@@ -26,7 +26,7 @@ export const AddCard = (props) => {
     //#region 表單狀態管理
     const [Name, Namehandler, NameregExpResult, NameResetValue] = useForm("", ["^[\u4E00-\u9FA5]{1,}$", "^.{1,5}$"], ["請輸入管理員中文姓名", "姓名最長為5個中文字"]); // 管理員姓名欄位
     const [Account, Accounthandler, AccountregExpResult, AccountResetValue] = useForm("", ["^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z]+$"], ["請輸入正確E-mail格式"]); // 管理員姓名欄位
-    const [Pass, Passhandler, PassregExpResult, PassResetValue] = useForm("", ["^.{1,}$"], ["請輸入正確密碼格式"]); // 管理員密碼欄位
+    const [Pass, Passhandler, PassregExpResult, PassResetValue] = useForm("", ["^[A-Za-z0-9]{4,16}$"], ["請輸入正確密碼格式"]); // 管理員密碼欄位
     const [Phone, Phonehandler, PhoneregExpResult, PhoneResetValue] = useForm("", ["^.{1,}$", "^09[0-9]{8}$"], ["請輸入手機號碼", "請輸入正確手機格式"]); // 管理員手機欄位
     const [Location, Locationhandler, LocationregExpResult, LocationResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇所在門市"]); // 管理員門市欄位
     const [Role, Rolehandler, RoleregExpResult, RoleResetValue] = useSelector([], [(value) => { /*console.log(value);*/ return (value ? value.length > 0 : false) }], ["請選擇管理員身份"]); // 管理員身分欄位
