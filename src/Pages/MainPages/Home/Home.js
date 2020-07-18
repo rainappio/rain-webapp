@@ -263,19 +263,19 @@ export const Home = (props) => {
                 <FormControl theme={{ margin: '0 0 32px 0' }}>
                     <FormRow theme={home.orderCardFormRowLessThan768}>
                         <SubContainer theme={home.addButtonSubContainer}>
-                            <OrderCardMobile icon={<LogoTotal />} labelFirst={cardCount[0]} labelSecond="預約總件數" onClick={() => console.log("123")} />
+                            <OrderCardMobile icon={<LogoTotal />} labelFirst={cardCount[0]} labelSecond="預約總件數" onClick={() => history.push('ReservationList?thisWeek=0&mode=')} />
                         </SubContainer>
                         <SubContainer theme={home.addButtonSubContainer}>
-                            <OrderCardMobile icon={<LogoDone />} labelFirst={cardCount[1]} labelSecond="已完成" onClick={() => console.log("123")} />
+                            <OrderCardMobile icon={<LogoDone />} labelFirst={cardCount[1]} labelSecond="已完成" onClick={() => history.push('ReservationList?thisWeek=0&mode=')} />
                         </SubContainer>
                         <SubContainer theme={home.addButtonSubContainer}>
-                            <OrderCardMobile icon={<LogoFail />} labelFirst={cardCount[2]} labelSecond="逾時未完成" onClick={() => console.log("123")} />
+                            <OrderCardMobile icon={<LogoFail />} labelFirst={cardCount[2]} labelSecond="逾時未完成" onClick={() => history.push('ReservationList?thisWeek=0&mode=')} />
                         </SubContainer>
                         <SubContainer theme={home.addButtonSubContainer}>
-                            <OrderCardMobile icon={<LogoNew />} labelFirst={cardCount[3]} labelSecond="尚未執行" onClick={() => console.log("123")} />
+                            <OrderCardMobile icon={<LogoNew />} labelFirst={cardCount[3]} labelSecond="尚未執行" onClick={() => history.push('ReservationList?thisWeek=0&mode=')} />
                         </SubContainer>
                         <SubContainer theme={home.addButtonSubContainer}>
-                            <OrderCardMobile icon={<LogoPercentage />} labelFirst={cardCount[4] === '無' ? "無" : `${cardCount[4] * 100}%`} labelSecond="達成率" onClick={() => console.log("123")} />
+                            <OrderCardMobile icon={<LogoPercentage />} labelFirst={cardCount[4] === '無' ? "無" : `${cardCount[4] * 100}%`} labelSecond="達成率" onClick={() => history.push('ReservationList?thisWeek=0&mode=')} />
                         </SubContainer>
                     </FormRow>
                 </FormControl>
@@ -283,19 +283,19 @@ export const Home = (props) => {
                 <FormControl theme={{}}>
                     <FormRow theme={home.orderCardFormRowLessThan768}>
                         <SubContainer theme={home.addButtonSubContainer}>
-                            <OrderCardMobile icon={<LogoTotal />} labelFirst={cardCountSeven[0]} labelSecond="預約總件數" onClick={() => console.log("123")} />
+                            <OrderCardMobile icon={<LogoTotal />} labelFirst={cardCountSeven[0]} labelSecond="預約總件數" onClick={() => history.push('ReservationList?thisWeek=1&mode=')} />
                         </SubContainer>
                         <SubContainer theme={home.addButtonSubContainer}>
-                            <OrderCardMobile icon={<LogoDone />} labelFirst={cardCountSeven[1]} labelSecond="已完成" onClick={() => console.log("123")} />
+                            <OrderCardMobile icon={<LogoDone />} labelFirst={cardCountSeven[1]} labelSecond="已完成" onClick={() => history.push('ReservationList?thisWeek=1&mode=')} />
                         </SubContainer>
                         <SubContainer theme={home.addButtonSubContainer}>
-                            <OrderCardMobile icon={<LogoFail />} labelFirst={cardCountSeven[2]} labelSecond="逾時未完成" onClick={() => console.log("123")} />
+                            <OrderCardMobile icon={<LogoFail />} labelFirst={cardCountSeven[2]} labelSecond="逾時未完成" onClick={() => history.push('ReservationList?thisWeek=1&mode=')} />
                         </SubContainer>
                         <SubContainer theme={home.addButtonSubContainer}>
-                            <OrderCardMobile icon={<LogoNew />} labelFirst={cardCountSeven[3]} labelSecond="尚未執行" onClick={() => console.log("123")} />
+                            <OrderCardMobile icon={<LogoNew />} labelFirst={cardCountSeven[3]} labelSecond="尚未執行" onClick={() => history.push('ReservationList?thisWeek=1&mode=')} />
                         </SubContainer>
                         <SubContainer theme={home.addButtonSubContainer}>
-                            <OrderCardMobile icon={<LogoPercentage />} labelFirst={cardCountSeven[4] === '無' ? "無" : `${cardCountSeven[4] * 100}%`} labelSecond="達成率" onClick={() => console.log("123")} />
+                            <OrderCardMobile icon={<LogoPercentage />} labelFirst={cardCountSeven[4] === '無' ? "無" : `${cardCountSeven[4] * 100}%`} labelSecond="達成率" onClick={() => history.push('ReservationList?thisWeek=1&mode=')} />
                         </SubContainer>
                     </FormRow>
                 </FormControl>
