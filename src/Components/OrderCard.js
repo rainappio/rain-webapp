@@ -30,13 +30,13 @@ export const OrderCard = (props) => {
                 onMouseEnter={() => setIsShown(true)}
                 onMouseLeave={() => setIsShown(false)}
             >
-                {props?.icon && <Container theme={{ justify: 'center', alignItems: 'center', height: '50%' }}>
+                {props?.icon && <Container theme={{ cursor: "pointer", justify: 'center', alignItems: 'center', height: '50%' }}>
                     {isShown && React.cloneElement(props?.icon, { style: { fill: 'white' } })}
                     {!isShown && React.cloneElement(props?.icon, { style: { fill: '#555555' } })}
                 </Container>}
                 <Container theme={{ direction: 'column', height: '50%' }}>
-                    <Text theme={{ color: `${isShown ? "white" : "#555555"}`, fontSize: "1.75rem", textAlign: "center", display: "block", fontWeight: 'bold', lineHeight: '2.0625rem' }}>{props.labelFirst ?? "labelFirst"}</Text>
-                    <Text theme={{ color: `${isShown ? "white" : "#555555"}`, fontSize: "0.875rem", textAlign: "center", display: "block" }}>{props.labelSecond ?? "labelSecond"}</Text>
+                    <Text theme={{ cursor: "pointer", color: `${isShown ? "white" : "#555555"}`, fontSize: "1.75rem", textAlign: "center", display: "block", fontWeight: 'bold', lineHeight: '2.0625rem' }}>{props.labelFirst ?? "labelFirst"}</Text>
+                    <Text theme={{ cursor: "pointer", color: `${isShown ? "white" : "#555555"}`, fontSize: "0.875rem", textAlign: "center", display: "block" }}>{props.labelSecond ?? "labelSecond"}</Text>
                 </Container>
             </BasicContainer>
 
@@ -60,13 +60,13 @@ export const OrderCardMobile = (props) => {
                 onMouseEnter={() => setIsShown(true)}
                 onMouseLeave={() => setIsShown(false)}
             >
-                {props?.icon && <Container theme={{ justify: 'center', alignItems: 'center', height: '50%' }}>
+                {props?.icon && <Container theme={{ cursor: "pointer", justify: 'center', alignItems: 'center', height: '50%' }}>
                     {isShown && React.cloneElement(props?.icon, { style: { fill: 'white', height: "3rem", width: "3rem" } })}
                     {!isShown && React.cloneElement(props?.icon, { style: { fill: '#555555', height: "3rem", width: "3rem" } })}
                 </Container>}
                 <Container theme={{ direction: 'column', height: '50%' }}>
-                    <Text theme={{ color: `${isShown ? "white" : "#555555"}`, fontSize: "24px", textAlign: "center", display: "block", fontWeight: 'bold', lineHeight: '24px' }}>{props.labelFirst ?? "labelFirst"}</Text>
-                    <Text theme={{ color: `${isShown ? "white" : "#555555"}`, fontSize: "14px", textAlign: "center", display: "block" }}>{props.labelSecond ?? "labelSecond"}</Text>
+                    <Text theme={{ cursor: "pointer", color: `${isShown ? "white" : "#555555"}`, fontSize: "24px", textAlign: "center", display: "block", fontWeight: 'bold', lineHeight: '24px' }}>{props.labelFirst ?? "labelFirst"}</Text>
+                    <Text theme={{ cursor: "pointer", color: `${isShown ? "white" : "#555555"}`, fontSize: "14px", textAlign: "center", display: "block" }}>{props.labelSecond ?? "labelSecond"}</Text>
                 </Container>
             </BasicContainer>
 

@@ -24,7 +24,6 @@ import percentagePageTitleAddSearch from './Pages/MainPages/Percentage/Percentag
 import reservationList from './Pages/MainPages/ReservationList/ReservationList'
 import reservationListAddCard from './Pages/MainPages/ReservationList/ReservationListAddCard'
 import reservationListEditCard from './Pages/MainPages/ReservationList/ReservationListEditCard'
-import reservationListDelDialog from './Pages/MainPages/ReservationList/ReservationListDelDialog'
 import reservationListPageTitleAddSearch from './Pages/MainPages/ReservationList/ReservationListPageTitleAddSearch'
 import test from './Pages/MainPages/Test/Test'
 import error404 from './Pages/ErrorPages/Error404'
@@ -38,6 +37,7 @@ import formCard from "./FormCard";
 import cardTable from "./CardTable";
 import list from "./Lists";
 import menuBar from "./MenuBar";
+import portal from "./Portal";
 
 export default {
     ...orderCards,
@@ -51,6 +51,7 @@ export default {
     ...jumpAlerts,
     ...buttons,
     ...formCard,
+    ...portal,
     pages: {
         loginPage: {
             login,
@@ -96,7 +97,6 @@ export default {
             reservationList,
             reservationListAddCard,
             reservationListEditCard,
-            reservationListDelDialog,
             reservationListPageTitleAddSearch,
         },
         testPage: {

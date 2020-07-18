@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { BasicContainer, Container, SubContainer } from '../Components/Containers'
 import { Text } from '../Components/Texts';
@@ -6,8 +6,6 @@ import { Context } from '../Store/store'
 import { DateRangePicker } from 'element-react';
 import 'element-theme-default';
 import DateRangeIcon from '@material-ui/icons/DateRange';
-
-
 
 /*
    Date   : 2020-07-08 16:41:30
@@ -18,11 +16,14 @@ import DateRangeIcon from '@material-ui/icons/DateRange';
                 value={[new Date('2020-07-01'),new Date('2020-07-30')]}// [startDate,endDate]
             對外開放樣式 theme = {  }
 */
-
 export const DatePicker = (props) => {
 
+    const [Value, setValue] = useState([new Date(), new Date()]);
 
-    const [Value, setValue] = useState([(props?.value?.[0] ?? new Date()), (props?.value?.[1] ?? new Date())]);
+    useEffect(() => {
+        setValue([(props?.value?.[0] ?? new Date()), (props?.value?.[1] ?? new Date())])
+
+    }, [props.value])
 
     return (
         <>
@@ -37,6 +38,7 @@ export const DatePicker = (props) => {
                             //console.log('DateRangePicker1 changed: ', date);
                             setValue(date);
                             props.getDate && props.getDate(date);
+                            props.doThings && props.doThings(date);
                         }}
                         align='left'
                         rangeSeparator=' 至 '

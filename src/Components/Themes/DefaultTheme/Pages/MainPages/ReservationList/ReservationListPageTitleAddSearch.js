@@ -109,5 +109,21 @@ export default {
         },
     },
     //#endregion 
+    //#region 匯出彈窗
+    exportText: {
+        display: "block",
+        textAlign: "center",
+        color: "#595959",
+        fontSize: "1.875em",
+        fontWeight: 900
+    },
+    highLightText: {
+        display: "block",
+        textAlign: "center",
+        color: "#545454",
+        fontSize: "1.125em",
+        fontWeight: 500
+    },
+    //#endregion
 }
 
