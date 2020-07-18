@@ -3,6 +3,7 @@ import { Routers } from '../Routers/Routers'
 import { Context } from '../Store/store'
 import { MenuBar } from '../Components/MenuBar'
 import { JumpAlert } from './JumpAlerts'
+import { Portal } from './Portal'
 
 /* 
    Date   : 2020-06-09 14:40:41
@@ -25,6 +26,7 @@ export const ContextContainer = (props) => {
         <>
           <MenuBar />
           <JumpAlert />
+          <Portal />
         </>
       }
       {/* 

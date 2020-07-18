@@ -13,7 +13,7 @@ const container = {
     //height: '3rem',
 }
 
-const text = { color: "#444", fontSize: "1.375em", fontWeight: 700, padding: " 0.2rem 0 12px 0", }
+const text = { userSelect: "none", color: "#444", fontSize: "1.375em", fontWeight: 700, padding: " 0.2rem 0 12px 0", }
 
 const subContainer = {}
 
@@ -55,7 +55,7 @@ const containerMobile = {
     //height: '3rem',
 }
 
-const textMobile = { color: "#444", fontSize: "18px", fontWeight: 700, }
+const textMobile = { userSelect: "none", color: "#444", fontSize: "18px", fontWeight: 700, }
 
 const subContainerMobile = {}
 

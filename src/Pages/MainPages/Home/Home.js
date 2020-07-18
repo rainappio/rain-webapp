@@ -233,47 +233,27 @@ export const Home = (props) => {
 
                 <Container theme={home.orderCardFormRow}>
                     <SubContainer >
-
-                        <OrderCard icon={<LogoTotal />} labelFirst={cardCount[0]} labelSecond="預約總件數" onClick={() => console.log("123")} />
-
-
-                        <OrderCard icon={<LogoDone />} labelFirst={cardCount[1]} labelSecond="已完成" onClick={() => console.log("123")} />
-
-
-                        <OrderCard icon={<LogoFail />} labelFirst={cardCount[2]} labelSecond="逾時未完成" onClick={() => console.log("123")} />
-
+                        <OrderCard icon={<LogoTotal />} labelFirst={cardCount[0]} labelSecond="預約總件數" onClick={() => history.push('ReservationList?thisWeek=0&mode=')} />
+                        <OrderCard icon={<LogoDone />} labelFirst={cardCount[1]} labelSecond="已完成" onClick={() => history.push('ReservationList?thisWeek=0&mode=')} />
+                        <OrderCard icon={<LogoFail />} labelFirst={cardCount[2]} labelSecond="逾時未完成" onClick={() => history.push('ReservationList?thisWeek=0&mode=')} />
                     </SubContainer>
                     <SubContainer>
-
-                        <OrderCard icon={<LogoNew />} labelFirst={cardCount[3]} labelSecond="尚未執行" onClick={() => console.log("123")} />
-
-
-                        <OrderCard icon={<LogoPercentage />} labelFirst={cardCount[4] === '無' ? "無" : `${cardCount[4] * 100}%`} labelSecond="達成率" onClick={() => console.log("123")} />
-
+                        <OrderCard icon={<LogoNew />} labelFirst={cardCount[3]} labelSecond="尚未執行" onClick={() => history.push('ReservationList?thisWeek=0&mode=')} />
+                        <OrderCard icon={<LogoPercentage />} labelFirst={cardCount[4] === '無' ? "無" : `${cardCount[4] * 100}%`} labelSecond="達成率" onClick={() => history.push('ReservationList?thisWeek=0&mode=')} />
                     </SubContainer>
                 </Container>
-
-
                 <PageSubTitle title='本週預約件數' />
                 <Container theme={home.orderCardFormRow}>
                     <SubContainer >
-                        <OrderCard icon={<LogoTotal />} labelFirst={cardCountSeven[0]} labelSecond="預約總件數" onClick={() => console.log("123")} />
-
-
-                        <OrderCard icon={<LogoDone />} labelFirst={cardCountSeven[1]} labelSecond="已完成" onClick={() => console.log("123")} />
-
-
-                        <OrderCard icon={<LogoFail />} labelFirst={cardCountSeven[2]} labelSecond="逾時未完成" onClick={() => console.log("123")} />
+                        <OrderCard icon={<LogoTotal />} labelFirst={cardCountSeven[0]} labelSecond="預約總件數" onClick={() => history.push('ReservationList?thisWeek=1&mode=')} />
+                        <OrderCard icon={<LogoDone />} labelFirst={cardCountSeven[1]} labelSecond="已完成" onClick={() => history.push('ReservationList?thisWeek=1&mode=')} />
+                        <OrderCard icon={<LogoFail />} labelFirst={cardCountSeven[2]} labelSecond="逾時未完成" onClick={() => history.push('ReservationList?thisWeek=1&mode=')} />
                     </SubContainer>
                     <SubContainer >
-                        <OrderCard icon={<LogoNew />} labelFirst={cardCountSeven[3]} labelSecond="尚未執行" onClick={() => console.log("123")} />
-
-                        <OrderCard icon={<LogoPercentage />} labelFirst={cardCountSeven[4] === '無' ? "無" : `${cardCountSeven[4] * 100}%`} labelSecond="達成率" onClick={() => console.log("123")} />
+                        <OrderCard icon={<LogoNew />} labelFirst={cardCountSeven[3]} labelSecond="尚未執行" onClick={() => history.push('ReservationList?thisWeek=1&mode=')} />
+                        <OrderCard icon={<LogoPercentage />} labelFirst={cardCountSeven[4] === '無' ? "無" : `${cardCountSeven[4] * 100}%`} labelSecond="達成率" onClick={() => history.push('ReservationList?thisWeek=1&mode=')} />
                     </SubContainer>
                 </Container>
-
-
-
             </BasicContainer>
             }
 
