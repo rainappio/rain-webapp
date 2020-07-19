@@ -62,7 +62,7 @@ const TableBase = (props) => {
         setPagesInfo(props.data);
         setData(props.data.data);
         setCheckedPatchArray((props.data.data ?? []).map((item, index) => (
-            item.Id
+            item[props.checkColKey]
         )))
         setColOrder({ colName: "", order: "" })
     }, [props.data])
@@ -167,7 +167,11 @@ const TableBase = (props) => {
                                 padding: "0.5rem",
                                 //borderRight: props?.theme?.tableBorder ?? "0.5px solid #ebeef5"
                             }} className={"checkbox"} >
-                                <Checkbox className={"checkIcon"} checked={(!(CheckedPatchArray ?? []).some(r => !CheckedArray.includes(r)))} onChange={(e) => { CheckedArray.length !== 0 ? setCheckedArray([]) : setCheckedArray(CheckedPatchArray) }} />
+                                <Checkbox style={{ color: "#964f19" }} className={"checkIcon"} checked={(!(CheckedPatchArray ?? []).some(r => !CheckedArray.includes(r)))}
+                                    onChange={(e) => {
+                                        CheckedArray.length !== 0 ? setCheckedArray([]) : setCheckedArray(CheckedPatchArray);
+                                        props?.onCheck && (CheckedArray.length !== 0 ? props.onCheck([]) : props.onCheck(CheckedPatchArray));
+                                    }} />
                             </BasicContainer>}
                         {(props.title ?? []).map((item, index) => (
                             <BasicContainer key={index} theme={{
@@ -271,12 +275,17 @@ const TableBase = (props) => {
                                         }}
                                     >
                                         <Checkbox
+                                            style={{ color: "#964f19" }}
                                             onChange={(e) => {
-                                                (CheckedArray.includes(item.Id) ?
-                                                    setCheckedArray(CheckedArray.filter((it) => (it !== item.Id)))
-                                                    : setCheckedArray((c) => ([...c, item.Id])))
+                                                (CheckedArray.includes(item[props.checkColKey]) ?
+                                                    setCheckedArray(CheckedArray.filter((it) => (it !== item[props.checkColKey])))
+                                                    : setCheckedArray((c) => ([...c, item[props.checkColKey]])));
+
+                                                props?.onCheck && (CheckedArray.includes(item[props.checkColKey]) ?
+                                                    props.onCheck(CheckedArray.filter((it) => (it !== item[props.checkColKey])))
+                                                    : props.onCheck([...CheckedArray, item[props.checkColKey]]));
                                             }}
-                                            checked={(CheckedArray.includes(item.Id))} className={"checkIcon"} />
+                                            checked={(CheckedArray.includes(item[props.checkColKey]))} className={"checkIcon"} />
                                     </BasicContainer>}
                                 {(props.colKeys ?? []).map((subItem, subIndex) => (
                                     <BasicContainer
@@ -382,6 +391,8 @@ const TableBase = (props) => {
                 title={["名稱", "描述", "狀態", "操作"]} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
                 colKeys={["Name", "Description", "Enabled", "controll"]} //必傳
                 haveCheck={true} //是否開啟勾選欄，預設不開啟
+                checkColKey={"uId"} //勾選欄資料的Key
+                onCheck={(check)=>{setCheck(check)}} //取得目前勾選的列id陣列，setCheck為父組件狀態
                 showHowManyRows={10} //顯示列數 * 3.5rem
                 turnPageExecute={(executePages) => { execute(executePages, keyWord) }}//發查翻頁，必傳否則不能翻頁
                 theme={{
@@ -445,20 +456,20 @@ export const TableBasic = styled(TableBase).attrs((props) => ({}))`
             svg {
                 width: ${props => props?.theme?.checkIconSize ? `calc( ${props.theme.checkIconSize} + 0.2rem )` : '1.2rem'}; 
                 height: ${props => props?.theme?.checkIconSize ? `calc( ${props.theme.checkIconSize} + 0.2rem )` : '1.2rem'};
-                color: ${props => props?.theme?.checkIconColor ?? '#409eff'};
+                // color: ${props => props?.theme?.checkIconColor ?? '#964f19'};
             }
         
         }
     
     }
 
-    && .MuiCheckbox-colorSecondary.Mui-checked {
-        color: ${props => props?.theme?.checkIconColor ?? '#409eff'};
-    }
+    // && .MuiCheckbox-colorSecondary.Mui-checked {
+    //     color: ${props => props?.theme?.checkIconColor ?? '#964f19'};
+    // }
 
-    && .MuiCheckbox-colorSecondary.Mui-checked:hover , .MuiIconButton-colorSecondary:hover {
-        background-color: ${props => props?.theme?.checkIconHoverBackgroundColor ?? '#409eff17'};
-    }
+    // && .MuiCheckbox-colorSecondary.Mui-checked:hover , .MuiIconButton-colorSecondary:hover {
+    //     background-color: ${props => props?.theme?.checkIconHoverBackgroundColor ?? '#964f1917'};
+    // }
 }
 `
 //#endregion
