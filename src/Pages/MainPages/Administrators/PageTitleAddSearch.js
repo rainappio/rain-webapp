@@ -27,7 +27,7 @@ export const PageTitleAddSearch = (props) => {
                                 text={"新增帳號"} icon={<AddIcon style={{
                                     position: "relative",
                                     top: "0.3rem",
-                                    height: "1.28rem"
+                                    height: "1.28rem",
                                 }} />}
                             />
                         </SubContainer>

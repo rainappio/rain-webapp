@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { mediaQuery } from './MediaQuery';
 import Button from '@material-ui/core/Button';
@@ -34,6 +34,75 @@ export const EasyButtonBase = (props) => {
 
 export const EasyButton = styled(EasyButtonBase).attrs((props) => ({}))`
 
+`
+//#endregion
+
+//#region 簡單按鈕搭配晃動動畫
+/* 
+   Date   : 2020-07-11 14:36:28
+   Author : Arhua Ho
+   Content: 一簡單按鈕搭配晃動動畫
+            可傳入props : 
+                onClick : 點擊事件函數
+                text : 按鈕文字
+                icon : 圖標元素
+                children : 子元素
+                theme : {
+                    //按鈕樣式
+                }
+*/
+export const EasyButtonShakeBase = (props) => {
+    const [Class, setClass] = useState("");
+    return (
+        <BasicContainer className={props.className}>
+            <BasicContainer className={Class} onMouseOver={() => { setClass("shake") }} onMouseLeave={() => { setClass("") }} onClick={props.onClick} theme={props?.theme} >
+                {props.icon}
+                <Text theme={{ fontSize: props?.theme?.fontSize, fontWeight: props?.theme?.fontWeight, color: "inherit", cursor: "pointer", userSelect: "none" }}>{props?.text ?? "按鈕"}</Text>
+                {props.children}
+            </BasicContainer>
+        </BasicContainer>
+    )
+}
+
+export const EasyButtonShake = styled(EasyButtonShakeBase).attrs((props) => ({}))`
+    .shake {
+        //動畫
+        animation: shake .8s 1;
+        svg {
+            fill : #fff;
+        }
+        @keyframes shake {
+            0% {
+              -webkit-transform: translateX(0);
+              transform: translateX(0);
+            }
+          
+            6.5% {
+              -webkit-transform: translateX(-6px) rotateY(-9deg);
+              transform: translateX(-6px) rotateY(-9deg);
+            }
+          
+            18.5% {
+              -webkit-transform: translateX(5px) rotateY(7deg);
+              transform: translateX(5px) rotateY(7deg);
+            }
+          
+            31.5% {
+              -webkit-transform: translateX(-3px) rotateY(-5deg);
+              transform: translateX(-3px) rotateY(-5deg);
+            }
+          
+            43.5% {
+              -webkit-transform: translateX(2px) rotateY(3deg);
+              transform: translateX(2px) rotateY(3deg);
+            }
+          
+            50% {
+              -webkit-transform: translateX(0);
+              transform: translateX(0);
+            }
+          }
+    }
 `
 //#endregion
 

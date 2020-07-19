@@ -8,6 +8,7 @@ import pageTitleAddSearch from './Pages/MainPages/Administrators/PageTitleAddSea
 import customers from './Pages/MainPages/Customers/Customers'
 import customersAddCard from './Pages/MainPages/Customers/CustomersAddCard'
 import dispatch from './Pages/MainPages/Dispatch/Dispatch'
+import dispatchPageTitleAddSearch from './Pages/MainPages/Dispatch/DispatchPageTitleAddSearch'
 import dispatchBoard from './Pages/MainPages/DispatchBoard/DispatchBoard'
 import experts from './Pages/MainPages/Experts/Experts'
 import expertsAddCard from './Pages/MainPages/Experts/ExpertsAddCard'
@@ -69,6 +70,7 @@ export default {
         },
         dispatchPage: {
             dispatch,
+            dispatchPageTitleAddSearch,
         },
         dispatchBoardPage: {
             dispatchBoard,

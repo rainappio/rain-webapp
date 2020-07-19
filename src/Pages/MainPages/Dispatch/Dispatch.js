@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Context } from '../../../Store/store'
 import { BasicContainer } from '../../../Components/Containers';
+import { DispatchPageTitleAddSearch } from './DispatchPageTitleAddSearch';
 
 export const Dispatch = (props) => {
 
@@ -11,7 +12,7 @@ export const Dispatch = (props) => {
     return (
         <>
             <BasicContainer theme={dispatch.basicContainer}>
-                Dispatch
+                <DispatchPageTitleAddSearch />
             </BasicContainer>
         </>
     )
