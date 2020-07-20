@@ -24,4 +24,23 @@ export default {
             scrollHeight: ".8rem",
         }
     },
+    tableBasicContainerLessThan768: {
+        padding: "0.75rem 1rem 0"
+    },
+    exportButton: {
+        backgroundColor: "#fff",
+        display: "inline-block",
+        width: "5.875rem",
+        height: "2.25rem",
+        lineHeight: "2.25rem",
+        color: "#d25959",
+        border: "1px solid #d25959",
+        borderRadius: "1.25rem",
+        textAlign: "center",
+        hoverBackgroundColor: "#d25959",
+        hoverColor: "#fff",
+        fontSize: "0.875rem",
+        cursor: "pointer",
+        margin: '4.5rem 1rem 0 0',
+    },
 }
