@@ -7,7 +7,7 @@ import { useAsync } from '../../../SelfHooks/useAsync';
 import { useForm, useSelector } from '../../../SelfHooks/useForm'
 import { alertService } from '../../../Components/JumpAlerts';
 import { FormCard } from '../../../Components/FormCard';
-import { month, getDayByYearAndMonth, YearFrom1930to, Counties, cityAndCountiesLite, times } from '../../../Mappings/Mappings';
+import { month, getDayByYearAndMonth, YearFrom1930to, Counties, cityAndCountiesLite, hours } from '../../../Mappings/Mappings';
 import { SubContainer } from '../../../Components/Containers';
 import { Text } from '../../../Components/Texts';
 
@@ -15,13 +15,13 @@ import { Text } from '../../../Components/Texts';
 const getTimeList = (isLeft, nowTheirSelected) => {
     if (!!nowTheirSelected) {
         if (isLeft) {
-            return times.filter((t) => (parseInt(t.value.replace(":", "")) < parseInt(nowTheirSelected.value.replace(":", ""))));
+            return hours.filter((t) => (parseInt(t.value.replace(":", "")) < parseInt(nowTheirSelected.value.replace(":", ""))));
         } else {
-            return times.filter((t) => (parseInt(t.value.replace(":", "")) > parseInt(nowTheirSelected.value.replace(":", ""))));
+            return hours.filter((t) => (parseInt(t.value.replace(":", "")) > parseInt(nowTheirSelected.value.replace(":", ""))));
         }
     } else {
         // nowTheirSelected===""
-        return times;
+        return hours;
     }
 }
 //#endregion
