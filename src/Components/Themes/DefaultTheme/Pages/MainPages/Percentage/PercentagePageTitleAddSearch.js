@@ -38,8 +38,8 @@ export default {
                 textAlign: "center",
                 //hoverBackgroundColor: "#964f19",
                 //hoverColor: "#fff",
-                fontSize: "1.25rem",
-                fontWeight: 400,
+                fontSize: "1.09rem",
+                fontWeight: 600,
                 cursor: "pointer",
                 padding: '12px 24px 12px 24px',
             }
@@ -56,8 +56,8 @@ export default {
                 textAlign: "center",
                 //hoverBackgroundColor: "#964f19",
                 //hoverColor: "#fff",
-                fontSize: "1.25rem",
-                fontWeight: 400,
+                fontSize: "1.09rem",
+                fontWeight: 600,
                 cursor: "pointer",
                 padding: '12px 24px 12px 24px',
             }
@@ -172,7 +172,7 @@ export default {
         },
         inputBasicContainer: {
             width: "100%",
-            margin: "0 0 1.5rem 0",
+            margin: "0 0 0 0",
             display: "inline-block",
             backgroundColor: "#fff",
             borderRadius: "20px"

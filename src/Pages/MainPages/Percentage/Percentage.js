@@ -30,24 +30,16 @@ export const Percentage = (props) => {
     const [ChoosenTag, setChoosenTag] = useState(1);
     const [SearchDate, SearchDatehandler, SearchDateregExpResult, SearchDateeResetValue] = useForm([new Date(), new Date()], [""], [""]);
 
-    const isFirstRun = useRef(true);
-    useEffect(() => {
-        if (isFirstRun.current) {
-            isFirstRun.current = false;
-            return;
-        }
-
-
-        execute(1, SearchDate);
-
-
-        execute2(1, SearchDate);
-
-
-        execute3(1, SearchDate);
-
-
-    }, [SearchDate])
+    // const isFirstRun = useRef(true);
+    // useEffect(() => {
+    //     if (isFirstRun.current) {
+    //         isFirstRun.current = false;
+    //         return;
+    //     }
+    //     execute(1, SearchDate);
+    //     execute2(1, SearchDate);
+    //     execute3(1, SearchDate);
+    // }, [SearchDate])
     //#region 查詢列表API
     const getShopPercentByPageOrkey = useCallback(async (page = 1, searchDate, key) => {
         let today = new Date().toISOString().split("T")[0];
@@ -335,6 +327,9 @@ export const Percentage = (props) => {
                     tag={ChoosenTag}
                     searchDate={SearchDate}
                     searchDateeResetValue={SearchDateeResetValue}
+                    execute={execute}
+                    execute2={execute2}
+                    execute3={execute3}
                 //  setOpenAddJumpDialog={setOpenAddJumpDialog} 
                 //  execute={execute}
                 //   setSearchWord={setSearchWord}
@@ -550,6 +545,183 @@ export const Percentage = (props) => {
                                             fontWeight: "550",
                                             cursor: "default",
                                             fontSize: "1rem",
+                                        }}
+                                            style={{
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                WebkitLineClamp: 1,
+                                                width: "100%",
+                                                WebkitBoxOrient: "vertical",
+                                                whiteSpace: 'nowarp'
+                                            }}>{item}</Text>
+                                    </TooltipBasic>))
+                            },
+                            "ReservationCount": {
+                                // width: "45rem",
+                                width: "33%",
+                                order: true,// 是否開啟排序，預設為不開啟
+                                render: (item, id) => (((item || item === 0) &&
+                                    <TooltipBasic title={item} arrow>
+                                        <Text theme={{
+                                            color: "#444",
+                                            fontWeight: "550",
+                                            cursor: "default",
+                                            fontSize: "1rem",
+                                        }}
+                                            style={{
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                WebkitLineClamp: 1,
+                                                width: "100%",
+                                                WebkitBoxOrient: "vertical",
+                                                whiteSpace: 'nowarp'
+                                            }}>{item}</Text>
+                                    </TooltipBasic>))
+                            },
+                            "CompleteCount": {
+                                // width: "20rem",
+                                width: "33%",
+                                order: true,
+                                render: (item, id) => (((item || item === 0) &&
+                                    <TooltipBasic title={item} arrow>
+                                        <Text theme={{
+                                            color: "#444",
+                                            fontWeight: "550",
+                                            cursor: "default",
+                                            fontSize: "1rem",
+                                            display: "inline-block",
+                                        }}
+                                            style={{
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                WebkitLineClamp: 1,
+                                                width: "100%",
+                                                WebkitBoxOrient: "vertical",
+                                                whiteSpace: 'nowarp'
+                                            }}>{item}</Text>
+                                    </TooltipBasic>))
+                            },
+
+
+                        }} />}
+                </BasicContainer>
+            </BasicContainer>}
+            {width <= 768 && <BasicContainer theme={percentage.basicContainer}>
+                <PercentagePageTitleAddSearch tableBasicContainerLessThan768
+                    setTag={setChoosenTag}
+                    tag={ChoosenTag}
+                    searchDate={SearchDate}
+                    searchDateeResetValue={SearchDateeResetValue}
+                    execute={execute}
+                    execute2={execute2}
+                    execute3={execute3}
+                //  setOpenAddJumpDialog={setOpenAddJumpDialog} 
+                //  execute={execute}
+                //   setSearchWord={setSearchWord}
+                />
+                <BasicContainer theme={percentage.tableBasicContainer}>
+                    {ChoosenTag === 1 && <TableBasic
+                        data={TableData} //原始資料
+                        title={["門市名稱", "預約次數", "預約率"]} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
+                        colKeys={["ShopName", "ReservationCount", "ReservationRate"]} //必傳
+                        //haveCheck={true} //是否開啟勾選欄，預設不開啟
+                        showHowManyRows={9 * 1.143} //顯示列數 * 3.5rem
+                        turnPageExecute={(executePages) => { execute(executePages, SearchWord) }}//發查翻頁，必傳否則不能翻頁
+                        theme={{
+                            // width:"", //外層容器寬度
+                            minWidth: "0", //外層容器最小寬度
+                            rowHeight: "4rem",
+                            titleRowHeight: "4rem",
+                            // padding:"", //外層容器內距
+                            // checkColWidth: "6rem", //勾選欄寬度
+                            // checkIconSize: "2rem", //勾選框大小
+                            // checkIconColor: "red", //勾選框顏色
+                            // checkIconHoverBackgroundColor: "black", //勾選框大小Hover背景顏色
+                            // rowHoverBackgroundColor: "black", // hover資料列背景色
+                            // tableBorder: "2px solid #e5e5e5", // 列表的整體邊框樣式
+                            // borderwidth: "2px",
+
+                            "ShopName": {
+                                // width: "40rem", // 調整個別欄寬度
+                                // 提供客製化渲染內容，可使用預設參數 item 與 id，item 為 對應列表資料、id 為對應列表資料的id
+                                // render: (item, id) => (`${item} ${id} sdf`)
+                                width: "33%",
+                                order: true,// 是否開啟排序，預設為不開啟
+                                render: (item, id) => (((item || item === 0) &&
+                                    <TooltipBasic title={item} arrow>
+                                        <Text theme={{
+                                            color: "#444",
+                                            fontWeight: "550",
+                                            cursor: "default",
+                                            fontSize: "1rem",
+                                        }}>{item}</Text>
+                                    </TooltipBasic>))
+                            },
+
+                            "ReservationCount": {
+                                // width: "20rem",
+                                width: "33%",
+                                order: true,
+                                render: (item, id) => (((item || item === 0) &&
+                                    <TooltipBasic title={item} arrow>
+                                        <Text theme={{
+                                            color: "#444",
+                                            fontWeight: "550",
+                                            cursor: "default",
+                                            fontSize: "1rem"
+                                        }}>{item}次</Text>
+                                    </TooltipBasic>))
+                            },
+                            "ReservationRate": {
+                                // width: "20rem",
+                                width: "34%",
+                                order: true,
+                                render: (item, id) => (((item || item === 0) &&
+                                    <TooltipBasic title={item} arrow>
+                                        <Text theme={{
+                                            color: "#444",
+                                            fontWeight: "550",
+                                            cursor: "default",
+                                            fontSize: "1rem"
+                                        }}>{item * 100}%</Text>
+                                    </TooltipBasic>))
+                            },
+
+                        }} />}
+                    {ChoosenTag === 2 && <TableBasic
+                        data={TableData2} //原始資料
+                        title={["區域名稱", "總預約次數", "已完成"]} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
+                        colKeys={["AreaName", "ReservationCount", "CompleteCount"]} //必傳
+                        //haveCheck={true} //是否開啟勾選欄，預設不開啟
+                        showHowManyRows={9 * 1.143} //顯示列數 * 3.5rem
+                        turnPageExecute={(executePages) => { execute(executePages, SearchWord) }}//發查翻頁，必傳否則不能翻頁
+                        theme={{
+                            // width:"", //外層容器寬度
+                            minWidth: "0", //外層容器最小寬度
+                            rowHeight: "4rem",
+                            titleRowHeight: "4rem",
+                            // padding:"", //外層容器內距
+                            // checkColWidth: "6rem", //勾選欄寬度
+                            // checkIconSize: "2rem", //勾選框大小
+                            // checkIconColor: "red", //勾選框顏色
+                            // checkIconHoverBackgroundColor: "black", //勾選框大小Hover背景顏色
+                            // rowHoverBackgroundColor: "black", // hover資料列背景色
+                            // tableBorder: "2px solid #e5e5e5", // 列表的整體邊框樣式
+                            // borderwidth: "2px",
+
+                            "AreaName": {
+                                // width: "40rem", // 調整個別欄寬度
+                                // 提供客製化渲染內容，可使用預設參數 item 與 id，item 為 對應列表資料、id 為對應列表資料的id
+                                // render: (item, id) => (`${item} ${id} sdf`)
+                                width: "33%",
+                                order: true,// 是否開啟排序，預設為不開啟
+                                render: (item, id) => (((item || item === 0) &&
+                                    <TooltipBasic title={item} arrow>
+                                        <Text theme={{
+                                            color: "#444",
+                                            fontWeight: "550",
+                                            cursor: "default",
+                                            fontSize: "1rem",
                                         }}>{item}</Text>
                                     </TooltipBasic>))
                             },
@@ -564,7 +736,118 @@ export const Percentage = (props) => {
                                             fontWeight: "550",
                                             cursor: "default",
                                             fontSize: "1rem"
-                                        }}>{item}</Text>
+                                        }}>{item}筆</Text>
+                                    </TooltipBasic>))
+                            },
+                            "CompleteCount": {
+                                // width: "20rem",
+                                width: "34%",
+                                order: true,
+                                render: (item, id) => (((item || item === 0) &&
+                                    <TooltipBasic title={item} arrow>
+                                        <Text theme={{
+                                            color: "#444",
+                                            fontWeight: "550",
+                                            cursor: "default",
+                                            fontSize: "1rem"
+                                        }}>{`${item}筆`}</Text>
+                                    </TooltipBasic>))
+                            },
+                            "CancelCount": {
+                                // width: "20rem",
+                                width: "20%",
+                                order: true,
+                                render: (item, id) => (((item || item === 0) &&
+                                    <TooltipBasic title={item} arrow>
+                                        <Text theme={{
+                                            color: "#444",
+                                            fontWeight: "550",
+                                            cursor: "default",
+                                            fontSize: "1rem"
+                                        }}>{item}筆</Text>
+                                    </TooltipBasic>))
+                            },
+                            "NotPerformedCount": {
+                                // width: "20rem",
+                                width: "20%",
+                                order: true,
+                                render: (item, id) => (((item || item === 0) &&
+                                    <TooltipBasic title={item} arrow>
+                                        <Text theme={{
+                                            color: "#444",
+                                            fontWeight: "550",
+                                            cursor: "default",
+                                            fontSize: "1rem"
+                                        }}>{item}筆</Text>
+                                    </TooltipBasic>))
+                            },
+
+                        }} />}
+                    {ChoosenTag === 3 && <TableBasic
+                        data={TableData3} //原始資料
+                        title={["姓名", "預約次數", "已完成"]} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
+                        colKeys={["MasterName", "ReservationCount", "CompleteCount"]} //必傳
+                        //haveCheck={true} //是否開啟勾選欄，預設不開啟
+                        showHowManyRows={9 * 1.143} //顯示列數 * 3.5rem
+                        turnPageExecute={(executePages) => { execute(executePages, SearchWord) }}//發查翻頁，必傳否則不能翻頁
+                        theme={{
+                            // width:"", //外層容器寬度
+                            minWidth: "0", //外層容器最小寬度
+                            rowHeight: "4rem",
+                            titleRowHeight: "4rem",
+                            // padding:"", //外層容器內距
+                            // checkColWidth: "6rem", //勾選欄寬度
+                            // checkIconSize: "2rem", //勾選框大小
+                            // checkIconColor: "red", //勾選框顏色
+                            // checkIconHoverBackgroundColor: "black", //勾選框大小Hover背景顏色
+                            // rowHoverBackgroundColor: "black", // hover資料列背景色
+                            // tableBorder: "2px solid #e5e5e5", // 列表的整體邊框樣式
+                            // borderwidth: "2px",
+
+                            "MasterName": {
+                                // width: "40rem", // 調整個別欄寬度
+                                // 提供客製化渲染內容，可使用預設參數 item 與 id，item 為 對應列表資料、id 為對應列表資料的id
+                                // render: (item, id) => (`${item} ${id} sdf`)
+                                width: "33%",
+                                order: true,// 是否開啟排序，預設為不開啟
+                                render: (item, id) => (((item || item === 0) &&
+                                    <TooltipBasic title={item} arrow>
+                                        <Text theme={{
+                                            color: "#444",
+                                            fontWeight: "550",
+                                            cursor: "default",
+                                            fontSize: "1rem",
+                                        }}
+                                            style={{
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                WebkitLineClamp: 1,
+                                                width: "100%",
+                                                WebkitBoxOrient: "vertical",
+                                                whiteSpace: 'nowarp'
+                                            }}>{item}</Text>
+                                    </TooltipBasic>))
+                            },
+                            "ReservationCount": {
+                                // width: "45rem",
+                                width: "33%",
+                                order: true,// 是否開啟排序，預設為不開啟
+                                render: (item, id) => (((item || item === 0) &&
+                                    <TooltipBasic title={item} arrow>
+                                        <Text theme={{
+                                            color: "#444",
+                                            fontWeight: "550",
+                                            cursor: "default",
+                                            fontSize: "1rem",
+                                        }}
+                                            style={{
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                WebkitLineClamp: 1,
+                                                width: "100%",
+                                                WebkitBoxOrient: "vertical",
+                                                whiteSpace: 'nowarp'
+                                            }}>{item}</Text>
                                     </TooltipBasic>))
                             },
                             "CompleteCount": {
@@ -577,21 +860,23 @@ export const Percentage = (props) => {
                                             color: "#444",
                                             fontWeight: "550",
                                             cursor: "default",
-                                            fontSize: "1rem"
-                                        }}>{item}</Text>
+                                            fontSize: "1rem",
+                                            display: "inline-block",
+                                        }}
+                                            style={{
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                WebkitLineClamp: 1,
+                                                width: "100%",
+                                                WebkitBoxOrient: "vertical",
+                                                whiteSpace: 'nowarp'
+                                            }}>{item}</Text>
                                     </TooltipBasic>))
                             },
 
 
                         }} />}
                 </BasicContainer>
-            </BasicContainer>}
-            {width <= 768 && <BasicContainer theme={percentage.basicContainer}>
-                <PercentagePageTitleAddSearch tableBasicContainerLessThan768
-                //  setOpenAddJumpDialog={setOpenAddJumpDialog} 
-                //  execute={execute}
-                //   setSearchWord={setSearchWord}
-                />
             </BasicContainer>
             }
         </>

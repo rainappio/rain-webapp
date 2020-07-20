@@ -20,14 +20,18 @@ const PercentagePageTitleAddSearchBase = (props) => {
 
     const [SearchWord, SearchWordhandler, SearchWordregExpResult] = useForm("", [""], [""]);
     const [Mode, Modehandler, ModeregExpResult, ModeResetValue] = useSelector([], [], []); // 狀態欄位
+    const [SearchDate, SearchDatehandler, SearchDateregExpResult, SearchDateeResetValue] = useForm([new Date(), new Date()], [""], [""]);
+
 
     if (!props.tableBasicContainerLessThan768) {
         return (
             <>
                 <FormControl theme={{}} onSubmit={(e) => {
                     e.preventDefault();
-                    console.log("dsfdf")
-                    //props.execute(1, SearchWord); props.setSearchWord(SearchWord)
+                    //console.log("dsfdf")
+                    props.execute(1, SearchDate, SearchWord);
+                    props.execute2(1, SearchDate, SearchWord);
+                    props.execute3(1, SearchDate, SearchWord);
                 }}>
                     <Container theme={{ justify: "space-between", padding: "40px 0 29px 40px", }}>
                         {/* 標題 */}
@@ -44,7 +48,8 @@ const PercentagePageTitleAddSearchBase = (props) => {
                         <SubContainer theme={{ padding: "0 2.5rem 0 0" }}>
                             <FormRow theme={percentagePageTitleAddSearch.addAndSearchFormRow}>
                                 <SubContainer theme={percentagePageTitleAddSearch.addButtonSubContainer}>
-                                    <DatePicker value={props.searchDate} getDate={props.searchDateeResetValue}></DatePicker>
+                                    <DatePicker value={props.searchDate} getDate={props.searchDateeResetValue}
+                                        doThings={(date) => { props.execute(1, date, SearchWord); props.execute2(1, date, SearchWord); props.execute3(1, date, SearchWord); SearchDateeResetValue(date) }}></DatePicker>
                                 </SubContainer>
                                 <SearchTextInput
                                     value={SearchWord}
@@ -52,7 +57,7 @@ const PercentagePageTitleAddSearchBase = (props) => {
                                     regExpResult={SearchWordregExpResult}
                                     placeholder={"請輸入搜尋內容"}
                                     theme={percentagePageTitleAddSearch.searchInput}
-                                    searchOnClick={() => { props.execute(1, SearchWord); props.setSearchWord(SearchWord) }}
+                                    searchOnClick={() => { props.execute(1, SearchDate, SearchWord); props.execute2(1, SearchDate, SearchWord); props.execute3(1, SearchDate, SearchWord); }}
                                 />
                             </FormRow>
                         </SubContainer>
@@ -101,8 +106,10 @@ const PercentagePageTitleAddSearchBase = (props) => {
                 <BasicContainer className={props.className} theme={{ padding: "0 0 0 0.5rem" }} >
                     <FormControl theme={{ padding: "0px 0 29px 0px" }} onSubmit={(e) => {
                         e.preventDefault();
-                        console.log("dsfdf")
-                        //props.execute(1, SearchWord); props.setSearchWord(SearchWord)
+                        //console.log("dsfdf")
+                        props.execute(1, SearchDate, SearchWord);
+                        props.execute2(1, SearchDate, SearchWord);
+                        props.execute3(1, SearchDate, SearchWord);
                     }}>
 
                         <FormRow theme={{ justify: "center", padding: "0px 0 0px 0px", }}>
@@ -153,7 +160,8 @@ const PercentagePageTitleAddSearchBase = (props) => {
                         {/* 日期區間選單、搜尋輸入框 */}
                         {IsExpand && <FormRow>
                             <SubContainer theme={percentagePageTitleAddSearch.addButtonSubContainerLessThan768}>
-                                <DatePicker theme={{ width: "100%" }}></DatePicker>
+                                <DatePicker theme={{ width: "100%" }} value={props.searchDate} getDate={props.searchDateeResetValue}
+                                    doThings={(date) => { props.execute(1, date, SearchWord); props.execute2(1, date, SearchWord); props.execute3(1, date, SearchWord); SearchDateeResetValue(date) }}></DatePicker>
                             </SubContainer>
                             <SearchTextInput
                                 value={SearchWord}
@@ -161,7 +169,7 @@ const PercentagePageTitleAddSearchBase = (props) => {
                                 regExpResult={SearchWordregExpResult}
                                 placeholder={"請輸入搜尋內容"}
                                 theme={percentagePageTitleAddSearch.searchInputLessThan768}
-                                searchOnClick={() => { props.execute(1, SearchWord); props.setSearchWord(SearchWord) }}
+                                searchOnClick={() => { props.execute(1, SearchDate, SearchWord); props.execute2(1, SearchDate, SearchWord); props.execute3(1, SearchDate, SearchWord); }}
                             />
                         </FormRow>}
 
