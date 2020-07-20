@@ -10,6 +10,7 @@ import customersAddCard from './Pages/MainPages/Customers/CustomersAddCard'
 import dispatch from './Pages/MainPages/Dispatch/Dispatch'
 import dispatchPageTitleAddSearch from './Pages/MainPages/Dispatch/DispatchPageTitleAddSearch'
 import dispatchBoard from './Pages/MainPages/DispatchBoard/DispatchBoard'
+import dispatchBoardPageTitleAddSearch from './Pages/MainPages/DispatchBoard/DispatchBoardPageTitleAddSearch'
 import experts from './Pages/MainPages/Experts/Experts'
 import expertsAddCard from './Pages/MainPages/Experts/ExpertsAddCard'
 import expertsEditCard from './Pages/MainPages/Experts/ExpertsEditCard'
@@ -74,6 +75,7 @@ export default {
         },
         dispatchBoardPage: {
             dispatchBoard,
+            dispatchBoardPageTitleAddSearch,
         },
         expertsPage: {
             experts,

@@ -26,6 +26,8 @@ border: ${props => props?.theme?.border ?? 'initial'};
 border-radius: ${props => props?.theme?.borderRadius ?? 'initial'};
 border-top: ${props => props?.theme?.borderTop};
 border-right: ${props => props?.theme?.borderRight};
+border-bottom: ${props => props?.theme?.borderBottom};
+border-left: ${props => props?.theme?.borderLeft};
 padding: ${props => props?.theme?.padding ?? 'initial'};
 
 //溢出
@@ -113,6 +115,8 @@ user-select: ${ props => props?.theme?.userSelect ?? 'initial'};
     border-radius: ${props => props?.theme?.tablet?.borderRadius ? props.theme.tablet.borderRadius : (props?.theme?.borderRadius ?? 'initial')};
     border-top: ${props => props?.theme?.tablet?.borderTop};
     border-right: ${props => props?.theme?.tablet?.borderRight};
+    border-bottom: ${props => props?.theme?.tablet?.borderBottom};
+    border-left: ${props => props?.theme?.tablet?.borderLeft};
     padding: ${props => props?.theme?.tablet?.padding ? props.theme.tablet.padding : (props?.theme?.padding ?? 'initial')};
     
     //溢出

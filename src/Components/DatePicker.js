@@ -96,3 +96,31 @@ const WeekendDay = styled.div.attrs((props) => ({}))`
     }
 `
 
+const SingleDatePicker = (props) => {
+
+    const [Value, setValue] = useState([new Date(), new Date()]);
+
+    useEffect(() => {
+        setValue([(props?.value?.[0] ?? new Date()), (props?.value?.[1] ?? new Date())])
+
+    }, [props.value])
+
+    return (
+        <>
+            <BasicContainer theme={{ width: "15.375rem", ...props?.theme }}>
+                <DatePicker
+                    value={Value}
+                    placeholder="選擇日期範圍"
+                    isShowTrigger={false}
+                    onChange={date => {
+                        //console.log('DateRangePicker1 changed: ', date);
+                        setValue(date);
+                        props.getDate && props.getDate(date);
+                        props.doThings && props.doThings(date);
+                    }}
+                    disabledDate={time => time.getTime() < Date.now() - 8.64e7}
+                />
+            </BasicContainer>
+        </>
+    )
+}

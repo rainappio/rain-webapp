@@ -54,6 +54,9 @@ export const Container = styled.div.attrs((props) => ({}))`
         border-radius: 4px;
         background: ${props => props?.theme?.scrollUnhoverBackgroundColor ?? '#9093994d'};
         }
+    ::-webkit-scrollbar-corner {
+        background-color: ${props => props?.theme?.scrollConerColor ?? '#90939900'};
+        }
     &:hover::-webkit-scrollbar-thumb {
         -webkit-border-radius: 4px;
         border-radius: 4px;
@@ -137,6 +140,9 @@ export const SubContainer = styled.div.attrs((props) => ({}))`
         -webkit-border-radius: 4px;
         border-radius: 4px;
         background: ${props => props?.theme?.scrollUnhoverBackgroundColor ?? '#9093994d'};
+        }
+    ::-webkit-scrollbar-corner {
+        background-color: ${props => props?.theme?.scrollConerColor ?? '#90939900'};
         }
     &:hover::-webkit-scrollbar-thumb {
         -webkit-border-radius: 4px;
@@ -309,6 +315,9 @@ export const BasicContainer = styled.div.attrs((props) => ({}))`
         -webkit-border-radius: 4px;
         border-radius: 4px;
         background: ${props => props?.theme?.scrollUnhoverBackgroundColor ?? '#9093994d'};
+        }
+    ::-webkit-scrollbar-corner {
+        background-color: ${props => props?.theme?.scrollConerColor ?? '#90939900'};
         }
     &:hover::-webkit-scrollbar-thumb {
         -webkit-border-radius: 4px;
