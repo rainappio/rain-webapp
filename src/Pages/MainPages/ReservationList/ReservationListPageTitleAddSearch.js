@@ -37,13 +37,16 @@ const ReservationListPageTitleAddSearchBase = (props) => {
         */
         if (parseInt(isThisWeek.get("thisWeek")) === 1) {
             props.execute && props.execute(dateTrans(DateRegion[0]), dateTransAndGetWeek(DateRegion[0]), SearchWord);//若等於1的就是過去一週
-            DateRegionResetValue([DateRegion[0], addDays(DateRegion[0], 6)])
+            DateRegionResetValue([DateRegion[0], addDays(DateRegion[0], 6)]);
+            props.setDateRange && props.setDateRange([DateRegion[0], addDays(DateRegion[0], 6)]);
         } else if (parseInt(isThisWeek.get("thisWeek")) === 0) {
             props.execute && props.execute(dateTrans(DateRegion[0]), dateTrans(DateRegion[1]), SearchWord);//若等於0查的就是今天
             DateRegionResetValue([DateRegion[0], DateRegion[0]])
+            props.setDateRange && props.setDateRange([DateRegion[0], DateRegion[0]]);
         } else {
             props.execute(dateTrans(), dateTrans(addMonths(new Date(), 3)), SearchWord);//若沒有Parma查的就是未來三個月
             DateRegionResetValue([new Date(), addMonths(new Date(), 3)]);
+            props.setDateRange && props.setDateRange([new Date(), addMonths(new Date(), 3)]);
         }
 
     }, [])
@@ -120,7 +123,10 @@ const ReservationListPageTitleAddSearchBase = (props) => {
                                     <DatePicker
                                         getDate={DateRegionResetValue}
                                         value={DateRegion}// [startDate,endDate]
-                                        doThings={(date) => { props.execute(dateTrans(date[0]), dateTrans(date[1]), SearchWord); }}
+                                        doThings={(date) => {
+                                            props.execute(dateTrans(date[0]), dateTrans(date[1]), SearchWord);
+                                            props.setDateRange && props.setDateRange([date[0], date[1]]);
+                                        }}
                                     ></DatePicker>
                                     {/* {console.log(DateRegion)} */}
                                 </SubContainer>
@@ -153,6 +159,7 @@ const ReservationListPageTitleAddSearchBase = (props) => {
                                 ]}
                                 onChange={(values) => {
                                     ModeResetValue(values);
+                                    props.setMode && props.setMode(values)
                                     //這裡的邏輯有問題  (首先要確定status對應規則)
                                     //1.舊版本 在一開始進入頁面時，
                                     //  若是本日進入，且"直接"改動狀態，則發查本日資料並對應篩選status資料
@@ -200,7 +207,7 @@ const ReservationListPageTitleAddSearchBase = (props) => {
         return (
             <>
                 <BasicContainer className={props.className} theme={{ padding: "0 0 0 0.5rem" }} >
-                    <BasicContainer onClick={() => { setIsExpand(e => !e) }} theme={{ cursor: "pointer" }}>
+                    <BasicContainer onClick={() => { setIsExpand(e => !e) }} theme={{ cursor: "pointer", padding: "0px 16px 0px 16px" }}>
                         <ExpandMoreIcon style={{
                             width: "1rem",
                             position: "relative",
@@ -210,7 +217,7 @@ const ReservationListPageTitleAddSearchBase = (props) => {
                         }}></ExpandMoreIcon>
                         <Text theme={{ display: "inline-block", margin: "0 0 0.75rem 0", color: "#999", fontSize: "0.875rem", fontWeight: "600", cursor: "pointer", userSelect: "none" }}>篩選日期區間或其它條件</Text>
                     </BasicContainer>
-                    <FormControl theme={{ padding: "0px 0 29px 0px" }} onSubmit={(e) => {
+                    <FormControl theme={{ padding: "0px 16px 0px 16px" }} onSubmit={(e) => {
                         e.preventDefault();
                         //console.log("dsfdf")
                         props.execute(dateTrans(DateRegion[0]), dateTrans(DateRegion[1]), SearchWord); props.setSearchWord(SearchWord)
@@ -221,7 +228,10 @@ const ReservationListPageTitleAddSearchBase = (props) => {
                                 <DatePicker theme={{ width: "100%" }}
                                     getDate={DateRegionResetValue}
                                     value={DateRegion}// [startDate,endDate]
-                                    doThings={(date) => { props.execute(dateTrans(date[0]), dateTrans(date[1]), SearchWord); }}
+                                    doThings={(date) => {
+                                        props.execute(dateTrans(date[0]), dateTrans(date[1]), SearchWord);
+                                        props.setDateRange && props.setDateRange([date[0], date[1]]);
+                                    }}
                                 ></DatePicker>
                             </SubContainer>
                             <SearchTextInput
@@ -234,7 +244,7 @@ const ReservationListPageTitleAddSearchBase = (props) => {
                             />
                         </FormRow>}
                         {/* 狀態選單、匯出問券按鈕 */}
-                        <FormRow theme={{ justify: "space-between", padding: "0px 0 24px 0px", }}>
+                        <FormRow theme={{ justify: "space-between", padding: "0px 0 0px 0px", }}>
                             <BasicContainer theme={{ width: "7.2rem" }}>
                                 < FormCardSelector
                                     //label={""}
@@ -251,6 +261,7 @@ const ReservationListPageTitleAddSearchBase = (props) => {
                                     ]}
                                     onChange={(values) => {
                                         ModeResetValue(values);
+                                        props.setMode && props.setMode(values)
                                         //這裡的邏輯有問題  (首先要確定status對應規則)
                                         //1.舊版本 在一開始進入頁面時，
                                         //  若是本日進入，且"直接"改動狀態，則發查本日資料並對應篩選status資料

@@ -4,12 +4,15 @@ import { ReservationListPageTitleAddSearch } from './ReservationListPageTitleAdd
 import { useWindowSize } from '../../../SelfHooks/useWindowSize'
 import { useHistory } from 'react-router-dom';
 import { useAsync } from '../../../SelfHooks/useAsync';
+import { useForm, useSelector } from '../../../SelfHooks/useForm'
 import { Text } from '../../../Components/Texts';
 import { CardTable } from '../../../Components/CardTable';
 import { EasyButton } from '../../../Components/Buttons';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { SubContainer, Container, BasicContainer } from '../../../Components/Containers';
+import { portalService } from '../../../Components/Portal';
+import { dateTrans, dateTransAndGetWeek, addDays, addMonths } from '../../../Handlers/DateHandler';
 import { setItemlocalStorage, getItemlocalStorage, clearlocalStorage } from '../../../Handlers/LocalStorageHandler'
 
 export const ReservationList = (props) => {
@@ -26,6 +29,8 @@ export const ReservationList = (props) => {
     const [DelWhoId, setDelWhoId] = useState(""); // 刪除彈窗中刪除id
     const [EditWho, setEditWho] = useState(""); // 編輯彈窗中編輯id
     const [SearchWord, setSearchWord] = useState(""); // 儲存關鍵字，供翻頁時的查詢用
+    const [Mode, setMode] = useState({ value: "all", label: "全部" });
+    const [DateRange, setDateRange] = useState([new Date(), new Date()]);
 
     let history = useHistory();
     const [width] = useWindowSize();
@@ -77,8 +82,8 @@ export const ReservationList = (props) => {
     //#endregion
 
     //#region 重新派遣API
-    const reOrder = useCallback(async (rowData) => {
-        console.log("reOrder", rowData);
+    const reOrder = useCallback(async (rowData, DateRange, SearchWord, Mode) => {
+        //console.log("reOrder", rowData);
         return await fetch(`${APIUrl}api/Orders/Put`,
             {
                 method: "PUT",
@@ -94,7 +99,10 @@ export const ReservationList = (props) => {
                 })
             }
         )//查詢角色、表格翻頁
-
+            .then(() => {
+                execute(dateTrans(DateRange[0]), dateTrans(DateRange[1]), SearchWord);
+                setMode(Mode);
+            })
             .catch((Error) => {
                 clearlocalStorage();
                 history.push("/Login");
@@ -110,18 +118,72 @@ export const ReservationList = (props) => {
 
     const [executeReOrder, PendingReOrder] = useAsync(reOrder, false);
     //#endregion
+
+    //#region 取消預約API
+    const cancelOrder = useCallback(async (rowData, DateRange, SearchWord, Mode, ) => {
+        console.log("reOrder", rowData);
+        return await fetch(`${APIUrl}api/Orders/Put`,
+            {
+                method: "PUT",
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
+                },
+                body: JSON.stringify({
+                    ...rowData,
+                    Status: 4,
+                    FootMasterId: 0,
+                    IsDeleted: false,
+                })
+            }
+        )//查詢角色、表格翻頁
+            .then(() => {
+                execute(dateTrans(DateRange[0]), dateTrans(DateRange[1]), SearchWord);
+                setMode(Mode);
+            })
+            .catch((Error) => {
+                clearlocalStorage();
+                history.push("/Login");
+                throw Error;
+            })
+            .finally(() => {
+
+            });
+
+        // 這裡要接著打refresh 延長Token存活期
+
+    }, [APIUrl, history])
+
+    const [executeCancelOrder, PendingCancelOrder] = useAsync(cancelOrder, false);
+    //#endregion
     const [OpenExportJumpDialog, setOpenExportJumpDialog] = useState(false); // 開啟刪除彈窗
 
     return (
         <>
             {width > 768 && <BasicContainer theme={reservationList.basicContainer}>
                 <ReservationListPageTitleAddSearch
+                    setMode={(mode) => { setMode(mode) }}
                     execute={execute}
                     setSearchWord={setSearchWord}
+                    setDateRange={setDateRange}
                     switch={[OpenExportJumpDialog, (isOpen) => { setOpenExportJumpDialog(isOpen) }]}
                 />
                 <BasicContainer theme={reservationList.tableBasicContainerLessThan768}>
-                    <CardTable data={TableData}
+                    <CardTable data={{
+                        ...TableData, data: TableData?.data?.filter((item) => {
+                            if (Mode?.value === 'all')
+                                return item;
+                            else if (Mode?.value === 'undone')
+                                return item?.Status === 0 || item?.Status === 1;
+                            else if (Mode?.value === 'overtime')
+                                return item?.Status === 6;
+                            else if (Mode?.value === 'done')
+                                return item?.Status === 5;
+                            else if (Mode?.value === 'cancle')
+                                return item?.Status === 2 || item?.Status === 3 || item?.Status === 4;
+
+                        })
+                    }}
                         title={["預約日期", "預約編號", ""]} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
                         colKeys={["CustomerName", "OrderNo", "controll"]} //必傳
                         // turnPageExecute={(executePages) => { execute(executePages, SearchWord) }}//暫不提供，因為沒用到 發查翻頁，必傳否則不能翻頁
@@ -184,14 +246,23 @@ export const ReservationList = (props) => {
                                     </>)),
                                 renderContent: (item, id, rowItem) => ((item &&
                                     <>
-                                        <Text theme={{
-                                            display: 'inline-block',
-                                            width: '20%',
-                                            //margin: "0 0 0.375rem 0",
-                                            color: "#444",
-                                            fontSize: "1.125rem",
-                                            fontWeight: "900"
-                                        }}>{rowItem?.ReservationDate?.split("T")?.[0]}</Text>
+                                        <Text style={{
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                            WebkitLineClamp: 1,
+                                            WebkitBoxOrient: "vertical",
+                                            //padding: '0 5rem 0 0',
+                                            whiteSpace: 'nowarp',
+                                            //display: 'inline-box',
+                                        }}
+                                            theme={{
+                                                display: "-webkit-inline-box",
+                                                width: '20%',
+                                                //margin: "0 0 0.375rem 0",
+                                                color: "#444",
+                                                fontSize: "1.125rem",
+                                                fontWeight: "900"
+                                            }}>{`${rowItem?.ReservationDate?.split("T")?.[0]} ${rowItem?.ReservationDate?.split("T")?.[1]}`}</Text>
                                         <Text theme={{
                                             display: 'inline-block',
                                             width: '35%',
@@ -216,15 +287,38 @@ export const ReservationList = (props) => {
                                             fontSize: "1.125rem",
                                             fontWeight: "900"
                                         }}>{rowItem?.MasterName === '' ? '尚未派遣' : rowItem?.MasterName}</Text>
-                                        <Text theme={{
-                                            display: 'inline-block',
-                                            //width: '15%',
-                                            margin: "0 0 0.375rem 0.5rem",
-                                            color: "#444",
-                                            fontSize: "0.875rem",
-                                            fontWeight: "400"
-                                        }}
-                                            onClick={rowItem?.MasterName === '' ? () => { console.log("導向派遣") } : () => { executeReOrder(rowItem) }}>{rowItem?.MasterName === '' ? '派遣' : '重新派遣'}</Text>
+                                        <EasyButton
+                                            key={`${item}2`}
+                                            onClick={() => {
+                                                rowItem?.MasterName === '' ? history.push('/Dispatch') :
+                                                    portalService.normal({
+                                                        autoClose: false,
+                                                        yes: () => {
+                                                            executeReOrder(rowItem, DateRange, SearchWord, Mode);
+                                                            //console.log(DateRange);
+                                                        },
+                                                        yesText: "是",
+                                                        noText: "否",
+                                                        content: (
+                                                            <>
+                                                                <Text theme={reservationList.exportText}>
+                                                                    您確定要重新派遣足健師嗎？
+                                                            </Text>
+
+                                                            </>)
+                                                    })
+                                            }}
+                                            theme={{
+                                                display: 'inline-block',
+                                                //width: '15%',
+                                                margin: "0 0 0.375rem 0.5rem",
+                                                color: "#444",
+                                                fontSize: "0.875rem",
+                                                fontWeight: "400"
+                                            }}
+                                            text={rowItem?.MasterName === '' ? '派遣' : '重新派遣'}
+                                        />
+
 
                                     </>))
                             },
@@ -377,16 +471,31 @@ export const ReservationList = (props) => {
                                                         display: 'block',
                                                         //width: '35%',
                                                         margin: "0 1rem 0 0",
-                                                        color: "#e37f22",
+                                                        color: rowItem?.Status <= 1 ? "#e37f22" : rowItem?.Status === 2 ? "#d25959" : rowItem?.Status === 3 ? '#d25959' : rowItem?.Status === 4 ? '#d25959' : rowItem?.Status === 5 ? '#26b49a' : rowItem?.Status === 6 ? '#d25959' : '#d25959',
+
                                                         fontSize: "1rem",
                                                         fontWeight: "400",
                                                         textAlign: "right",
-                                                    }}>即將到來</Text>,
+                                                    }}>{rowItem?.Status <= 1 ? '即將到來' : rowItem?.Status === 2 ? '客戶未到' : rowItem?.Status === 3 ? '已由顧客取消' : rowItem?.Status === 4 ? '已由系統取消' : rowItem?.Status === 5 ? '已完成' : rowItem?.Status === 6 ? '逾期未排班' : '狀態異常'}</Text>,
                                                 <EasyButton
                                                     key={`${item}2`}
-                                                    onClick={() => { }}
-                                                    theme={reservationList.exportButton}
-                                                    text={"取消預約"}
+                                                    onClick={() => {
+                                                        portalService.warn({
+                                                            autoClose: false,
+                                                            yes: () => { executeCancelOrder(rowItem, DateRange, SearchWord, Mode) },
+                                                            yesText: "是，取消預約",
+                                                            noText: "否，繼續瀏覽",
+                                                            content: (
+                                                                <>
+                                                                    <Text theme={reservationList.exportText}>
+                                                                        {`確定取消${rowItem?.ReservationDate?.split('T')?.[0]}在${rowItem?.ShopName}的預約嗎`}
+                                                                    </Text>
+
+                                                                </>)
+                                                        })
+                                                    }}
+                                                    theme={rowItem?.Status <= 1 ? reservationList.exportButton : (rowItem?.Status === 5 && rowItem?.AllService !== 0) ? reservationList.checkServiceButton : { display: 'none' }}
+                                                    text={rowItem?.Status <= 1 ? "取消預約" : '查看評論'}
                                                 />
                                             ]}
                                         </BasicContainer>
@@ -400,41 +509,201 @@ export const ReservationList = (props) => {
             {
                 width <= 768 && <BasicContainer theme={reservationList.basicContainer}>
                     <ReservationListPageTitleAddSearch tableBasicContainerLessThan768
+                        setMode={(mode) => { setMode(mode) }}
                         execute={execute}
                         setSearchWord={setSearchWord}
+                        setDateRange={setDateRange}
                         switch={[OpenExportJumpDialog, (isOpen) => { setOpenExportJumpDialog(isOpen) }]}
                     />
                     <BasicContainer theme={reservationList.tableBasicContainerLessThan768}>
-                        <CardTable data={TableData}
-                            title={["管理員姓名", "連絡電話", "Email", "建立日期", ""]} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
-                            colKeys={["CustomerName", "CustomerPhone", "OrderNo", "ReservationDate", "controll"]} //必傳
+                        <CardTable data={{
+                            ...TableData, data: TableData?.data?.filter((item) => {
+                                if (Mode?.value === 'all')
+                                    return item;
+                                else if (Mode?.value === 'undone')
+                                    return item?.Status === 0 || item?.Status === 1;
+                                else if (Mode?.value === 'overtime')
+                                    return item?.Status === 6;
+                                else if (Mode?.value === 'done')
+                                    return item?.Status === 5;
+                                else if (Mode?.value === 'cancle')
+                                    return item?.Status === 2 || item?.Status === 3 || item?.Status === 4;
+
+                            })
+                        }}
+                            title={["管理員姓名", "顧客資訊", "預約日期", "預約編號", '足健師資訊', ""]} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
+                            colKeys={["ShopName", "CustomerName", "ReservationDate", "OrderNo", "MasterName", "controll"]} //必傳
                             // turnPageExecute={(executePages) => { execute(executePages, SearchWord) }}//暫不提供，因為沒用到 發查翻頁，必傳否則不能翻頁
                             theme={{
                                 // basicContainer:{}, // 卡片最外層容器
                                 // rowContainer: {}, // 卡片內每個資料列容器樣式，可在下方針對個別欄位複寫樣式
                                 // rowTitle: {}, // 卡片內每個資料列中標題 不以renderTitle複寫時樣式
                                 // rowContent: {}, // 卡片內每個資料列中標題 不以renderContent複寫時樣式
-                                "uRealName": {
+                                "ShopName": {
                                     // 提供客製化渲染內容，可使用預設參數 item 與 id，item 為 對應列表資料、id 為對應列表資料的id
                                     // renderTitle: (item, id) => (`${item} ${id} sdf`)
                                     width: "20%",
+                                    renderTitle: (item, id, rowItem) => ((item &&
+                                        <Text style={{
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                            WebkitLineClamp: 1,
+                                            WebkitBoxOrient: "vertical",
+                                            //padding: '0 5rem 0 0',
+                                            whiteSpace: 'nowarp',
+                                            //display: 'inline-box',
+                                        }}
+                                            theme={{
+                                                display: "block",
+                                                width: '50%',
+                                                //margin: "0 0 0.375rem 0",
+                                                color: "#444",
+                                                fontSize: "18px",
+                                                fontWeight: "700",
+                                                lineHeight: '21px',
+                                            }}>{rowItem?.ShopName}</Text>)),
+                                    renderContent: (item, id, rowItem) => ((item &&
+                                        <>
+                                            <Text style={{
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                WebkitLineClamp: 1,
+                                                WebkitBoxOrient: "vertical",
+                                                //padding: '0 5rem 0 0',
+                                                whiteSpace: 'nowarp',
+                                                //display: 'inline-box',
+                                            }}
+                                                theme={{
+                                                    display: "block",
+                                                    //width: '50%',
+                                                    //margin: "0 0 0.375rem 0",
+                                                    color: "#444",
+                                                    fontSize: "14px",
+                                                    fontWeight: "400",
+                                                    lineHeight: '26px',
+                                                }}>{rowItem?.ShopAddr}</Text>
+                                            <Text style={{
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                WebkitLineClamp: 1,
+                                                WebkitBoxOrient: "vertical",
+                                                //padding: '0 5rem 0 0',
+                                                whiteSpace: 'nowarp',
+                                                //display: 'inline-box',
+                                            }}
+                                                theme={{
+                                                    display: "block",
+                                                    width: '50%',
+                                                    //margin: "0 0 0.375rem 0",
+                                                    color: "#964f19",
+                                                    fontSize: "14px",
+                                                    fontWeight: "400",
+                                                    lineHeight: '19px',
+                                                }}>{rowItem?.ShopTel}</Text>
+                                        </>
+                                    ))
+                                },
+                                "CustomerName": {
                                     renderTitle: (item, id) => ((item &&
                                         <Text theme={{
                                             display: "block",
                                             margin: "0 0 0.375rem 0",
                                             color: "#999",
                                             fontSize: "0.75rem",
-                                            fontWeight: "500",
-                                            height: "0.875rem"
+                                            fontWeight: "500"
+                                        }}>{item}</Text>)),
+                                    renderContent: (item, id, rowItem) => ((item &&
+                                        <>
+                                            <Text style={{
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                WebkitLineClamp: 1,
+                                                WebkitBoxOrient: "vertical",
+                                                //padding: '0 5rem 0 0',
+                                                whiteSpace: 'nowarp',
+                                                //display: 'inline-box',
+                                            }}
+                                                theme={{
+                                                    display: "block",
+                                                    width: '50%',
+                                                    //margin: "0 0 0.375rem 0",
+                                                    color: "#444",
+                                                    fontSize: "16px",
+                                                    fontWeight: "400",
+                                                    lineHeight: '19px',
+                                                }}>{item}</Text>
+                                            <Text style={{
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                WebkitLineClamp: 1,
+                                                WebkitBoxOrient: "vertical",
+                                                //padding: '0 5rem 0 0',
+                                                whiteSpace: 'nowarp',
+                                                //display: 'inline-box',
+                                            }}
+                                                theme={{
+                                                    display: "block",
+                                                    width: '50%',
+                                                    //margin: "0 0 0.375rem 0",
+                                                    color: "#964f19",
+                                                    fontSize: "14px",
+                                                    fontWeight: "400",
+                                                    lineHeight: '19px',
+                                                }}>{rowItem?.CustomerPhone}</Text>
+                                        </>
+                                    ))
+                                },
+                                "ReservationDate": {
+                                    renderTitle: (item, id) => ((item &&
+                                        <Text theme={{
+                                            display: "block",
+                                            margin: "0 0 0.375rem 0",
+                                            color: "#999",
+                                            fontSize: "0.75rem",
+                                            fontWeight: "500"
+                                        }}>{item}</Text>)),
+                                    renderContent: (item, id, rowItem) => ((item &&
+                                        <Text style={{
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                            WebkitLineClamp: 1,
+                                            WebkitBoxOrient: "vertical",
+                                            //padding: '0 5rem 0 0',
+                                            whiteSpace: 'nowarp',
+                                            //display: 'inline-box',
+                                        }}
+                                            theme={{
+                                                display: "-webkit-inline-box",
+                                                //width: '50%',
+                                                //margin: "0 0 0.375rem 0",
+                                                color: "#444",
+                                                fontSize: "1.125rem",
+                                                fontWeight: "900"
+                                            }}>{`${rowItem?.ReservationDate?.split("T")?.[0]} ${rowItem?.ReservationDate?.split("T")?.[1]}`}</Text>)),
+                                },
+                                "OrderNo": {
+                                    renderTitle: (item, id) => ((item &&
+                                        <Text theme={{
+                                            display: "block",
+                                            margin: "0 0 0.375rem 0",
+                                            color: "#999",
+                                            fontSize: "0.75rem",
+                                            fontWeight: "500"
                                         }}>{item}</Text>)),
                                     renderContent: (item, id) => ((item &&
                                         <Text theme={{
                                             color: "#444",
-                                            fontSize: "1.125rem",
-                                            fontWeight: "900"
+                                            fontSize: "14px",
+                                            fontWeight: "400",
+                                            lineHeight: '19px'
                                         }}>{item}</Text>))
                                 },
-                                "phone": {
+                                "MasterName": {
+                                    rowContainer: {
+                                        position: "absolute",
+                                        top: "90px",
+                                        left: "50%"
+                                    },
                                     renderTitle: (item, id) => ((item &&
                                         <Text theme={{
                                             display: "block",
@@ -443,44 +712,23 @@ export const ReservationList = (props) => {
                                             fontSize: "0.75rem",
                                             fontWeight: "500"
                                         }}>{item}</Text>)),
-                                    renderContent: (item, id) => ((item &&
-                                        <Text theme={{
-                                            color: "#964f19",
-                                            fontSize: "1rem",
-                                            fontWeight: "550"
-                                        }}>{item}</Text>))
-                                },
-                                "uLoginName": {
-                                    renderTitle: (item, id) => ((item &&
-                                        <Text theme={{
-                                            display: "block",
-                                            margin: "0 0 0.375rem 0",
-                                            color: "#999",
-                                            fontSize: "0.75rem",
-                                            fontWeight: "500"
-                                        }}>{item}</Text>)),
-                                    renderContent: (item, id) => ((item &&
-                                        <Text theme={{
-                                            color: "#444",
-                                            fontSize: "1rem",
-                                            fontWeight: "500"
-                                        }}>{item.split("T")[0]}</Text>))
-                                },
-                                "uCreateTime": {
-                                    renderTitle: (item, id) => ((item &&
-                                        <Text theme={{
-                                            display: "block",
-                                            margin: "0 0 0.375rem 0",
-                                            color: "#999",
-                                            fontSize: "0.75rem",
-                                            fontWeight: "500"
-                                        }}>{item}</Text>)),
-                                    renderContent: (item, id) => ((item &&
-                                        <Text theme={{
-                                            color: "#444",
-                                            fontSize: "1rem",
-                                            fontWeight: "500"
-                                        }}>{item.split("T")[0]}</Text>))
+                                    renderContent: (item, id, rowItem) => ((
+                                        <>
+                                            <Text theme={{
+                                                display: 'block',
+                                                color: "#444",
+                                                fontSize: "14px",
+                                                fontWeight: "400",
+                                                lineHeight: '19px'
+                                            }}>{item === '' ? '尚未派遣' : item}</Text>
+                                            <Text theme={{
+                                                display: 'block',
+                                                color: "#964f19",
+                                                fontSize: "14px",
+                                                fontWeight: "400",
+                                                lineHeight: '19px'
+                                            }}>{item === '' ? '' : rowItem?.MasterPhone}</Text>
+                                        </>))
                                 },
                                 "controll": {
                                     width: "40%",
@@ -496,15 +744,37 @@ export const ReservationList = (props) => {
                                                 textAlign: "right",
                                             }}>
                                                 {[
-                                                    <CreateIcon
+                                                    <Text
                                                         key={`${item}1`}
-                                                        style={{ cursor: "pointer", color: "#964f19", margin: "0 1rem 0 0" }}
-                                                        onClick={() => { setEditWho(rowItem.uID); setOpenEditJumpDialog(true); }}
-                                                    />,
+                                                        theme={{
+                                                            display: 'block',
+                                                            //width: '35%',
+                                                            margin: "0 1rem 0 0",
+                                                            color: rowItem?.Status <= 1 ? "#e37f22" : rowItem?.Status === 2 ? "#d25959" : rowItem?.Status === 3 ? '#d25959' : rowItem?.Status === 4 ? '#d25959' : rowItem?.Status === 5 ? '#26b49a' : rowItem?.Status === 6 ? '#d25959' : '#d25959',
+
+                                                            fontSize: "1rem",
+                                                            fontWeight: "400",
+                                                            textAlign: "right",
+                                                        }}>{rowItem?.Status <= 1 ? '即將到來' : rowItem?.Status === 2 ? '客戶未到' : rowItem?.Status === 3 ? '已由顧客取消' : rowItem?.Status === 4 ? '已由系統取消' : rowItem?.Status === 5 ? '已完成' : rowItem?.Status === 6 ? '逾期未排班' : '狀態異常'}</Text>,
                                                     <EasyButton
-                                                        onClick={() => { }}
-                                                        theme={reservationList.exportButton}
-                                                        text={"匯出問券"}
+                                                        key={`${item}2`}
+                                                        onClick={() => {
+                                                            portalService.warn({
+                                                                autoClose: false,
+                                                                yes: () => { executeCancelOrder(rowItem, DateRange, SearchWord, Mode) },
+                                                                yesText: "是，取消預約",
+                                                                noText: "否，繼續瀏覽",
+                                                                content: (
+                                                                    <>
+                                                                        <Text theme={reservationList.exportText}>
+                                                                            {`確定取消${rowItem?.ReservationDate?.split('T')?.[0]}在${rowItem?.ShopName}的預約嗎`}
+                                                                        </Text>
+
+                                                                    </>)
+                                                            })
+                                                        }}
+                                                        theme={rowItem?.Status <= 1 ? reservationList.exportButton : (rowItem?.Status === 5 && rowItem?.AllService !== 0) ? reservationList.checkServiceButton : { display: 'none' }}
+                                                        text={rowItem?.Status <= 1 ? "取消預約" : '查看評論'}
                                                     />
                                                 ]}
                                             </BasicContainer>

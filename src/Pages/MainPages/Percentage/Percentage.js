@@ -339,6 +339,7 @@ export const Percentage = (props) => {
                 <BasicContainer theme={percentage.tableBasicContainer}>
                     {ChoosenTag === 1 && <TableBasic
                         data={TableData} //原始資料
+                        noDataMsg={"該區間無資料"}
                         title={["門市名稱", "所屬縣市", "預約次數", "預約率"]} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
                         colKeys={["ShopName", "ShopCounty", "ReservationCount", "ReservationRate"]} //必傳
                         //haveCheck={true} //是否開啟勾選欄，預設不開啟
@@ -420,6 +421,7 @@ export const Percentage = (props) => {
                         }} />}
                     {ChoosenTag === 2 && <TableBasic
                         data={TableData2} //原始資料
+                        noDataMsg={"該區間無資料"}
                         title={["區域名稱", "總預約次數", "已完成", "逾時未完成", '尚未執行']} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
                         colKeys={["AreaName", "ReservationCount", "CompleteCount", "CancelCount", 'NotPerformedCount']} //必傳
                         //haveCheck={true} //是否開啟勾選欄，預設不開啟
@@ -515,6 +517,7 @@ export const Percentage = (props) => {
                         }} />}
                     {ChoosenTag === 3 && <TableBasic
                         data={TableData3} //原始資料
+                        noDataMsg={"該區間無資料"}
                         title={["姓名", "預約次數", "已完成"]} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
                         colKeys={["MasterName", "ReservationCount", "CompleteCount"]} //必傳
                         //haveCheck={true} //是否開啟勾選欄，預設不開啟
@@ -624,6 +627,7 @@ export const Percentage = (props) => {
                 <BasicContainer theme={percentage.tableBasicContainer}>
                     {ChoosenTag === 1 && <TableBasic
                         data={TableData} //原始資料
+                        noDataMsg={"該區間無資料"}
                         title={["門市名稱", "預約次數", "預約率"]} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
                         colKeys={["ShopName", "ReservationCount", "ReservationRate"]} //必傳
                         //haveCheck={true} //是否開啟勾選欄，預設不開啟
@@ -692,6 +696,7 @@ export const Percentage = (props) => {
                         }} />}
                     {ChoosenTag === 2 && <TableBasic
                         data={TableData2} //原始資料
+                        noDataMsg={"該區間無資料"}
                         title={["區域名稱", "總預約次數", "已完成"]} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
                         colKeys={["AreaName", "ReservationCount", "CompleteCount"]} //必傳
                         //haveCheck={true} //是否開啟勾選欄，預設不開啟
@@ -787,6 +792,7 @@ export const Percentage = (props) => {
                         }} />}
                     {ChoosenTag === 3 && <TableBasic
                         data={TableData3} //原始資料
+                        noDataMsg={"該區間無資料"}
                         title={["姓名", "預約次數", "已完成"]} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
                         colKeys={["MasterName", "ReservationCount", "CompleteCount"]} //必傳
                         //haveCheck={true} //是否開啟勾選欄，預設不開啟
