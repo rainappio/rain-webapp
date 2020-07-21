@@ -248,63 +248,67 @@ const TableBase = (props) => {
                     {/* 
                     //min-width: ${props => props?.theme?.minWidth ?? 'fit-content'}; //表格最小寬度
                     border-spacing: 0px; */}
-                    <BasicContainer theme={{
-                        height: props?.showHowManyRows ? `calc( ${props.showHowManyRows} * 3.5rem )` : `${props?.showHowManyRows}rem` ?? 'initial',
-                    }}>
-                        {(Data ?? []).map((item, index) => (
-                            <BasicContainer theme={{
-                                display: "flex",
-                                //minWidth: "fit-content",
-                                width: "100%",
-                                minWidth: (props?.theme?.minWidth ?? "0"),
-                                height: props?.theme?.rowHeight,
-                                borderLeft: props?.theme?.tableBorder ?? "0.5px solid #ebeef5",
-                                borderBottom: props?.theme?.tableBorder ?? "0.5px solid #ebeef5",
-                                backgroundColor: (index % 2 === 1 ? "#f8f5f2" : "#fdfcfb"),
-                                //hoverBackgroundColor: props?.theme?.rowHoverBackgroundColor ?? "#f5f7fa",
-                            }} key={`tr${index}`}>
+                    {(Data ?? []).length > 0 ?
+                        <BasicContainer theme={{
+                            height: props?.showHowManyRows ? `calc( ${props.showHowManyRows} * 3.5rem )` : `${props?.showHowManyRows}rem` ?? 'initial',
+                        }}>
+                            {(Data ?? []).map((item, index) => (
+                                <BasicContainer theme={{
+                                    display: "flex",
+                                    //minWidth: "fit-content",
+                                    width: "100%",
+                                    minWidth: (props?.theme?.minWidth ?? "0"),
+                                    height: props?.theme?.rowHeight,
+                                    borderLeft: props?.theme?.tableBorder ?? "0.5px solid #ebeef5",
+                                    borderBottom: props?.theme?.tableBorder ?? "0.5px solid #ebeef5",
+                                    backgroundColor: (index % 2 === 1 ? "#f8f5f2" : "#fdfcfb"),
+                                    //hoverBackgroundColor: props?.theme?.rowHoverBackgroundColor ?? "#f5f7fa",
+                                }} key={`tr${index}`}>
 
-                                {props.haveCheck &&
-                                    <BasicContainer
-                                        className={"checkbox"}
-                                        theme={{
-                                            padding: "0.5rem",
-                                            width: props?.theme?.checkColWidth ?? "4rem",
-                                            textAlign: "center",
-                                            borderRight: props?.theme?.tableBorder ?? "0.5px solid #ebeef5",
-                                        }}
-                                    >
-                                        <Checkbox
-                                            style={{ color: "#964f19" }}
-                                            onChange={(e) => {
-                                                (CheckedArray.includes(item[props.checkColKey]) ?
-                                                    setCheckedArray(CheckedArray.filter((it) => (it !== item[props.checkColKey])))
-                                                    : setCheckedArray((c) => ([...c, item[props.checkColKey]])));
-
-                                                props?.onCheck && (CheckedArray.includes(item[props.checkColKey]) ?
-                                                    props.onCheck(CheckedArray.filter((it) => (it !== item[props.checkColKey])))
-                                                    : props.onCheck([...CheckedArray, item[props.checkColKey]]));
+                                    {props.haveCheck &&
+                                        <BasicContainer
+                                            className={"checkbox"}
+                                            theme={{
+                                                padding: "0.5rem",
+                                                width: props?.theme?.checkColWidth ?? "4rem",
+                                                textAlign: "center",
+                                                borderRight: props?.theme?.tableBorder ?? "0.5px solid #ebeef5",
                                             }}
-                                            checked={(CheckedArray.includes(item[props.checkColKey]))} className={"checkIcon"} />
-                                    </BasicContainer>}
-                                {(props.colKeys ?? []).map((subItem, subIndex) => (
-                                    <BasicContainer
-                                        key={`${subItem}${subIndex}`}
-                                        theme={{
-                                            width: (props?.theme?.[props?.colKeys[subIndex]] ? (props?.theme[props.colKeys[subIndex]].width ?? `calc( ( 100% - ${props?.theme?.checkColWidth ?? (props.haveCheck ? "4rem" : "0rem")} ) / ${props?.title?.length} )`) : `calc( ( 100% - ${props?.theme?.checkColWidth ?? (props.haveCheck ? "4rem" : "0rem")} ) / ${props?.title?.length} )`),
-                                            padding: "0.8rem 0.5rem",
-                                            borderRight: props?.theme?.tableBorder ?? "0.5px solid #ebeef5",
-                                        }}>
-                                        {props?.theme?.[subItem]?.render ?
-                                            props.theme[subItem].render(item[subItem], item.Id ?? null, item)
-                                            : <TooltipBasic key={`tr${subIndex}`} title={`${item[subItem]}`} arrow>< Text theme={{ fontSize: "1rem", color: "#595959" }}>{`${item[subItem]}`}</Text></TooltipBasic>
-                                        }
-                                    </BasicContainer>
-                                ))
-                                }
-                            </BasicContainer>
-                        ))}
-                    </BasicContainer>
+                                        >
+                                            <Checkbox
+                                                style={{ color: "#964f19" }}
+                                                onChange={(e) => {
+                                                    (CheckedArray.includes(item[props.checkColKey]) ?
+                                                        setCheckedArray(CheckedArray.filter((it) => (it !== item[props.checkColKey])))
+                                                        : setCheckedArray((c) => ([...c, item[props.checkColKey]])));
+
+                                                    props?.onCheck && (CheckedArray.includes(item[props.checkColKey]) ?
+                                                        props.onCheck(CheckedArray.filter((it) => (it !== item[props.checkColKey])))
+                                                        : props.onCheck([...CheckedArray, item[props.checkColKey]]));
+                                                }}
+                                                checked={(CheckedArray.includes(item[props.checkColKey]))} className={"checkIcon"} />
+                                        </BasicContainer>}
+                                    {(props.colKeys ?? []).map((subItem, subIndex) => (
+                                        <BasicContainer
+                                            key={`${subItem}${subIndex}`}
+                                            theme={{
+                                                width: (props?.theme?.[props?.colKeys[subIndex]] ? (props?.theme[props.colKeys[subIndex]].width ?? `calc( ( 100% - ${props?.theme?.checkColWidth ?? (props.haveCheck ? "4rem" : "0rem")} ) / ${props?.title?.length} )`) : `calc( ( 100% - ${props?.theme?.checkColWidth ?? (props.haveCheck ? "4rem" : "0rem")} ) / ${props?.title?.length} )`),
+                                                padding: "0.8rem 0.5rem",
+                                                borderRight: props?.theme?.tableBorder ?? "0.5px solid #ebeef5",
+                                            }}>
+                                            {props?.theme?.[subItem]?.render ?
+                                                props.theme[subItem].render(item[subItem], item.Id ?? null, item)
+                                                : <TooltipBasic key={`tr${subIndex}`} title={`${item[subItem]}`} arrow>< Text theme={{ fontSize: "1rem", color: "#595959" }}>{`${item[subItem]}`}</Text></TooltipBasic>
+                                            }
+                                        </BasicContainer>
+                                    ))
+                                    }
+                                </BasicContainer>
+                            ))}
+                        </BasicContainer>
+                        :
+                        <Text theme={{ fontWeight: "600", display: "block", height: "12.5rem", lineHeight: "12.5rem", fontSize: "1.125rem", color: "#d25959", textAlign: "center", width: "100%" }}>{props.noDataMsg ?? "查無資料"}</Text>
+                    }
                 </BasicContainer>
             </BasicContainer >
             <BasicContainer theme={{
@@ -395,6 +399,7 @@ const TableBase = (props) => {
                 onCheck={(check)=>{setCheck(check)}} //取得目前勾選的列id陣列，setCheck為父組件狀態
                 showHowManyRows={10} //顯示列數 * 3.5rem
                 turnPageExecute={(executePages) => { execute(executePages, keyWord) }}//發查翻頁，必傳否則不能翻頁
+                noDataMsg={"查無資料"} //若查無資料時要顯示的文字
                 theme={{
                     width:"", //外層容器寬度
                     minWidth:"", //外層容器最小寬度
