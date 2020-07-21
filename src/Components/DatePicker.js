@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { BasicContainer, Container, SubContainer } from '../Components/Containers'
 import { Text } from '../Components/Texts';
 import { Context } from '../Store/store'
-import { DateRangePicker } from 'element-react';
+import { DateRangePicker, DatePicker as DatePickerEl } from 'element-react';
 import 'element-theme-default';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 
@@ -96,31 +96,77 @@ const WeekendDay = styled.div.attrs((props) => ({}))`
     }
 `
 
-const SingleDatePicker = (props) => {
+const SingleDatePickerBase = (props) => {
 
-    const [Value, setValue] = useState([new Date(), new Date()]);
+    const [Value, setValue] = useState(new Date());
 
     useEffect(() => {
-        setValue([(props?.value?.[0] ?? new Date()), (props?.value?.[1] ?? new Date())])
+        setValue(props?.value ?? new Date())
 
     }, [props.value])
 
     return (
         <>
-            <BasicContainer theme={{ width: "15.375rem", ...props?.theme }}>
-                <DatePicker
+            <BasicContainer className={props.className} theme={{ width: "12.125rem", ...props?.theme }}>
+                <DatePickerEl
                     value={Value}
                     placeholder="選擇日期範圍"
                     isShowTrigger={false}
                     onChange={date => {
-                        //console.log('DateRangePicker1 changed: ', date);
+                        console.log('DateRangePicker1 changed: ', date);
                         setValue(date);
+                        console.log(Value)
                         props.getDate && props.getDate(date);
                         props.doThings && props.doThings(date);
                     }}
-                    disabledDate={time => time.getTime() < Date.now() - 8.64e7}
+                //disabledDate={time => time.getTime() < Date.now() - 8.64e7}
                 />
+                <DateRangeIcon style={{
+                    position: "absolute",
+                    top: "0.35rem",
+                    left: "0.8rem",
+                    color: "#666",
+                    width: "1.1rem"
+                }} />
             </BasicContainer>
         </>
     )
 }
+
+export const SingleDatePicker = styled(SingleDatePickerBase).attrs((props) => ({}))`
+&& {
+    .el-input__inner {
+        //padding-left: 35px;
+        //padding-right: 0px;
+        text-align :center;
+        border-radius: 18px;
+        border-color: #666;
+        padding-top: .1rem;
+        color:#666;
+        font-family: "Arial", Microsoft JhengHei, "微軟正黑體", Helvetica, sans-serif;
+        font-weight: 500;
+        font-size: 0.875rem;
+    }
+    .el-input__inner:hover {
+        border-color: #c0c4cc;
+    }
+    .el-input__inner:focus {
+        border-color: #964f19;
+    }
+    .el-input__icon{
+        left:0;
+    }
+    .is-filled {
+        width: 100% !important;
+    }
+    .el-date-editor--daterange.el-input {
+        width: 100% !important;
+    }
+    
+
+    // .MuiPickersDay-daySelected {
+    //     color :red
+    // }
+
+}
+`

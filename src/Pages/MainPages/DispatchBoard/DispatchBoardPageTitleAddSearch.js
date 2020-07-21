@@ -5,7 +5,7 @@ import { EasyButtonShake } from '../../../Components/Buttons';
 import { SearchTextInput, FormControl, FormRow, FormCardSelector } from '../../../Components/Forms';
 import { useForm, useSelector } from '../../../SelfHooks/useForm'
 import { Text } from '../../../Components/Texts';
-import { DatePicker } from '../../../Components/DatePicker';
+import { SingleDatePicker } from '../../../Components/DatePicker';
 import { dateTrans, dateTransAndGetWeek, addDays, addMonths } from '../../../Handlers/DateHandler';
 import styled from 'styled-components';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -23,7 +23,7 @@ const DispatchBoardPageTitleAddSearchBase = (props) => {
     let history = useHistory();
 
     const [SearchWord, SearchWordhandler, SearchWordregExpResult] = useForm("", [""], [""]);
-    const [DateRegion, DateRegionhandler, DateRegionregExpResult, DateRegionResetValue] = useForm([new Date(), new Date()], [""], [""]);//日期區間欄位
+    const [DateRegion, DateRegionhandler, DateRegionregExpResult, DateRegionResetValue] = useForm(new Date(), [""], [""]);//日期區間欄位
     const [Mode, Modehandler, ModeregExpResult, ModeResetValue] = useSelector({ value: "future", label: "顯示未來訂單" }, [], []); // 狀態欄位
 
     let isThisWeek = new URLSearchParams(useLocation().search);//取得參數
@@ -34,7 +34,7 @@ const DispatchBoardPageTitleAddSearchBase = (props) => {
                 <FormControl theme={{}} onSubmit={(e) => {
                     e.preventDefault();
                     //console.log("dsfdf")
-                    props.execute(dateTrans(DateRegion[0]), dateTrans(DateRegion[1]), SearchWord); props.setSearchWord(SearchWord)
+                    props.execute(dateTrans(DateRegion), dateTrans(DateRegion), SearchWord); props.setSearchWord(SearchWord)
                 }}>
                     <Container theme={{ justify: "space-between", padding: "40px 0 29px 40px", }}>
                         {/* 標題 */}
@@ -51,11 +51,11 @@ const DispatchBoardPageTitleAddSearchBase = (props) => {
                         <SubContainer theme={{ padding: "0 2rem 0 0" }}>
                             <FormRow theme={dispatchBoardPageTitleAddSearch.addAndSearchFormRow}>
                                 <SubContainer theme={dispatchBoardPageTitleAddSearch.addButtonSubContainer}>
-                                    <DatePicker
+                                    <SingleDatePicker
                                         getDate={DateRegionResetValue}
                                         value={DateRegion}// [startDate,endDate]
-                                        doThings={(date) => { props.execute(dateTrans(date[0]), dateTrans(date[1]), SearchWord); }}
-                                    ></DatePicker>
+                                        doThings={(date) => { props.execute(dateTrans(date), dateTrans(date), SearchWord); }}
+                                    ></SingleDatePicker>
                                     {/* {console.log(DateRegion)} */}
                                 </SubContainer>
                             </FormRow>

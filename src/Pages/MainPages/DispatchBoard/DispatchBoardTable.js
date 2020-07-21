@@ -107,7 +107,7 @@ const ordersFormatTrans = (orders = []) => {
                 orderMasterBeKeyWithOrders[item.MasterName][item.ReservationDate.split("T")[1].substring(0, 5)] = item;
             }
     });
-    console.log(orderMasterBeKeyWithOrders)
+    // console.log(orderMasterBeKeyWithOrders)
     if (Object.keys(orderMasterBeKeyWithOrders).length > 0) {
         return Object.keys(orderMasterBeKeyWithOrders).map((item, index) => {
             return (

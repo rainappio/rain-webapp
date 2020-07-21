@@ -6,6 +6,7 @@ import { DispatchBoardTable } from './DispatchBoardTable';
 import { useAsync } from '../../../SelfHooks/useAsync';
 import { setItemlocalStorage, getItemlocalStorage, clearlocalStorage } from '../../../Handlers/LocalStorageHandler'
 import { useHistory } from 'react-router-dom';
+import { dateTrans } from '../../../Handlers/DateHandler';
 
 export const DispatchBoard = (props) => {
 
@@ -17,7 +18,7 @@ export const DispatchBoard = (props) => {
 
 
     //#region 查詢列表API
-    const getRoleByPageOrkey = useCallback(async (startDate = 1, endDate) => {
+    const getRoleByPageOrkey = useCallback(async (startDate = dateTrans(new Date()), endDate = dateTrans(new Date())) => {
 
         return await fetch(`${APIUrl}api/Orders/GetList?_date=${startDate}&_eDate=${endDate}`,
             {
