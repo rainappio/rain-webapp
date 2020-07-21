@@ -11,6 +11,7 @@ import { Text } from '../../../Components/Texts'
 import { useForm, useSelector } from '../../../SelfHooks/useForm'
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import { dateTrans, dateTransAndGetWeek, addDays, addMonths } from '../../../Handlers/DateHandler';
 
 import { setItemlocalStorage, getItemlocalStorage, clearlocalStorage } from '../../../Handlers/LocalStorageHandler'
 
@@ -42,9 +43,10 @@ export const Percentage = (props) => {
     // }, [SearchDate])
     //#region 查詢列表API
     const getShopPercentByPageOrkey = useCallback(async (page = 1, searchDate, key) => {
-        let today = new Date().toISOString().split("T")[0];
-        let startDate = searchDate?.[0] ? searchDate?.[0].toISOString().split("T")[0] : today;
-        let endDate = searchDate?.[1] ? searchDate?.[1].toISOString().split("T")[0] : today;
+        let today = dateTrans(new Date());
+        let startDate = searchDate?.[0] ? dateTrans(searchDate?.[0]) : today;
+        let endDate = searchDate?.[1] ? dateTrans(searchDate?.[1]) : today;
+        //console.log("DATE", today, startDate, endDate, searchDate);
         return await fetch(`${APIUrl}api/Report/GetShopReport?startDate=${startDate}&endDate=${endDate}&page=${page}&orderBy=2&key=${(key ? `${key}` : "")}`,
             {
                 headers: {
@@ -135,9 +137,9 @@ export const Percentage = (props) => {
 
     //#region 查詢列表API
     const getRegionPercentByPageOrkey = useCallback(async (page = 1, searchDate, key) => {
-        let today = new Date().toISOString().split("T")[0];
-        let startDate = searchDate?.[0] ? searchDate?.[0].toISOString().split("T")[0] : today;
-        let endDate = searchDate?.[1] ? searchDate?.[1].toISOString().split("T")[0] : today;
+        let today = dateTrans(new Date());
+        let startDate = searchDate?.[0] ? dateTrans(searchDate?.[0]) : today;
+        let endDate = searchDate?.[1] ? dateTrans(searchDate?.[1]) : today;
         return await fetch(`${APIUrl}api/Report/GetAreaReport?startDate=${startDate}&endDate=${endDate}&page=${page}&orderBy=2&key=${(key ? `${key}` : "")}`,
             {
                 headers: {
@@ -228,9 +230,9 @@ export const Percentage = (props) => {
 
     //#region 查詢列表API
     const getMasterPercentByPageOrkey = useCallback(async (page = 1, searchDate, key) => {
-        let today = new Date().toISOString().split("T")[0];
-        let startDate = searchDate?.[0] ? searchDate?.[0].toISOString().split("T")[0] : today;
-        let endDate = searchDate?.[1] ? searchDate?.[1].toISOString().split("T")[0] : today;
+        let today = dateTrans(new Date());
+        let startDate = searchDate?.[0] ? dateTrans(searchDate?.[0]) : today;
+        let endDate = searchDate?.[1] ? dateTrans(searchDate?.[1]) : today;
         return await fetch(`${APIUrl}api/Report/GetMasterReport?startDate=${startDate}&endDate=${endDate}&page=${page}&orderBy=2&key=${(key ? `${key}` : "")}`,
             {
                 headers: {
