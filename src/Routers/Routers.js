@@ -2,6 +2,8 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { getItemlocalStorage } from '../Handlers/LocalStorageHandler';
 import { urlMapping } from '../Mappings/Mappings'
+import { Test } from '../Pages/MainPages/Test';
+import { ReservationListCheckComment } from '../Pages/MainPages/ReservationList/ReservationListCheckComment';
 
 /* 
    Date   : 2020-06-17 17:35:53
@@ -203,6 +205,20 @@ export const Routers = (props) => {
                     render={({ location }) => {
                         return (getItemlocalStorage("Auth") !== null) ? (
                             urlMapping["/Percentage"]
+                        ) : (
+                                <Redirect
+                                    to={{
+                                        pathname: "/Login",
+                                    }}
+                                />
+                            );
+                    }
+                    }>
+                </Route>
+                <Route path={"/ReservationList/:id"}
+                    render={({ location }) => {
+                        return (getItemlocalStorage("Auth") !== null) ? (
+                            <ReservationListCheckComment />
                         ) : (
                                 <Redirect
                                     to={{

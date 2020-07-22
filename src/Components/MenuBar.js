@@ -22,7 +22,7 @@ export const MenuBar = (props) => {
             <BasicContainer theme={menuBar.leftModeBasicContainer}>
                 {/* 圖片 */}
                 <BasicContainer theme={menuBar.leftModeImgContainer}>
-                    <img alt="sdf" width="150" style={{ userSelect: "none" }} height="31.33" src={"./2db8549.png"}></img>
+                    <img alt="sdf" width="150" style={{ userSelect: "none" }} height="31.33" src={"/2db8549.png"}></img>
                 </BasicContainer>
                 {/* 標題 */}
                 <BasicContainer theme={menuBar.leftModeTitleContainer}>
@@ -119,7 +119,7 @@ export const MenuBar = (props) => {
             <BasicContainer theme={menuBar.topModeBasicContainer}>
                 {/* 開關功能選單按鈕與顯示目前功能名稱 */}
                 <SortIcon onClick={() => { setOpenMenu((o) => (!o)) }} style={{ position: "absolute", left: "1rem", top: "1.5rem", cursor: "pointer" }} />
-                <Text theme={{ color: "#444", lineHeight: "4.5rem", fontWeight: 600, fontSize: "1.25rem" }}>{navbarTitleMapping[location.pathname]}</Text>
+                <Text theme={{ color: "#444", lineHeight: "4.5rem", fontWeight: 600, fontSize: "1.25rem" }}>{navbarTitleMapping[location.pathname] ?? navbarTitleMapping[`/${location.pathname.split("/")[1]}/`]}</Text>
                 {/* 功能選單，寫死的 */}
                 <BasicContainer onClick={() => { setOpenMenu(false) }} theme={OpenMenu ? menuBar.topModeMenuContainerBackgroundExpand : menuBar.topModeMenuContainerBackgroundCollapse} >
                     <BasicContainer theme={OpenMenu ? menuBar.topModeMenuContainerExpand : menuBar.topModeMenuContainerCollapse}>

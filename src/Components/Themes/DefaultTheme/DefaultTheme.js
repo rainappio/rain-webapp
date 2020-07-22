@@ -27,6 +27,7 @@ import reservationList from './Pages/MainPages/ReservationList/ReservationList'
 import reservationListAddCard from './Pages/MainPages/ReservationList/ReservationListAddCard'
 import reservationListEditCard from './Pages/MainPages/ReservationList/ReservationListEditCard'
 import reservationListPageTitleAddSearch from './Pages/MainPages/ReservationList/ReservationListPageTitleAddSearch'
+import reservationListCheckComment from './Pages/MainPages/ReservationList/ReservationListCheckComment'
 import test from './Pages/MainPages/Test/Test'
 import error404 from './Pages/ErrorPages/Error404'
 import forms from "./Forms";
@@ -102,6 +103,7 @@ export default {
             reservationListAddCard,
             reservationListEditCard,
             reservationListPageTitleAddSearch,
+            reservationListCheckComment
         },
         testPage: {
             test,

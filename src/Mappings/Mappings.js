@@ -68,6 +68,7 @@ export const navbarTitleMapping = {
    "/Dispatch": "足健師派遣",// 足健師派遣
    "/DispatchBoard": "派遣單總覽",// 派遣單總覽
    "/ReservationList": "預約清單",// 預約清單
+   "/ReservationList/": "客戶評論",// 預約清單-客戶評論
    "/Percentage": "預約率總覽",// 預約率總覽
    "/": "預約件數",// 預約件數
    "/Test": "測試組件頁面",// 測試組件頁面
