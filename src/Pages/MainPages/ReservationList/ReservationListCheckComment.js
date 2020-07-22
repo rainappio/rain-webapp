@@ -210,10 +210,9 @@ export const ReservationListCheckComment = (props) => {
                             fontWeight: 800,
                             fontSize: "0.875rem",
                             lineHeight: "1rem",
-                            textAlign: "center",
                             color: "#444",
                             userSelect: "none",
-                            margin: "0.5rem 0rem 0 0",
+                            margin: "1rem 0rem 0 0",
                         }}>
                             客戶未填
                         </Text>
