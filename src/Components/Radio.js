@@ -6,7 +6,7 @@ import { Radio as RadioEl } from 'element-react';
 
 const RadioBase = (props) => {
     return (
-        <BasicContainer className={props.className} theme={{ display: props?.theme?.display ?? "inline-block", margin: props?.theme?.margin ?? "1rem 1.875rem 0 0", width: "10rem" }}>
+        <BasicContainer className={props.className} theme={{ display: props?.theme?.display ?? "inline-block", margin: props?.theme?.margin ?? "1rem 1.875rem 0 0", width: props?.theme?.width ?? "fit-content" }}>
             <RadioEl value={"1"} checked={props.checked} disabled={true}>{props.text}</RadioEl>
         </BasicContainer >
     )

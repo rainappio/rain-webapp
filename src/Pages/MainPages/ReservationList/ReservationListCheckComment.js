@@ -387,9 +387,9 @@ export const ReservationListCheckComment = (props) => {
                             您是如何得知本服務的？
                         </Text>
                         <Container theme={{ alignItems: "center", justify: "center", direction: "column" }}>
-                            <Radio theme={{ display: "block", margin: "" }} text={"阿瘦門市"} />
-                            <Radio theme={{ display: "block", margin: "" }} text={"阿瘦粉絲團等網路資訊"} checked />
-                            <Radio theme={{ display: "block", margin: "" }} text={"親友推薦分享"} />
+                            <Radio theme={{ display: "block", margin: "", width: "10rem" }} text={"阿瘦門市"} />
+                            <Radio theme={{ display: "block", margin: "", width: "10rem" }} text={"阿瘦粉絲團等網路資訊"} checked />
+                            <Radio theme={{ display: "block", margin: "", width: "10rem" }} text={"親友推薦分享"} />
                         </Container>
                     </BasicContainer>
                     <BasicContainer theme={{ display: "block", margin: "1.5rem 0 1rem" }}>
