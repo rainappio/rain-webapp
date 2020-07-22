@@ -5,7 +5,7 @@ import { EasyButtonShake } from '../../../Components/Buttons';
 import { SearchTextInput, FormControl, FormRow, FormCardSelector } from '../../../Components/Forms';
 import { useForm, useSelector } from '../../../SelfHooks/useForm'
 import { Text } from '../../../Components/Texts';
-import { DatePicker } from '../../../Components/DatePicker';
+import { SingleDatePicker } from '../../../Components/DatePicker';
 import { dateTrans, dateTransAndGetWeek, addDays, addMonths } from '../../../Handlers/DateHandler';
 import styled from 'styled-components';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -27,6 +27,22 @@ const DispatchPageTitleAddSearchBase = (props) => {
     const [Mode, Modehandler, ModeregExpResult, ModeResetValue] = useSelector({ value: "future", label: "顯示未來訂單" }, [], []); // 狀態欄位
 
     let isThisWeek = new URLSearchParams(useLocation().search);//取得參數
+
+    useEffect(() => {
+        //DateRegionResetValue([new Date('2020-07-01'), new Date('2020-07-30')])
+        //console.log(isThisWeek.get("thisWeek"))
+        /* 
+           Date   : 2020-07-17 14:02:36
+           Author : Arhua Ho
+           Content: 後端API並沒有吃狀態欄位，所以無法依狀態塞選訂單，依據下拉選單查詢欄位邏輯待確認
+        */
+
+        props.execute(dateTrans(), dateTrans(addMonths(new Date(), 3)), SearchWord);//若沒有Parma查的就是未來三個月
+        //DateRegionResetValue([new Date(), addMonths(new Date(), 3)]);
+        //props.setDateRange && props.setDateRange([new Date(), addMonths(new Date(), 3)]);
+
+
+    }, [])
 
     if (!props.tableBasicContainerLessThan768) {
         return (
@@ -63,6 +79,10 @@ const DispatchPageTitleAddSearchBase = (props) => {
                                 ]}
                                 onChange={(values) => {
                                     ModeResetValue(values);
+                                    if (values.value === 'past')
+                                        props.execute(dateTrans(addMonths(new Date(), -3)), dateTrans(), SearchWord);
+                                    else
+                                        props.execute(dateTrans(), dateTrans(addMonths(new Date(), 3)), SearchWord);
                                 }}
                                 regExpResult={ModeregExpResult}
                                 theme={dispatchPageTitleAddSearch.modeSelector}
@@ -71,21 +91,57 @@ const DispatchPageTitleAddSearchBase = (props) => {
                         <SubContainer theme={{ padding: "0 2.5rem 0 0" }}>
                             <EasyButtonShake
                                 onClick={() => {
-                                    // portalService.normal({
-                                    //     autoClose: false,
-                                    //     yes: () => { ExportExecute(dateTrans(DateRegion[0]), dateTrans(DateRegion[1]), SearchWord) },
-                                    //     yesText: "是",
-                                    //     noText: "否",
-                                    //     content: (
-                                    //         <>
-                                    //             <Text theme={dispatchPageTitleAddSearch.exportText}>
-                                    //                 您確定要匯出問卷嗎？
-                                    //              </Text>
-                                    //             <Text theme={dispatchPageTitleAddSearch.highLightText}>
-                                    //                 {`起：${dateTrans(DateRegion[0])} ~ 訖：${dateTrans(DateRegion[1])}`}
-                                    //             </Text>
-                                    //         </>)
-                                    // })
+                                    if (props?.Check?.length > 0)
+                                        portalService.normal({
+                                            autoClose: false,
+                                            yes: () => {
+                                                //console.log(props?.AllCheck)
+                                                if (Object.keys(props?.AllCheck).length === props.Check.length)
+                                                    props.Check.forEach((item) => {
+                                                        //console.log("foreach", props?.AllCheck[item.Id]);
+                                                        props.executeLetItGo(item, props?.AllCheck[item.Id]);
+                                                    })
+                                                else {
+                                                    console.log("NOTHING!")
+                                                    portalService.warn({
+                                                        autoClose: false,
+                                                        yes: () => { console.log("HAHA") },
+                                                        yesText: "OK",
+                                                        noText: "",
+                                                        content: (
+                                                            <>
+                                                                <Text theme={dispatchPageTitleAddSearch.exportText}>
+                                                                    請檢查是否有為訂單派遣足健師
+                                                             </Text>
+
+                                                            </>)
+                                                    })
+                                                }
+                                            },
+                                            yesText: "是，立即派遣",
+                                            noText: "否，取消派遣",
+                                            content: (
+                                                <>
+                                                    <Text theme={dispatchPageTitleAddSearch.exportText}>
+                                                        您確定要派遣足健師嗎？
+                                                 </Text>
+
+                                                </>)
+                                        })
+                                    else
+                                        portalService.warn({
+                                            autoClose: false,
+                                            yes: () => { console.log("HAHA") },
+                                            yesText: "OK",
+                                            noText: "",
+                                            content: (
+                                                <>
+                                                    <Text theme={dispatchPageTitleAddSearch.exportText}>
+                                                        請勾選欲派遣的訂單
+                                                 </Text>
+
+                                                </>)
+                                        })
                                 }}
                                 theme={dispatchPageTitleAddSearch.exportButton}
                                 text={"派遣足健師"}
