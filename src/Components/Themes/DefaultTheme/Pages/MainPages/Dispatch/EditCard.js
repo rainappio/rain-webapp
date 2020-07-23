@@ -108,6 +108,13 @@ export default {
         fontSize: "1.875em",
         fontWeight: 900
     },
+    exportTextSm: {
+        display: "block",
+        textAlign: "center",
+        color: "#595959",
+        fontSize: "1.25em",
+        fontWeight: 600
+    },
     highLightText: {
         display: "block",
         textAlign: "center",
