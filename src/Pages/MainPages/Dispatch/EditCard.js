@@ -104,6 +104,9 @@ export const EditCard = (props) => {
                                 <Text theme={dispatchEditCard.exportText}>
                                     確定要修改時間嗎？
                              </Text>
+                                <Text theme={dispatchEditCard.exportTextSm}>
+                                    *時間修改不代表派遣，請繼續操作並派遣足健師*
+                             </Text>
 
                             </>)
                     })
