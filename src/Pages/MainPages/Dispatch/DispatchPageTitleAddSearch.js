@@ -96,7 +96,7 @@ const DispatchPageTitleAddSearchBase = (props) => {
                                             autoClose: false,
                                             yes: () => {
                                                 //console.log(props?.AllCheck)
-                                                if (Object.keys(props?.AllCheck).length === props.Check.length)
+                                                if (Object.keys(props?.AllCheck).length === props.Check.length) {
                                                     props.Check.forEach((item) => {
                                                         //console.log("foreach", props?.AllCheck[item.Id]);
                                                         props.executeLetItGo(item, props?.AllCheck[item.Id]);
@@ -104,7 +104,11 @@ const DispatchPageTitleAddSearchBase = (props) => {
                                                             props.execute(dateTrans(addMonths(new Date(), -3)), dateTrans(), SearchWord);
                                                         else
                                                             props.execute(dateTrans(), dateTrans(addMonths(new Date(), 3)), SearchWord);
+
                                                     })
+
+                                                }
+
                                                 else {
                                                     console.log("NOTHING!")
                                                     portalService.warn({

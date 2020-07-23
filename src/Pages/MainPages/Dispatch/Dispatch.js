@@ -155,7 +155,7 @@ export const Dispatch = (props) => {
                 }
 
                 if (PreResult.success) {
-                    //console.log(PreResult.response)
+                    console.log(PreResult.response)
                     let tempData = PreResult.response.filter((item) => { return item.Status === 0 })
                     setTableData({ data: tempData });
                     return "查詢角色表格資訊成功"
@@ -169,7 +169,10 @@ export const Dispatch = (props) => {
                 throw Error;
             })
             .finally(() => {
-
+                setAllCheck('');
+                setCheck('');
+                ChoosenMasterResetValue('');
+                console.log("Done");
             });
 
         // 這裡要接著打refresh 延長Token存活期
