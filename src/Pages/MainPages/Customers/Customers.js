@@ -22,6 +22,7 @@ import { FormCard } from '../../../Components/FormCard';
 import { TooltipBasic } from '../../../Components/Tooltips';
 import { CustomersAddCard } from './CustomersAddCard';
 import { CustomersEditCard } from './CustomersEditCard';
+import { CustomersPageTitleAddSearch } from './CustomersPageTitleAddSearch';
 export const Customers = (props) => {
 
     const { APIUrl, Theme } = useContext(Context);
@@ -34,7 +35,7 @@ export const Customers = (props) => {
     const [ScrollPage, setScrollPage] = useState(2); // 滾動到底部加載頁面
     const [DelWho, setDelWho] = useState(""); // 刪除彈窗中刪除名字
     const [EditAutoFill, setEditAutoFill] = useState({}); // 編輯彈窗中data
-    const [SearchWord, SearchWordhandler, SearchWordregExpResult] = useForm("", [""], [""]);
+    const [SearchWord, setSearchWord] = useState(""); // 儲存關鍵字，供翻頁時的查詢用
     const [width] = useWindowSize();
 
     const [Id, Idhandler, IdregExpResult, IdResetValue] = useForm("", [""], [""]); // Id欄位
@@ -313,30 +314,7 @@ export const Customers = (props) => {
         <>
             {/* 寬度大於等於768時渲染的組件 */}
             {width > 768 && <BasicContainer theme={customers.basicContainer}>
-                <PageTitle>顧客名單</PageTitle>
-                <FormControl theme={{}} onSubmit={(e) => { e.preventDefault(); execute(1, SearchWord) }}>
-                    <FormRow theme={customers.addAndSearchFormRow}>
-                        <SubContainer theme={customers.addButtonSubContainer}>
-                            <EasyButton
-                                onClick={() => { setOpenAddJumpDialog(true) }}
-                                theme={customers.addButton}
-                                text={"新增帳號"} icon={<AddIcon style={{
-                                    position: "relative",
-                                    top: "0.3rem",
-                                    height: "1.28rem"
-                                }} />}
-                            />
-                        </SubContainer>
-                        <SearchTextInput
-                            value={SearchWord}
-                            onChange={SearchWordhandler}
-                            regExpResult={SearchWordregExpResult}
-                            placeholder={"搜尋姓名、電話、Email"}
-                            theme={customers.searchInput}
-                            searchOnClick={() => { execute(1, SearchWord); }}
-                        />
-                    </FormRow>
-                </FormControl>
+                <CustomersPageTitleAddSearch setOpenAddJumpDialog={setOpenAddJumpDialog} execute={execute} setSearchWord={setSearchWord} />
                 <BasicContainer theme={customers.tableBasicContainer}>
                     <TableBasic
                         data={TableData} //原始資料
@@ -564,29 +542,8 @@ export const Customers = (props) => {
                     }
                 }}
             >
-                <FormControl theme={{}} onSubmit={(e) => { e.preventDefault(); execute(1, SearchWord) }}>
-                    <FormRow theme={customers.addAndSearchFormRowLessThan768}>
-                        <SearchTextInput
-                            value={SearchWord}
-                            onChange={SearchWordhandler}
-                            regExpResult={SearchWordregExpResult}
-                            placeholder={"搜尋姓名、電話、Email"}
-                            theme={customers.searchInput}
-                            searchOnClick={() => { execute(1, SearchWord); }}
-                        />
-                        <SubContainer theme={customers.addButtonSubContainerLessThan768}>
-                            <EasyButton
-                                onClick={() => { setOpenAddJumpDialog(true) }}
-                                theme={customers.addButtonLessThan768}
-                                text={"新增帳號"} icon={<AddIcon style={{
-                                    position: "relative",
-                                    top: "0.3rem",
-                                    height: "1.28rem"
-                                }} />}
-                            />
-                        </SubContainer>
-                    </FormRow>
-                </FormControl>
+                <CustomersPageTitleAddSearch tableBasicContainerLessThan768 setOpenAddJumpDialog={setOpenAddJumpDialog} execute={execute} setSearchWord={setSearchWord} />
+
                 <BasicContainer theme={customers.tableBasicContainerLessThan768}>
                     <CardTable data={TableData}
                         title={["顧客姓名", "連絡電話", "通訊地址", "生日", 'Email', '註冊日期', '']} //必傳 title 與 colKeys 順序必需互相對應，否則名字跟資料欄會對錯
