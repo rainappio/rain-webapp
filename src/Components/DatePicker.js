@@ -170,3 +170,84 @@ export const SingleDatePicker = styled(SingleDatePickerBase).attrs((props) => ({
 
 }
 `
+
+const SingleDatePickerBase2 = (props) => {
+
+    const [Value, setValue] = useState(new Date());
+
+    useEffect(() => {
+        setValue(props?.value ?? new Date())
+
+    }, [props.value])
+
+    return (
+        <>
+            <div>預約日期</div>
+            <BasicContainer className={props.className} theme={{ width: "100%", ...props?.theme }}>
+                <DatePickerEl
+                    value={Value}
+                    placeholder="選擇日期範圍"
+                    isShowTrigger={false}
+                    onChange={date => {
+                        console.log('DateRangePicker1 changed: ', date);
+                        setValue(date);
+                        console.log(Value)
+                        props.getDate && props.getDate(date);
+                        props.doThings && props.doThings(date);
+                    }}
+                //disabledDate={time => time.getTime() < Date.now() - 8.64e7}
+                />
+                <DateRangeIcon style={{
+                    position: "absolute",
+                    top: "0.35rem",
+                    left: "0.8rem",
+                    color: "#666",
+                    width: "1.1rem"
+                }} />
+            </BasicContainer>
+        </>
+    )
+}
+
+export const SingleDatePicker2 = styled(SingleDatePickerBase2).attrs((props) => ({}))`
+&& {
+    .el-input__inner {
+        //padding-left: 35px;
+        //padding-right: 0px;
+        text-align :center;
+        border:0px;
+        border-bottom: 1px solid;
+        border-radius: 0px;
+        border-color: #666;
+        padding-top: .1rem;
+        color:#666;
+        font-family: "Arial", Microsoft JhengHei, "微軟正黑體", Helvetica, sans-serif;
+        font-weight: 500;
+        font-size: 0.875rem;
+    }
+    .el-input__inner:hover {
+        border-color: #c0c4cc;
+    }
+    .el-input__inner:focus {
+        border-color: #964f19;
+    }
+    .el-input__icon{
+        left:0;
+    }
+    .is-filled {
+        width: 100% !important;
+    }
+    .el-date-editor--daterange.el-input {
+        width: 100% !important;
+    }
+    .el-date-editor.el-input {
+        width: 90%;
+    }
+    
+
+    // .MuiPickersDay-daySelected {
+    //     color :red
+    // }
+
+}
+`

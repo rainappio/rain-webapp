@@ -9,6 +9,7 @@ import customers from './Pages/MainPages/Customers/Customers'
 import customersAddCard from './Pages/MainPages/Customers/CustomersAddCard'
 import dispatch from './Pages/MainPages/Dispatch/Dispatch'
 import dispatchPageTitleAddSearch from './Pages/MainPages/Dispatch/DispatchPageTitleAddSearch'
+import dispatchEditCard from './Pages/MainPages/Dispatch/EditCard'
 import dispatchBoard from './Pages/MainPages/DispatchBoard/DispatchBoard'
 import dispatchBoardPageTitleAddSearch from './Pages/MainPages/DispatchBoard/DispatchBoardPageTitleAddSearch'
 import experts from './Pages/MainPages/Experts/Experts'
@@ -73,6 +74,7 @@ export default {
         dispatchPage: {
             dispatch,
             dispatchPageTitleAddSearch,
+            dispatchEditCard,
         },
         dispatchBoardPage: {
             dispatchBoard,
