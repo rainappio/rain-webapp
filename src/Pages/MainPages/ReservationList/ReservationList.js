@@ -14,11 +14,13 @@ import { SubContainer, Container, BasicContainer } from '../../../Components/Con
 import { portalService } from '../../../Components/Portal';
 import { dateTrans, dateTransAndGetWeek, addDays, addMonths } from '../../../Handlers/DateHandler';
 import { setItemlocalStorage, getItemlocalStorage, clearlocalStorage } from '../../../Handlers/LocalStorageHandler'
+import { ReservationListCheckComment } from './ReservationListCheckComment'
 
 export const ReservationList = (props) => {
 
     const { APIUrl, Theme } = useContext(Context);
     const { pages: { reservationListPage: { reservationList } } } = Theme;
+    let history = useHistory();
 
     const [TableData, setTableData] = useState([]);
     const [OpenDelJumpDialog, setOpenDelJumpDialog] = useState(false); // 開啟刪除彈窗
@@ -32,7 +34,7 @@ export const ReservationList = (props) => {
     const [Mode, setMode] = useState({ value: "all", label: "全部" });
     const [DateRange, setDateRange] = useState([new Date(), new Date()]);
 
-    let history = useHistory();
+
     const [width] = useWindowSize();
 
     //#region 查詢列表API
@@ -480,19 +482,20 @@ export const ReservationList = (props) => {
                                                 <EasyButton
                                                     key={`${item}2`}
                                                     onClick={() => {
-                                                        portalService.warn({
-                                                            autoClose: false,
-                                                            yes: () => { executeCancelOrder(rowItem, DateRange, SearchWord, Mode) },
-                                                            yesText: "是，取消預約",
-                                                            noText: "否，繼續瀏覽",
-                                                            content: (
-                                                                <>
-                                                                    <Text theme={reservationList.exportText}>
-                                                                        {`確定取消${rowItem?.ReservationDate?.split('T')?.[0]}在${rowItem?.ShopName}的預約嗎`}
-                                                                    </Text>
+                                                        rowItem?.Status <= 1 ?
+                                                            portalService.warn({
+                                                                autoClose: false,
+                                                                yes: () => { rowItem?.Status <= 1 ? executeCancelOrder(rowItem, DateRange, SearchWord, Mode) : history.push(`ReservationList/${rowItem?.Id}?data=${JSON.stringify(rowItem)}`) },
+                                                                yesText: "是，取消預約",
+                                                                noText: "否，繼續瀏覽",
+                                                                content: (
+                                                                    <>
+                                                                        <Text theme={reservationList.exportText}>
+                                                                            {`確定取消${rowItem?.ReservationDate?.split('T')?.[0]}在${rowItem?.ShopName}的預約嗎`}
+                                                                        </Text>
 
-                                                                </>)
-                                                        })
+                                                                    </>)
+                                                            }) : history.push(`ReservationList/${rowItem?.Id}?data=${JSON.stringify(rowItem)}`)
                                                     }}
                                                     theme={rowItem?.Status <= 1 ? reservationList.exportButton : (rowItem?.Status === 5 && rowItem?.AllService !== 0) ? reservationList.checkServiceButton : { display: 'none' }}
                                                     text={rowItem?.Status <= 1 ? "取消預約" : '查看評論'}

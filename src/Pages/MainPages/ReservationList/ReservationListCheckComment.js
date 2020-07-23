@@ -28,7 +28,9 @@ export const ReservationListCheckComment = (props) => {
     const [width] = useWindowSize();
 
     let urlParams = new URLSearchParams(useLocation().search);//取得參數
-    console.log(urlParams.get("d"))//從網址取得參數
+    let data = JSON.parse(urlParams.get("data"));
+    console.log(data)//從網址取得參數
+    //console.log(urlParams.get("g"))//從網址取得參數
 
     return (
         <>
@@ -58,7 +60,7 @@ export const ReservationListCheckComment = (props) => {
                                 預約日期
                             </Text>
                             <Text theme={{ display: "block", userSelect: "none", fontSize: "1rem", lineHeight: "1rem", }}>
-                                2020-04-15
+                                {data?.ReservationDate.split('T')[0]}
                             </Text>
                         </BasicContainer>
                         <BasicContainer theme={{ display: "inline-block", width: "30%", minWidth: "fit-content" }}>
@@ -73,7 +75,7 @@ export const ReservationListCheckComment = (props) => {
                                 預約編號
                             </Text>
                             <Text theme={{ display: "block", userSelect: "none", fontSize: "1rem", lineHeight: "1rem", }}>
-                                TS15869300642734
+                                {data?.OrderNo}
                             </Text>
                         </BasicContainer>
                         <BasicContainer theme={{ display: "inline-block", width: "30%", minWidth: "fit-content" }}>
@@ -88,7 +90,7 @@ export const ReservationListCheckComment = (props) => {
                                 預約門市
                             </Text>
                             <Text theme={{ display: "block", userSelect: "none", fontSize: "1rem", lineHeight: "1rem", }}>
-                                測試東門店
+                                {data?.ShopName}
                             </Text>
                         </BasicContainer>
                         <BasicContainer theme={{ display: "inline-block", width: "30%", minWidth: "fit-content" }}>
@@ -102,7 +104,7 @@ export const ReservationListCheckComment = (props) => {
                             }}>顧客資訊
                             </Text>
                             <Text theme={{ display: "block", userSelect: "none", fontSize: "1rem", lineHeight: "1rem", }}>
-                                阿宅董董
+                                {data?.CustomerName}
                             </Text>
                         </BasicContainer>
                         <BasicContainer theme={{ display: "inline-block", width: "30%", minWidth: "fit-content" }}>
@@ -116,7 +118,7 @@ export const ReservationListCheckComment = (props) => {
                             }}>足健師資訊
                             </Text>
                             <Text theme={{ display: "block", userSelect: "none", fontSize: "1rem", lineHeight: "1rem", }}>
-                                林陵發發
+                                {data?.MasterName}
                             </Text>
                         </BasicContainer>
                     </BasicContainer>
@@ -133,7 +135,7 @@ export const ReservationListCheckComment = (props) => {
                         }}
                             style={{ textShadow: "#000 0rem 0rem 0rem" }}
                         >整體服務滿意度</Text>
-                        <Rate rate={2} size={"2rem"} margin={"0 0 0 0.375rem"} theme={{ top: "0.5rem" }} />
+                        <Rate rate={data?.AllService} size={"2rem"} margin={"0 0 0 0.375rem"} theme={{ top: "0.5rem" }} />
                     </BasicContainer>
                     {/* 您對於本次的足壓量測服務滿意度為何？ */}
                     <BasicContainer theme={{ display: "block", margin: "1.5rem 0 2.5rem" }}>
@@ -147,7 +149,7 @@ export const ReservationListCheckComment = (props) => {
                         }}>
                             您對於本次的足壓量測服務滿意度為何？
                         </Text>
-                        <Rate rate={2} size={"2rem"} margin={"0 0 0 0.375rem"} theme={{ top: "0.5rem" }} />
+                        <Rate rate={data?.FootMeasureService} size={"2rem"} margin={"0 0 0 0.375rem"} theme={{ top: "0.5rem" }} />
                     </BasicContainer>
                     {/* 本次體驗對於您的足健康問題有多大的幫助？ */}
                     <BasicContainer theme={{ display: "block", margin: "1.5rem 0 2.5rem" }}>
@@ -161,7 +163,7 @@ export const ReservationListCheckComment = (props) => {
                         }}>
                             本次體驗對於您的足健康問題有多大的幫助？
                         </Text>
-                        <Rate rate={2} size={"2rem"} margin={"0 0 0 0.375rem"} theme={{ top: "0.5rem" }} />
+                        <Rate rate={data?.IsHelp} size={"2rem"} margin={"0 0 0 0.375rem"} theme={{ top: "0.5rem" }} />
                     </BasicContainer>
                     {/* 您是如何得知本服務的？ */}
                     <BasicContainer theme={{ display: "block", margin: "1.5rem 0 2.5rem" }}>
@@ -175,9 +177,9 @@ export const ReservationListCheckComment = (props) => {
                         }}>
                             您是如何得知本服務的？
                         </Text>
-                        <Radio text={"阿瘦門市"} />
-                        <Radio text={"阿瘦粉絲團等網路資訊"} checked />
-                        <Radio text={"親友推薦分享"} />
+                        <Radio text={"阿瘦門市"} checked={data?.WhereKnow === "阿瘦門市"} />
+                        <Radio text={"阿瘦粉絲團等網路資訊"} checked={data?.WhereKnow === "阿瘦粉絲團等網路資訊"} />
+                        <Radio text={"親友推薦分享"} checked={data?.WhereKnow === "親友推薦分享"} />
                     </BasicContainer>
                     {/* 您介紹親友體驗足壓量測服務的意願有多高？ */}
                     <BasicContainer theme={{ display: "block", margin: "1.5rem 0 2.5rem" }}>
@@ -191,7 +193,7 @@ export const ReservationListCheckComment = (props) => {
                         }}>
                             您介紹親友體驗足壓量測服務的意願有多高？
                         </Text>
-                        <Rate rate={2} size={"2rem"} margin={"0 0 0 0.375rem"} theme={{ top: "0.5rem" }} />
+                        <Rate rate={data?.WillingIntroduce} size={"2rem"} margin={"0 0 0 0.375rem"} theme={{ top: "0.5rem" }} />
                     </BasicContainer>
                     {/* 其它回饋建議 */}
                     <BasicContainer theme={{ display: "block", margin: "1.5rem 0 2.5rem" }}>
@@ -214,7 +216,7 @@ export const ReservationListCheckComment = (props) => {
                             userSelect: "none",
                             margin: "1rem 0rem 0 0",
                         }}>
-                            客戶未填
+                            {data?.ServiceRemark === null ? '客戶未填' : data?.ServiceRemark}
                         </Text>
                     </BasicContainer>
                 </BasicContainer>
