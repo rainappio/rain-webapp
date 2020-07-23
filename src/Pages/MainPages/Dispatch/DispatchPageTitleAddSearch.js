@@ -100,6 +100,10 @@ const DispatchPageTitleAddSearchBase = (props) => {
                                                     props.Check.forEach((item) => {
                                                         //console.log("foreach", props?.AllCheck[item.Id]);
                                                         props.executeLetItGo(item, props?.AllCheck[item.Id]);
+                                                        if (Mode.value === 'past')
+                                                            props.execute(dateTrans(addMonths(new Date(), -3)), dateTrans(), SearchWord);
+                                                        else
+                                                            props.execute(dateTrans(), dateTrans(addMonths(new Date(), 3)), SearchWord);
                                                     })
                                                 else {
                                                     console.log("NOTHING!")

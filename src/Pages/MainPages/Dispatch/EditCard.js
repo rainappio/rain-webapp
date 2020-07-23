@@ -11,6 +11,7 @@ import { month, getDayByYearAndMonth, YearFrom1930to, Counties, cityAndCountiesL
 import { SubContainer } from '../../../Components/Containers';
 import { Text } from '../../../Components/Texts';
 import { SingleDatePicker2 } from '../../../Components/DatePicker';
+import { portalService } from '../../../Components/Portal';
 import { dateTrans, dateTransAndGetWeek, addDays, addMonths } from '../../../Handlers/DateHandler';
 
 
@@ -80,18 +81,37 @@ export const EditCard = (props) => {
             <FormCard
                 title={"修改日期時間"}
                 yes={() => {
-                    //全部通過檢核才可放行
-                    (NameregExpResult ? alertService.warn(NameregExpResult, { autoClose: true })
-                        : (PhoneregExpResult ? alertService.warn(PhoneregExpResult, { autoClose: true })
+                    portalService.normal({
+                        autoClose: false,
+                        yes: () => {
+                            //console.log(props.tableData);
+                            let newRow = { ...props.editAutoFill, ReservationDate: `${dateTrans(DateRegion)}T${Time.value}:00` };
+                            let newTableData = { ...props.tableData };
+                            newTableData.data = newTableData.data.map((item) => {
+                                if (item.Id === newRow.Id)
+                                    return newRow;
+                                else
+                                    return item;
+                            });
+                            //console.log(newTableData);
+                            props?.editExecute && props.editExecute(newTableData);
+                            props?.onClose && props.onClose(false);
+                        },
+                        yesText: "確定修改",
+                        noText: "取消修改",
+                        content: (
+                            <>
+                                <Text theme={dispatchEditCard.exportText}>
+                                    確定要修改時間嗎？
+                             </Text>
 
-                            : props.editAdminUserExecute(props.editAutoFill, Name, Phone)
-                        )
-                    )
+                            </>)
+                    })
 
 
                 }}
                 yesText={"儲存變更"}
-                no={() => { props?.onClose && props.onClose(false); }}
+                no={() => { props?.onClose && props.onClose(false); console.log(DateRegion, Time) }}
                 noText={"放棄修改"}
                 close={() => { props?.onClose && props.onClose(false); }}
                 theme={dispatchEditCard.addformCard}
@@ -99,7 +119,7 @@ export const EditCard = (props) => {
                 <FormControl
                     sumbit={false}
                     theme={{
-                        maxHeight: "calc( 100% - 3.25rem )",
+                        maxHeight: "100%",
                         overflowY: "scroll",// 註解後關閉滾動
                         overflowX: "hidden",// 註解後關閉滾動
                         minWidth: "0",
@@ -112,6 +132,7 @@ export const EditCard = (props) => {
                             label={"預約門市"}
                             hint={""}
                             value={Name}
+                            disabled
                             onChange={Namehandler}
                             regExpResult={NameregExpResult}
                             placeholder={"請在此輸入中文姓名"}
@@ -131,6 +152,7 @@ export const EditCard = (props) => {
                             label={"顧客手機"}
                             hint={""}
                             value={Phone}
+                            disabled
                             onChange={Phonehandler}
                             regExpResult={PhoneregExpResult}
                             placeholder={"0966888168"}

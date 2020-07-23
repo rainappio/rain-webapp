@@ -83,8 +83,53 @@ export const Dispatch = (props) => {
             }
             else
                 return false;
+        } else if (day === 5) {
+            let serviceTime = item?.FridayService.split('-');
+            if (time >= serviceTime[0] && time <= serviceTime[1]) {
+                return true;
+            }
+            else
+                return false;
+        } else if (day === 6) {
+            let serviceTime = item?.SaturdayService.split('-');
+            if (time >= serviceTime[0] && time <= serviceTime[1]) {
+                return true;
+            }
+            else
+                return false;
+        } else if (day === 0) {
+            let serviceTime = item?.SundayService.split('-');
+            if (time >= serviceTime[0] && time <= serviceTime[1]) {
+                return true;
+            }
+            else
+                return false;
+        } else if (day === 1) {
+            let serviceTime = item?.MondayService.split('-');
+            if (time >= serviceTime[0] && time <= serviceTime[1]) {
+                return true;
+            }
+            else
+                return false;
+        } else if (day === 2) {
+            let serviceTime = item?.TuesdayService.split('-');
+            if (time >= serviceTime[0] && time <= serviceTime[1]) {
+                return true;
+            }
+            else
+                return false;
+        } else if (day === 3) {
+            let serviceTime = item?.WednesdayService.split('-');
+            if (time >= serviceTime[0] && time <= serviceTime[1]) {
+                return true;
+            }
+            else
+                return false;
         }
-        return true;
+        else {
+            return false;
+        }
+
     }
 
     //#region 查詢列表API
@@ -342,7 +387,7 @@ export const Dispatch = (props) => {
                                                     cursor: "default",
                                                     fontSize: "1rem",
                                                     whiteSpace: 'nowarp'
-                                                }}>{item.split("T")[0]}</Text>
+                                                }}>{`${item.split("T")[0]}  ${item.split("T")[1].slice(0, 5)}`}</Text>
                                         </TooltipBasic>
                                         <TooltipBasic key={`${item}1`} title={"編輯"} arrow>
                                             <CreateIcon
@@ -465,7 +510,7 @@ export const Dispatch = (props) => {
                                         < FormCardSelector
                                             //label={""}
                                             //hint={""}
-                                            placeholder={`選擇足健師${id}`}
+                                            placeholder={`選擇足健師`}
                                             //value={ChoosenMaster}
                                             isSearchable
                                             options={filterMaster(MasterData, rowItem)}
@@ -518,7 +563,7 @@ export const Dispatch = (props) => {
                         }} />
                 </BasicContainer>
             </BasicContainer>
-            {OpenEditJumpDialog && <EditCard execute={(page, key) => { execute(page, key) }} editAdminUserExecute={() => { console.log("EDIT!") }} onClose={(isOpen) => { setOpenEditJumpDialog(isOpen) }} editAutoFill={EditAutoFill} />}
+            {OpenEditJumpDialog && <EditCard execute={(page, key) => { execute(page, key) }} tableData={TableData} editExecute={(data) => { setTableData(data) }} onClose={(isOpen) => { setOpenEditJumpDialog(isOpen) }} editAutoFill={EditAutoFill} />}
         </>
     )
 }

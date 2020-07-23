@@ -183,7 +183,7 @@ const SingleDatePickerBase2 = (props) => {
     return (
         <>
             <div>預約日期</div>
-            <BasicContainer className={props.className} theme={{ width: "12.125rem", ...props?.theme }}>
+            <BasicContainer className={props.className} theme={{ width: "100%", ...props?.theme }}>
                 <DatePickerEl
                     value={Value}
                     placeholder="選擇日期範圍"
@@ -239,6 +239,9 @@ export const SingleDatePicker2 = styled(SingleDatePickerBase2).attrs((props) => 
     }
     .el-date-editor--daterange.el-input {
         width: 100% !important;
+    }
+    .el-date-editor.el-input {
+        width: 90%;
     }
     
 
