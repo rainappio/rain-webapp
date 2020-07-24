@@ -171,7 +171,7 @@ export const MenuBar = (props) => {
                             </Link>
                         </Ul>
                         {/* 任務調度 */}
-                        <Ul theme={menuBar.topModeMenuUl}>
+                        {/* <Ul theme={menuBar.topModeMenuUl}>
                             <Link to={"/DispatchBoard"} style={{ textDecoration: "none", display: "block" }}>
                                 <Li onClick={() => { setOpenMenu(false) }} theme={(location.pathname === "/DispatchBoard" ? menuBar.topModeMenuLiClicked : menuBar.topModeMenuLi)}>
                                     {iconMap["派遣單總覽"]}
@@ -184,7 +184,7 @@ export const MenuBar = (props) => {
                                     <Text theme={(location.pathname === "/Dispatch" ? menuBar.leftModeMenuLiTtextClicked : menuBar.leftModeMenuLiTtext)}>足健師派遣</Text>
                                 </Li>
                             </Link>
-                        </Ul>
+                        </Ul> */}
                         {/* 門市與人員名單 */}
                         <Ul theme={menuBar.topModeMenuUl}>
                             <Link to={"/Customers"} style={{ textDecoration: "none", display: "block" }}>
