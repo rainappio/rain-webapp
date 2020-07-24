@@ -381,26 +381,28 @@ export const FormCardTextInput = styled(FormCardTextInputBase).attrs((props) => 
 //#region 繼承 react-select 的 Select
 const SelectExtend = styled(Select).attrs((props) => ({}))`
     && {
-        [class*="MenuList"] {
-            //滾動條美化
-            ::-webkit-scrollbar {
-                width: 0.5em;
-                height: ${props => props?.theme?.scrollHeight ?? 'initial'}; //scroll-x 的高度
-            }
-            ::-webkit-scrollbar-track {
-                -webkit-border-radius: 10px;
-                border-radius: 10px;
-                margin:0px 0.1rem 5px 0;
-            }
-            ::-webkit-scrollbar-thumb {
-                -webkit-border-radius: 4px;
-                border-radius: 4px;
-                background: ${props => props?.theme?.scrollUnhoverBackgroundColor ?? '#9093994d'};
-            }
-            &:hover::-webkit-scrollbar-thumb {
-                -webkit-border-radius: 4px;
-                border-radius: 4px;
-                background: ${props => props?.theme?.scrollHoverBackgroundColor ?? '#9093994d'};
+        [class*="menu"] {
+            div:nth-child(1) {
+                //滾動條美化
+                ::-webkit-scrollbar {
+                    width: 0.5em;
+                    height: ${props => props?.theme?.scrollHeight ?? 'initial'}; //scroll-x 的高度
+                }
+                ::-webkit-scrollbar-track {
+                    -webkit-border-radius: 10px;
+                    border-radius: 10px;
+                    margin:0px 0.1rem 5px 0;
+                }
+                ::-webkit-scrollbar-thumb {
+                    -webkit-border-radius: 4px;
+                    border-radius: 4px;
+                    background: ${props => props?.theme?.scrollUnhoverBackgroundColor ?? '#9093994d'};
+                }
+                &:hover::-webkit-scrollbar-thumb {
+                    -webkit-border-radius: 4px;
+                    border-radius: 4px;
+                    background: ${props => props?.theme?.scrollHoverBackgroundColor ?? '#9093994d'};
+                }
             }
         }
     }
@@ -496,9 +498,9 @@ export const FormCardSelector = styled(FormCardSelectorBase).attrs((props) => ({
 //#region FormCard表單卡片內的 時間選擇框 (icon 在左方)
 //#region 時間icon
 const DropdownIndicator = (props: ElementConfig<typeof components.DropdownIndicator>) => {
-
+    console.log(props)
     return (
-        <components.DropdownIndicator {...props}>
+        <components.DropdownIndicator style={{ position: "absolute", left: "11rem" }} {...props}>
             <AccessTimeIcon style={{ height: "20px", width: "20px" }} />
         </components.DropdownIndicator>
     );
@@ -593,11 +595,13 @@ const FormCardLeftIconSelectorBase = (props) => {
 export const FormCardLeftIconSelector = styled(FormCardLeftIconSelectorBase).attrs((props) => ({}))`
     .selector {
 
-            [class*="IndicatorsContainer"] {
-                color: red;
-                div:first-child {
-                    position: absolute;
-                    left: ${props => props?.clearIconLeft ?? "11rem"};//必須因應寬度不同調整
+            [class*="control"] {
+                //color: red;
+                div:nth-child(2){
+                    div:nth-child(1):not([style^="display: inline-block;"]){
+                        position: absolute;
+                        left: ${props => props?.clearIconLeft ?? "11rem"};//必須因應寬度不同調整
+                    }
                 }
             }   
 
