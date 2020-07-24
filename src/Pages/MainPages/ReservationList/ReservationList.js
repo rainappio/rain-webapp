@@ -15,6 +15,7 @@ import { portalService } from '../../../Components/Portal';
 import { dateTrans, dateTransAndGetWeek, addDays, addMonths } from '../../../Handlers/DateHandler';
 import { setItemlocalStorage, getItemlocalStorage, clearlocalStorage } from '../../../Handlers/LocalStorageHandler'
 import { ReservationListCheckComment } from './ReservationListCheckComment'
+import { Rate } from '../../../Components/Rate';
 
 export const ReservationList = (props) => {
 
@@ -122,7 +123,7 @@ export const ReservationList = (props) => {
     //#endregion
 
     //#region 取消預約API
-    const cancelOrder = useCallback(async (rowData, DateRange, SearchWord, Mode,) => {
+    const cancelOrder = useCallback(async (rowData, DateRange, SearchWord, Mode, ) => {
         //console.log("reOrder", rowData);
         return await fetch(`${APIUrl}api/Orders/Put`,
             {
@@ -206,7 +207,7 @@ export const ReservationList = (props) => {
                                             width: '20%',
                                             margin: "0 0 0.375rem 0",
                                             color: "#999",
-                                            fontSize: "0.75rem",
+                                            fontSize: "0.875rem",
                                             fontWeight: "500",
                                             height: "0.875rem"
                                         }}>{'預約日期'}</Text>
@@ -214,10 +215,10 @@ export const ReservationList = (props) => {
 
                                         <Text theme={{
                                             display: 'inline-block',
-                                            width: '35%',
+                                            width: '28%',
                                             padding: "0 0 0.375rem 0",
                                             color: "#999",
-                                            fontSize: "0.75rem",
+                                            fontSize: "0.875rem",
                                             fontWeight: "500",
                                             height: "0.875rem"
                                         }}>預約門市</Text>
@@ -228,7 +229,7 @@ export const ReservationList = (props) => {
                                             width: '15%',
                                             margin: "0 0 0.375rem 0",
                                             color: "#999",
-                                            fontSize: "0.75rem",
+                                            fontSize: "0.875rem",
                                             fontWeight: "500",
                                             height: "0.875rem"
                                         }}>顧客資訊</Text>
@@ -236,11 +237,11 @@ export const ReservationList = (props) => {
 
                                         <Text theme={{
                                             display: 'inline-block',
-                                            width: '15%',
+                                            width: '30%',
                                             //display: "inline-block",
                                             margin: "0 0 0.375rem 0",
                                             color: "#999",
-                                            fontSize: "0.75rem",
+                                            fontSize: "0.875rem",
                                             fontWeight: "500",
                                             height: "0.875rem"
                                         }}>足健師資訊</Text>
@@ -267,7 +268,7 @@ export const ReservationList = (props) => {
                                             }}>{`${rowItem?.ReservationDate?.split("T")?.[0]} ${rowItem?.ReservationDate?.split("T")?.[1]}`}</Text>
                                         <Text theme={{
                                             display: 'inline-block',
-                                            width: '35%',
+                                            width: '28%',
                                             //margin: "0 0 0.375rem 0",
                                             color: "#444",
                                             fontSize: "1.125rem",
@@ -279,15 +280,15 @@ export const ReservationList = (props) => {
                                             //margin: "0 0 0.375rem 0",
                                             color: "#444",
                                             fontSize: "1.125rem",
-                                            fontWeight: "900"
+                                            fontWeight: "400"
                                         }}>{item}</Text>
                                         <Text theme={{
                                             display: 'inline-block',
                                             //width: '15%',
                                             //margin: "0 0 0.375rem 0",
-                                            color: "#444",
+                                            color: rowItem?.MasterName === '' ? "#999" : '#444',
                                             fontSize: "1.125rem",
-                                            fontWeight: "900"
+                                            fontWeight: "400"
                                         }}>{rowItem?.MasterName === '' ? '尚未派遣' : rowItem?.MasterName}</Text>
                                         <EasyButton
                                             key={`${item}2`}
@@ -314,7 +315,7 @@ export const ReservationList = (props) => {
                                                 display: 'inline-block',
                                                 //width: '15%',
                                                 margin: "0 0 0.375rem 0.5rem",
-                                                color: "#444",
+                                                color: "#964f19",
                                                 fontSize: "0.875rem",
                                                 fontWeight: "400"
                                             }}
@@ -345,9 +346,9 @@ export const ReservationList = (props) => {
                                                 width: '20%',
                                                 margin: "0 0 0.375rem 0",
                                                 color: "#999",
-                                                fontSize: "0.75rem",
+                                                fontSize: "0.875rem",
                                                 fontWeight: "500",
-                                                height: "0.875rem"
+                                                height: "1.25rem"
                                             }}>{'預約編號'}</Text>
 
 
@@ -362,11 +363,11 @@ export const ReservationList = (props) => {
                                         }}
                                             theme={{
                                                 display: "-webkit-inline-box",
-                                                width: '35%',
+                                                width: '28%',
                                                 margin: "0 0 0.375rem 0",
-                                                color: "#999",
+                                                color: "#666",
                                                 fontSize: "1.125rem",
-                                                fontWeight: "500",
+                                                fontWeight: "400",
                                                 height: "1.25rem"
                                             }}>{rowItem?.ShopAddr}</Text>
 
@@ -386,7 +387,7 @@ export const ReservationList = (props) => {
                                                 margin: "0 0 0.375rem 0",
                                                 color: "#964f19",
                                                 fontSize: "1.125rem",
-                                                fontWeight: "500",
+                                                fontWeight: "400",
                                                 height: "1.25rem"
                                             }}>{rowItem?.CustomerPhone}</Text>
 
@@ -395,21 +396,21 @@ export const ReservationList = (props) => {
                                             overflow: "hidden",
                                             textOverflow: "ellipsis",
                                             //WebkitLineClamp: 0,
-                                            width: '15%',
+                                            //width: '15%',
                                             //WebkitBoxOrient: "vertical",
                                             //padding: '0 5rem 0 0',
                                             whiteSpace: 'nowarp'
                                         }}
                                             theme={{
                                                 display: 'inline-block',
-                                                width: '15%',
+                                                width: '35%',
                                                 //display: "inline-block",
                                                 margin: "0 0 0.375rem 0",
-                                                color: "#964f19",
+                                                color: rowItem?.MasterPhone === '' ? "#999" : '#964f19',
                                                 fontSize: "1.125rem",
-                                                fontWeight: "500",
+                                                fontWeight: "400",
                                                 height: "1.25rem"
-                                            }}>{rowItem?.MasterPhone}</Text>
+                                            }}>{rowItem?.MasterPhone === '' ? '無' : rowItem?.MasterPhone}</Text>
 
                                     </>)),
                                 renderContent: (item, id, rowItem) => ((item &&
@@ -429,7 +430,7 @@ export const ReservationList = (props) => {
                                                 //margin: "0 0 0.375rem 0",
                                                 color: "#444",
                                                 fontSize: "1.125rem",
-                                                fontWeight: "900"
+                                                fontWeight: "400"
                                             }}>{item}</Text>
                                         <Text
                                             style={{
@@ -443,12 +444,32 @@ export const ReservationList = (props) => {
                                             }}
                                             theme={{
                                                 display: 'inline-block',
-                                                width: '35%',
+                                                width: '28%',
                                                 //margin: "0 0 0.375rem 0",
                                                 color: "#964f19",
                                                 fontSize: "1.125rem",
-                                                fontWeight: "900"
+                                                fontWeight: "400"
                                             }}>{rowItem?.ShopTel}</Text>
+                                        <Text
+                                            style={{
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                //WebkitLineClamp: 0,
+                                                //WebkitBoxOrient: "vertical",
+                                                //padding: '0 5rem 0 0',
+                                                whiteSpace: 'nowarp',
+                                                display: 'inline-box',
+                                            }}
+                                            theme={{
+                                                display: 'inline-block',
+                                                width: '15%',
+                                                //margin: "0 0 0.375rem 0",
+                                                color: "#964f19",
+                                                fontSize: "1.125rem",
+                                                fontWeight: "400"
+                                            }}>{''}</Text>
+                                        {rowItem?.AllService > 0 && <Rate rate={rowItem?.AllService} size={"1rem"} margin={"0 0 0 0rem"} />}
+
 
 
                                     </>))
@@ -734,7 +755,7 @@ export const ReservationList = (props) => {
                                                 fontSize: "14px",
                                                 fontWeight: "400",
                                                 lineHeight: '19px'
-                                            }}>{item === '' ? '' : rowItem?.MasterPhone}</Text>
+                                            }}>{item === '' ? '無' : rowItem?.MasterPhone}</Text>
                                         </>))
                                 },
                                 "controll": {
