@@ -97,15 +97,39 @@ const DispatchPageTitleAddSearchBase = (props) => {
                                             yes: () => {
                                                 //console.log(props?.AllCheck)
                                                 if (Object.keys(props?.AllCheck).length === props.Check.length) {
+                                                    let matchFlag = true;
                                                     props.Check.forEach((item) => {
-                                                        //console.log("foreach", props?.AllCheck[item.Id]);
-                                                        props.executeLetItGo(item, props?.AllCheck[item.Id]);
-                                                        if (Mode.value === 'past')
-                                                            props.execute(dateTrans(addMonths(new Date(), -3)), dateTrans(), SearchWord);
-                                                        else
-                                                            props.execute(dateTrans(), dateTrans(addMonths(new Date(), 3)), SearchWord);
-
+                                                        if (props?.AllCheck[item.Id] === undefined) {
+                                                            matchFlag = false;
+                                                        }
                                                     })
+                                                    if (matchFlag) {
+                                                        props.Check.forEach((item) => {
+                                                            //console.log("foreach", props?.AllCheck[item.Id]);
+                                                            props.executeLetItGo(item, props?.AllCheck[item.Id]);
+                                                            if (Mode.value === 'past')
+                                                                props.execute(dateTrans(addMonths(new Date(), -3)), dateTrans(), SearchWord);
+                                                            else
+                                                                props.execute(dateTrans(), dateTrans(addMonths(new Date(), 3)), SearchWord);
+
+                                                        })
+                                                    }
+                                                    else {
+                                                        portalService.warn({
+                                                            autoClose: false,
+                                                            yes: () => { console.log("HAHA") },
+                                                            yesText: "OK",
+                                                            noText: "",
+                                                            content: (
+                                                                <>
+                                                                    <Text theme={dispatchPageTitleAddSearch.exportText}>
+                                                                        請檢查是否有為訂單派遣足健師
+                                                                 </Text>
+
+                                                                </>)
+                                                        })
+                                                    }
+
 
                                                 }
 
