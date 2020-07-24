@@ -22,6 +22,7 @@ import { FormCard } from '../../../Components/FormCard';
 import { TooltipBasic } from '../../../Components/Tooltips';
 import { DispatchPageTitleAddSearch } from './DispatchPageTitleAddSearch';
 import { EditCard } from './EditCard';
+import { useSwitch } from '../../../SelfHooks/useSwitch'
 
 export const Dispatch = (props) => {
 
@@ -44,6 +45,8 @@ export const Dispatch = (props) => {
     const [ChoosenMaster, ChoosenMasterhandler, ChoosenMasterregExpResult, ChoosenMasterResetValue] = useSelector('', [], []); // 狀態欄位
     const [AllCheck, setAllCheck] = useState({})//儲存已選擇之下拉選單值
     const [Check, setCheck] = useState([])//儲存以勾選之列id
+    const [ResetPickerFlag, setResetPickerFlag] = useState(true)//儲存以勾選之列id
+
 
     const filterMaster = (array, order) => {
         if (order) {
@@ -169,9 +172,7 @@ export const Dispatch = (props) => {
                 throw Error;
             })
             .finally(() => {
-                setAllCheck('');
-                setCheck('');
-                ChoosenMasterResetValue('');
+                //ChoosenMasterResetValue('');
                 console.log("Done");
             });
 
@@ -320,7 +321,9 @@ export const Dispatch = (props) => {
                 throw Error;
             })
             .finally(() => {
-
+                setResetPickerFlag(!ResetPickerFlag);
+                setAllCheck({});
+                setCheck([]);
             });
 
         // 這裡要接著打refresh 延長Token存活期
@@ -346,7 +349,11 @@ export const Dispatch = (props) => {
                         colKeys={["ReservationDate", "ShopName", "CustomerName", "CustomerPhone", "UserRemark", 'MasterName']} //必傳
                         haveCheck={true} //是否開啟勾選欄，預設不開啟
                         checkColKey={"Id"} //勾選欄資料的Key
-                        onCheck={(check) => { setCheck(check.map((item) => { return TableData.data.find((item2) => { return item2.Id === item }) })) }}
+                        onCheck={(check) => {
+                            let tempArray = check.map((item) => { return TableData.data.find((item2) => { return item2.Id === item }) });
+
+                            setCheck(tempArray.filter((item) => { return item !== undefined }))
+                        }}
                         showHowManyRows={9 * 1.143} //顯示列數 * 3.5rem
                         turnPageExecute={(executePages) => { execute(executePages, SearchWord) }}//發查翻頁，必傳否則不能翻頁
                         theme={{
@@ -395,7 +402,10 @@ export const Dispatch = (props) => {
                                         <TooltipBasic key={`${item}1`} title={"編輯"} arrow>
                                             <CreateIcon
                                                 style={{ cursor: "pointer", color: "#964f19", margin: "0 0rem 0 0" }}
-                                                onClick={() => { setEditWho(rowItem.Id); setEditAutoFill(rowItem); setOpenEditJumpDialog(true); }}
+                                                onClick={() => {
+                                                    setEditWho(rowItem.Id); setEditAutoFill(rowItem); setOpenEditJumpDialog(true); console.log(AllCheck);
+                                                    console.log(Check);
+                                                }}
                                             />
                                         </TooltipBasic></>))
                             },
@@ -510,7 +520,7 @@ export const Dispatch = (props) => {
                                 render: (item, id, rowItem) => ((
 
                                     <BasicContainer theme={{ width: "100%" }}>
-                                        < FormCardSelector
+                                        {ResetPickerFlag && < FormCardSelector
                                             //label={""}
                                             //hint={""}
                                             placeholder={`選擇足健師`}
@@ -525,7 +535,22 @@ export const Dispatch = (props) => {
                                             }}
                                             regExpResult={ChoosenMasterregExpResult}
                                             theme={dispatch.modeSelector}
-                                        ></FormCardSelector>
+                                        ></FormCardSelector>}
+                                        {!ResetPickerFlag && < FormCardSelector
+                                            //label={""}
+                                            //hint={""}
+                                            placeholder={`選擇足健師`}
+                                            //value={ChoosenMaster}
+                                            isSearchable
+                                            options={filterMaster(MasterData, rowItem)}
+                                            onChange={(values) => {
+                                                //ChoosenMasterResetValue(values);
+                                                setAllCheck((a) => ({ ...a, [rowItem.Id]: values }))
+
+                                            }}
+                                            regExpResult={ChoosenMasterregExpResult}
+                                            theme={dispatch.modeSelector}
+                                        ></FormCardSelector>}
                                     </BasicContainer>
                                 ))
                             },
