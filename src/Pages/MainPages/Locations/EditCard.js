@@ -212,13 +212,14 @@ export const EditCard = (props) => {
                 no={() => { props?.onClose && props.onClose(false); formValueReset(); }}
                 noText={"放棄"}
                 close={() => { props?.onClose && props.onClose(false); formValueReset(); }}
+                theme={expertsAddCard.addformCard}
             >
                 <FormControl
                     sumbit={false}
                     theme={{
-                        maxHeight: "40rem",
-                        // overflowY: "scroll",// 註解後關閉滾動
-                        // overflowX: "hidden",// 註解後關閉滾動
+                        maxHeight: "calc( 100% - 3.25rem )",
+                        overflowY: "scroll",// 註解後關閉滾動
+                        overflowX: "hidden",// 註解後關閉滾動
                         minWidth: "0",
                         padding: "0 1.25rem 0 0",
                         margin: "20px 0 0 0"
