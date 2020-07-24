@@ -30,7 +30,7 @@ export const Login = (props) => {
                 if (PreResult.success) {
                     setItemlocalStorage("Auth", PreResult.token);
                 } else {
-                    console.log(PreResult)
+                    //console.log(PreResult)
                     if (PreResult?.message) {
                         //setMessage(PreResult.message);
                     }
@@ -50,7 +50,7 @@ export const Login = (props) => {
                 return ResultJson;
             })
             .then((PreResult) => {
-                console.log(PreResult)
+                //console.log(PreResult)
                 if (PreResult.success) {
                     //儲存 跨組件State LoginName: "test",
                     setItemlocalStorage("LoginName", PreResult.response.uRealName);

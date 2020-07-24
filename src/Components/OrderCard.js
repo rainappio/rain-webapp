@@ -26,7 +26,7 @@ export const OrderCard = (props) => {
 
             <BasicContainer
                 theme={isShown ? (props?.theme?.orderCardContainerHover ?? orderCard?.orderCardContainerHover) : (props?.theme?.orderCardContainer ?? orderCard?.orderCardContainer)}
-                onClick={props?.onClick ?? (() => console.log("click OrderCard without onClick!", props))}
+                onClick={props?.onClick ?? (() => {/*console.log("click OrderCard without onClick!", props)*/ })}
                 onMouseEnter={() => setIsShown(true)}
                 onMouseLeave={() => setIsShown(false)}
             >
@@ -56,7 +56,7 @@ export const OrderCardMobile = (props) => {
 
             <BasicContainer
                 theme={isShown ? (props?.theme?.orderCardMobileContainerHover ?? orderCard?.orderCardMobileContainerHover) : (props?.theme?.orderCardMobileContainer ?? orderCard?.orderCardMobileContainer)}
-                onClick={props?.onClick ?? (() => console.log("click OrderCard without onClick!", props))}
+                onClick={props?.onClick ?? (() => {/*console.log("click OrderCard without onClick!", props)*/ })}
                 onMouseEnter={() => setIsShown(true)}
                 onMouseLeave={() => setIsShown(false)}
             >

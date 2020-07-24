@@ -63,7 +63,7 @@ export const Administrators = (props) => {
                 }
 
                 if (PreResult.success) {
-                    console.log(PreResult.response)
+                    //console.log(PreResult.response)
                     setTableData(PreResult.response);
                     return "查詢角色表格資訊成功"
                 } else {
@@ -243,7 +243,7 @@ export const Administrators = (props) => {
     //#region 修改用戶API
     const editAdminUser = useCallback(async (rowData, name, account, pass, phone, location, role) => {
         setOpenEditJumpDialog(false);
-        console.log(location)
+        //console.log(location)
 
         return await fetch(`${APIUrl}api/User/Put`,
             {

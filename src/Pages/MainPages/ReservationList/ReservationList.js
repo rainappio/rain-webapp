@@ -60,7 +60,7 @@ export const ReservationList = (props) => {
                 }
 
                 if (PreResult.success) {
-                    console.log(PreResult.response)
+                    //console.log(PreResult.response)
                     setTableData({ data: PreResult.response });
                     return "查詢角色表格資訊成功"
                 } else {
@@ -122,8 +122,8 @@ export const ReservationList = (props) => {
     //#endregion
 
     //#region 取消預約API
-    const cancelOrder = useCallback(async (rowData, DateRange, SearchWord, Mode, ) => {
-        console.log("reOrder", rowData);
+    const cancelOrder = useCallback(async (rowData, DateRange, SearchWord, Mode,) => {
+        //console.log("reOrder", rowData);
         return await fetch(`${APIUrl}api/Orders/Put`,
             {
                 method: "PUT",
@@ -482,10 +482,14 @@ export const ReservationList = (props) => {
                                                 <EasyButton
                                                     key={`${item}2`}
                                                     onClick={() => {
+
+                                                        let { ReservationDate, OrderNo, ShopName, CustomerName, MasterName, AllService, FootMeasureService, IsHelp, WhereKnow, WillingIntroduce, ServiceRemark } = rowItem;
+                                                        let resaveRowItem = { ReservationDate, OrderNo, ShopName, CustomerName, MasterName, AllService, FootMeasureService, IsHelp, WhereKnow, WillingIntroduce, ServiceRemark };
+
                                                         rowItem?.Status <= 1 ?
                                                             portalService.warn({
                                                                 autoClose: false,
-                                                                yes: () => { rowItem?.Status <= 1 ? executeCancelOrder(rowItem, DateRange, SearchWord, Mode) : history.push(`ReservationList/${rowItem?.Id}?data=${JSON.stringify(rowItem)}`) },
+                                                                yes: () => { rowItem?.Status <= 1 ? executeCancelOrder(rowItem, DateRange, SearchWord, Mode) : history.push(`ReservationList/${rowItem?.Id}?data=${JSON.stringify(resaveRowItem)}`) },
                                                                 yesText: "是，取消預約",
                                                                 noText: "否，繼續瀏覽",
                                                                 content: (
@@ -495,7 +499,7 @@ export const ReservationList = (props) => {
                                                                         </Text>
 
                                                                     </>)
-                                                            }) : history.push(`ReservationList/${rowItem?.Id}?data=${JSON.stringify(rowItem)}`)
+                                                            }) : history.push(`ReservationList/${rowItem?.Id}?data=${JSON.stringify(resaveRowItem)}`)
                                                     }}
                                                     theme={rowItem?.Status <= 1 ? reservationList.exportButton : (rowItem?.Status === 5 && rowItem?.AllService !== 0) ? reservationList.checkServiceButton : { display: 'none' }}
                                                     text={rowItem?.Status <= 1 ? "取消預約" : '查看評論'}

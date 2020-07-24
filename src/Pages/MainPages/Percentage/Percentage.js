@@ -68,7 +68,7 @@ export const Percentage = (props) => {
                 }
 
 
-                console.log(PreResult.response)
+                //console.log(PreResult.response)
                 setTableData(PreResult.response);
                 return "查詢角色表格資訊成功"
 
@@ -112,7 +112,7 @@ export const Percentage = (props) => {
                 }
 
 
-                console.log(PreResult.response)
+                //console.log(PreResult.response)
                 setTableData((d) => ({ ...d, data: [...(d?.data ?? []), ...PreResult.response.data] }));
                 setScrollPage((p) => (p + 1)); // 頁數+1
                 return "查詢角色表格資訊成功"
@@ -161,7 +161,7 @@ export const Percentage = (props) => {
                 }
 
 
-                console.log(PreResult.response)
+                //console.log(PreResult.response)
                 setTableData2(PreResult.response);
                 return "查詢角色表格資訊成功"
 
@@ -205,7 +205,7 @@ export const Percentage = (props) => {
                 }
 
 
-                console.log(PreResult.response)
+                //console.log(PreResult.response)
                 setTableData2((d) => ({ ...d, data: [...(d?.data ?? []), ...PreResult.response.data] }));
                 setScrollPage2((p) => (p + 1)); // 頁數+1
                 return "查詢角色表格資訊成功"
@@ -254,7 +254,7 @@ export const Percentage = (props) => {
                 }
 
 
-                console.log(PreResult.response)
+                //console.log(PreResult.response)
                 setTableData3(PreResult.response);
                 return "查詢角色表格資訊成功"
 
@@ -298,7 +298,7 @@ export const Percentage = (props) => {
                 }
 
 
-                console.log(PreResult.response)
+                //console.log(PreResult.response)
                 setTableData3((d) => ({ ...d, data: [...(d?.data ?? []), ...PreResult.response.data] }));
                 setScrollPage3((p) => (p + 1)); // 頁數+1
                 return "查詢角色表格資訊成功"

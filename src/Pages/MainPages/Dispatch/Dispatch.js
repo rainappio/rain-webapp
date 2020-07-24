@@ -158,7 +158,7 @@ export const Dispatch = (props) => {
                 }
 
                 if (PreResult.success) {
-                    console.log(PreResult.response)
+                    //console.log(PreResult.response)
                     let tempData = PreResult.response.filter((item) => { return item.Status === 0 })
                     setTableData({ data: tempData });
                     return "查詢角色表格資訊成功"
@@ -173,7 +173,7 @@ export const Dispatch = (props) => {
             })
             .finally(() => {
                 //ChoosenMasterResetValue('');
-                console.log("Done");
+                //console.log("Done");
             });
 
         // 這裡要接著打refresh 延長Token存活期
@@ -207,7 +207,7 @@ export const Dispatch = (props) => {
 
                 if (PreResult.success) {
                     let data = PreResult.response.map((item) => { return { ...item, value: item?.mRealName, label: item?.mRealName } })
-                    console.log(data)
+                    //console.log(data)
                     setMasterData(data);
                     return "查詢角色表格資訊成功"
                 } else {
@@ -308,7 +308,7 @@ export const Dispatch = (props) => {
                 }
 
                 if (PreResult.success) {
-                    console.log(PreResult.response)
+                    //console.log(PreResult.response)
                     //setTableData({ data: PreResult.response });
                     return "查詢角色表格資訊成功"
                 } else {
@@ -403,8 +403,8 @@ export const Dispatch = (props) => {
                                             <CreateIcon
                                                 style={{ cursor: "pointer", color: "#964f19", margin: "0 0rem 0 0" }}
                                                 onClick={() => {
-                                                    setEditWho(rowItem.Id); setEditAutoFill(rowItem); setOpenEditJumpDialog(true); console.log(AllCheck);
-                                                    console.log(Check);
+                                                    setEditWho(rowItem.Id); setEditAutoFill(rowItem); setOpenEditJumpDialog(true); //console.log(AllCheck);
+                                                    //console.log(Check);
                                                 }}
                                             />
                                         </TooltipBasic></>))
@@ -530,8 +530,8 @@ export const Dispatch = (props) => {
                                             onChange={(values) => {
                                                 //ChoosenMasterResetValue(values);
                                                 setAllCheck((a) => ({ ...a, [rowItem.Id]: values }))
-                                                console.log(AllCheck);
-                                                console.log(Check);
+                                                //console.log(AllCheck);
+                                                //console.log(Check);
                                             }}
                                             regExpResult={ChoosenMasterregExpResult}
                                             theme={dispatch.modeSelector}

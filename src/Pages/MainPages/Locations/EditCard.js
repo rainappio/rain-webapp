@@ -34,8 +34,8 @@ export const EditCard = (props) => {
     const [ContactName, ContactNamehandler, ContactNameregExpResult, ContactNameResetValue] = useForm("", ["^[\u4E00-\u9FA5]{1,}$", "^.{1,5}$"], ["請輸入店長中文姓名", "姓名最長為5個中文字"]); // 門市姓名欄位
     const [Pass, Passhandler, PassregExpResult, PassResetValue] = useForm("", ["^.{1,}$"], ["請輸入正確密碼格式"]); // 門市密碼欄位
     const [Phone, Phonehandler, PhoneregExpResult, PhoneResetValue] = useForm("", ["^.{1,}$"], ["請輸入門市電話"]); // 門市手機欄位
-    const [County, Countyhandler, CountyregExpResult, CountyResetValue] = useSelector([], [(value) => { console.log(value); return (value?.value ?? "").toString()?.length > 0 }], ["請選擇門市所在縣市"]); // 門市門市欄位
-    const [District, Districthandler, DistrictregExpResult, DistrictResetValue] = useSelector([], [(value) => { console.log(value); return (value?.value ?? "").toString()?.length > 0 }], ["請選擇門市所在行政區"]); // 門市門市欄位
+    const [County, Countyhandler, CountyregExpResult, CountyResetValue] = useSelector([], [(value) => { /*console.log(value);*/ return (value?.value ?? "").toString()?.length > 0 }], ["請選擇門市所在縣市"]); // 門市門市欄位
+    const [District, Districthandler, DistrictregExpResult, DistrictResetValue] = useSelector([], [(value) => { /*console.log(value);*/ return (value?.value ?? "").toString()?.length > 0 }], ["請選擇門市所在行政區"]); // 門市門市欄位
     const [Addr, Addrhandler, AddrregExpResult, AddrResetValue] = useForm("", ["^.{1,}$"], ["請輸入地址"]); // 門市手機欄位
     const [lat, lathandler, latregExpResult, latResetValue] = useForm("", ["^.{1,}$"], ["請輸入正確密碼格式"]); // 門市密碼欄位
     const [lon, lonhandler, lonregExpResult, lonResetValue] = useForm("", ["^.{1,}$"], ["請輸入正確密碼格式"]); // 門市密碼欄位
@@ -275,7 +275,7 @@ export const EditCard = (props) => {
                             isSearchable
                             options={Counties}
                             //defaultValue={ { value: '1', label: 'Chocolate' }}
-                            onChange={(value) => { CountyResetValue(value); console.log(value); DistrictResetValue('') }}
+                            onChange={(value) => { CountyResetValue(value); /*console.log(value);*/ DistrictResetValue('') }}
                             regExpResult={CountyregExpResult}
                             theme={editCard.locationFormCardTextInput}
                         ></FormCardSelector>

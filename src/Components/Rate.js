@@ -8,9 +8,9 @@ const countStar = (rate = 0, size, space) => {
     let res = [];
     for (let count = 0; count < 5; count++) {
         if ((rate) > count) {
-            res.push(<StarRoundedIcon className={"first"} style={{ margin: count > 0 && space, width: size, height: "100%", flex: "none", color: "#f7ba2a" }} />)
+            res.push(<StarRoundedIcon key={count} className={"first"} style={{ margin: count > 0 && space, width: size, height: "100%", flex: "none", color: "#f7ba2a" }} />)
         } else {
-            res.push(<StarRoundedIcon className={"other"} style={{ margin: space, width: size, height: "100%", flex: "none", color: "#eff2f7" }} />)
+            res.push(<StarRoundedIcon key={count} className={"other"} style={{ margin: space, width: size, height: "100%", flex: "none", color: "#eff2f7" }} />)
         }
     }
     return res;

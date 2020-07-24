@@ -60,7 +60,7 @@ export const AddCard = (props) => {
                     let shopList = PreResult.response?.map(function (item, index, array) {
                         return { value: item?.Id, label: item?.ShopName };
                     });
-                    console.log(shopList)
+                    //console.log(shopList)
                     setShopListData(shopList);
                     return "查詢全部分店成功"
                 } else {

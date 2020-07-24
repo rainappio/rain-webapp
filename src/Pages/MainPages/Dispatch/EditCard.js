@@ -39,7 +39,7 @@ const getTimeList = (isLeft, nowTheirSelected) => {
                 onClose : onClose={(isOpen) => { setOpenAddJumpDialog(isOpen); ...其他動作 }} // 控制關閉新增管理員帳號表單卡片的父組件狀態
 */
 export const EditCard = (props) => {
-    console.log("row", props.editAutoFill);
+    //console.log("row", props.editAutoFill);
 
     const { APIUrl, Theme } = useContext(Context);
     const { pages: { dispatchPage: { dispatchEditCard } } } = Theme;
@@ -114,7 +114,7 @@ export const EditCard = (props) => {
 
                 }}
                 yesText={"儲存變更"}
-                no={() => { props?.onClose && props.onClose(false); console.log(DateRegion, Time) }}
+                no={() => { props?.onClose && props.onClose(false); /*console.log(DateRegion, Time)*/ }}
                 noText={"放棄修改"}
                 close={() => { props?.onClose && props.onClose(false); }}
                 theme={dispatchEditCard.addformCard}

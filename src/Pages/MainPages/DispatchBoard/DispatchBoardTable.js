@@ -112,6 +112,7 @@ const ordersFormatTrans = (orders = []) => {
         return Object.keys(orderMasterBeKeyWithOrders).map((item, index) => {
             return (
                 <BasicContainer
+                    key={index}
                     style={{ userSelect: "none" }}
                     theme={{
                         backgroundColor: "#f8f5f2",
@@ -144,17 +145,19 @@ const ordersFormatTrans = (orders = []) => {
                     {
                         hours.slice(1).map((subItem, subIndex) => {
                             return (
-                                <BasicContainer theme={{
-                                    //padding:"0.5rem 0 0 0",
-                                    width: "8.125rem",
-                                    height: "100%",
-                                    display: "block",
-                                    borderBottom: "0.5px solid #e5e5e5",
-                                    borderRight: subIndex !== 12 ? "0.5px solid #e5e5e5" : null,
-                                    backgroundColor: "#fcfaf9",
-                                    flex: "none",
-                                    padding: "0.3rem 0.125rem 0.3rem 0"
-                                }}>
+                                <BasicContainer
+                                    key={subIndex}
+                                    theme={{
+                                        //padding:"0.5rem 0 0 0",
+                                        width: "8.125rem",
+                                        height: "100%",
+                                        display: "block",
+                                        borderBottom: "0.5px solid #e5e5e5",
+                                        borderRight: subIndex !== 12 ? "0.5px solid #e5e5e5" : null,
+                                        backgroundColor: "#fcfaf9",
+                                        flex: "none",
+                                        padding: "0.3rem 0.125rem 0.3rem 0"
+                                    }}>
                                     {orderMasterBeKeyWithOrders[item]?.[subItem] && < SingleOrder data={orderMasterBeKeyWithOrders[item][subItem]} />}
                                 </BasicContainer>
                             )

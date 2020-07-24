@@ -129,7 +129,7 @@ export const EditCard = (props) => {
                 }
 
                 if (PreResult.success) {
-                    console.log(PreResult.response)
+                    //console.log(PreResult.response)
                     let rowData = PreResult.response;
                     formValueReset(rowData.uID, rowData.uRealName, rowData.uLoginName, rowData.uLoginPWD, rowData.phone, getShopIds(rowData.ShopIds), getRIDs(rowData.RIDs))
                     setrowData(rowData);

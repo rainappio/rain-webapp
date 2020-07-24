@@ -113,9 +113,9 @@ const SingleDatePickerBase = (props) => {
                     placeholder="選擇日期範圍"
                     isShowTrigger={false}
                     onChange={date => {
-                        console.log('DateRangePicker1 changed: ', date);
+                        //console.log('DateRangePicker1 changed: ', date);
                         setValue(date);
-                        console.log(Value)
+                        //console.log(Value)
                         props.getDate && props.getDate(date);
                         props.doThings && props.doThings(date);
                     }}
@@ -189,9 +189,9 @@ const SingleDatePickerBase2 = (props) => {
                     placeholder="選擇日期範圍"
                     isShowTrigger={false}
                     onChange={date => {
-                        console.log('DateRangePicker1 changed: ', date);
+                        //console.log('DateRangePicker1 changed: ', date);
                         setValue(date);
-                        console.log(Value)
+                        //console.log(Value)
                         props.getDate && props.getDate(date);
                         props.doThings && props.doThings(date);
                     }}

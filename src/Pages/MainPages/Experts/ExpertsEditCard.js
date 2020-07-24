@@ -35,7 +35,7 @@ const getTimeList = (isLeft, nowTheirSelected) => {
                 onClose : onClose={(isOpen) => { setOpenAddJumpDialog(isOpen); ...其他動作 }} // 控制關閉新增管理員帳號表單卡片的父組件狀態
 */
 export const ExpertsEditCard = (props) => {
-    console.log("row", props.editAutoFill);
+    //console.log("row", props.editAutoFill);
 
     const { APIUrl, Theme } = useContext(Context);
     const { pages: { expertsPage: { expertsAddCard } } } = Theme;

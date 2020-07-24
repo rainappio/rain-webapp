@@ -29,7 +29,7 @@ const JumpDialogBase = (props) => {
 
   //#region 讓一開始focus在確認按鈕上
   useEffect(() => {
-    console.log(!props.removeYesButton)
+    //console.log(!props.removeYesButton)
     if (!props.removeNoButton) {
       //沒有移除 取消按紐
       if (!props.removeYesButton) {

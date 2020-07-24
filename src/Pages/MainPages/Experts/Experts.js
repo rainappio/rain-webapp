@@ -69,7 +69,7 @@ export const Experts = (props) => {
                 }
 
                 if (PreResult.success) {
-                    console.log(PreResult.response)
+                    //console.log(PreResult.response)
                     setTableData(PreResult.response);
                     return "查詢角色表格資訊成功"
                 } else {

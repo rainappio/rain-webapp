@@ -62,7 +62,7 @@ export const Home = (props) => {
                 }
 
                 if (PreResult.success) {
-                    console.log(PreResult.response)
+                    //console.log(PreResult.response)
                     setTableData(PreResult.response);
                     return "查詢角色表格資訊成功"
                 } else {
@@ -119,7 +119,7 @@ export const Home = (props) => {
                     setorderRes(PreResult.response);
                     let cardContent = analyzeStatus(PreResult.response);
                     setcardCount(cardContent);
-                    console.log("1", PreResult.response, cardContent);
+                    //console.log("1", PreResult.response, cardContent);
                     return "查詢角色表格資訊成功"
                 } else {
 
@@ -178,7 +178,7 @@ export const Home = (props) => {
                     //setorderRes(PreResult.response);
                     let cardContent = analyzeStatus(PreResult.response);
                     setcardCountSeven(cardContent);
-                    console.log("7", PreResult.response, cardContent);
+                    //console.log("7", PreResult.response, cardContent);
                     return "查詢角色表格資訊成功"
                 } else {
 
