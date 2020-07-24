@@ -113,9 +113,10 @@ const DispatchPageTitleAddSearchBase = (props) => {
                                                     console.log("NOTHING!")
                                                     portalService.warn({
                                                         autoClose: false,
-                                                        yes: () => { console.log("HAHA") },
-                                                        yesText: "OK",
-                                                        noText: "",
+                                                        //yes: () => { console.log("HAHA") },
+                                                        //yesText: "OK",
+                                                        removeYesButton: true,
+                                                        noText: "OK",
                                                         content: (
                                                             <>
                                                                 <Text theme={dispatchPageTitleAddSearch.exportText}>
@@ -139,9 +140,10 @@ const DispatchPageTitleAddSearchBase = (props) => {
                                     else
                                         portalService.warn({
                                             autoClose: false,
-                                            yes: () => { console.log("HAHA") },
-                                            yesText: "OK",
-                                            noText: "",
+                                            //yes: () => { console.log("HAHA") },
+                                            //yesText: "OK",
+                                            removeYesButton: true,
+                                            noText: "OK",
                                             content: (
                                                 <>
                                                     <Text theme={dispatchPageTitleAddSearch.exportText}>

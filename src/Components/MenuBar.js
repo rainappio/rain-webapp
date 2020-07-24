@@ -4,9 +4,11 @@ import { Context } from '../Store/store'
 import { Text } from './Texts';
 import { EasyButton } from './Buttons';
 import { Ul, Li } from './Lists';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import { iconMap, navbarTitleMapping } from '../Mappings/Mappings'
 import SortIcon from '@material-ui/icons/Sort';
+import { portalService } from './Portal';
+import { clearlocalStorage } from '../Handlers/LocalStorageHandler';
 
 export const MenuBar = (props) => {
     //document.documentElement.clientWidth ,can by js controll responed
@@ -14,6 +16,7 @@ export const MenuBar = (props) => {
     const { menuBar } = Theme;
     const [OpenMenu, setOpenMenu] = useState(false);
     let location = useLocation();
+    let history = useHistory();
 
     return (
         <>
@@ -38,7 +41,29 @@ export const MenuBar = (props) => {
                     <Text theme={menuBar.leftModeLoginNameText}>
                         {localStorage.getItem("LoginName")}
                     </Text>
-                    <EasyButton theme={menuBar.leftModeLoginNameButton} text={"登出"}></EasyButton>
+                    <EasyButton theme={menuBar.leftModeLoginNameButton} text={"登出"}
+                        onClick={() => {
+                            portalService.normal({
+                                autoClose: false,
+                                yes: () => { clearlocalStorage(); history.push("/Login"); },
+                                yesText: "是",
+                                noText: "否",
+                                content: (
+                                    <>
+                                        <Text theme={{
+                                            display: "block",
+                                            textAlign: "center",
+                                            color: "#595959",
+                                            fontSize: "1.5rem",
+                                            fontWeight: 600
+                                        }}>
+                                            {`確定要登出嗎?`}
+                                        </Text>
+
+                                    </>)
+                            })
+                        }}
+                    ></EasyButton>
                 </BasicContainer>
                 {/* 功能選單，寫死的 */}
                 <BasicContainer theme={menuBar.leftModeMenuContainer}>

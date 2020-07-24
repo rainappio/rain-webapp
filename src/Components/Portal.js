@@ -157,8 +157,10 @@ const PortalBase = (props, { id, fade = true }) => {
                 switch={["隨便一個東西", (isopen) => { portalService.clear(); }]} //使彈窗開關由 obserable 控制
                 close={() => { Portal[0].close && Portal[0].close(Portal[0]); }} //能夠得到 Portal 所有參數
                 yes={() => { Portal[0]?.yes && Portal[0].yes(Portal[0]); }} //能夠得到 Portal 所有參數
+                removeYesButton={Portal[0]?.removeYesButton ?? false}
                 yesText={Portal[0]?.yesText ?? "確認"}
                 no={() => { portalService.clear(); }}
+                removeNoButton={Portal[0]?.removeNoButton ?? false}
                 noText={Portal[0]?.noText ?? "取消"}
                 backgroundCanClose={Portal[0]?.backgroundCanClose ?? true}
             >

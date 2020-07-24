@@ -29,7 +29,22 @@ const JumpDialogBase = (props) => {
 
   //#region 讓一開始focus在確認按鈕上
   useEffect(() => {
-    yesButton.current.focus();
+    console.log(!props.removeYesButton)
+    if (!props.removeNoButton) {
+      //沒有移除 取消按紐
+      if (!props.removeYesButton) {
+        //沒有移除 取消按紐、確認按紐
+        yesButton.current.focus();
+      } else {
+        //沒有移除 取消按紐、 移除 確認按紐
+        noButton.current.focus();
+      }
+    } else {
+      if (!props.removeYesButton) {
+        //移除 取消按紐、沒有移除 確認按紐
+        yesButton.current.focus();
+      }
+    }
   }, [])
   //#endregion
 
@@ -76,7 +91,7 @@ const JumpDialogBase = (props) => {
           {/* 按鈕區域 */}
           <BasicContainer theme={{ width: "100%", textAlign: "center" }}>
             {/* 確認按鈕 */}
-            <JumpDialogButton
+            {!props.removeYesButton && <JumpDialogButton
               ref={yesButton}
               onClick={() => {
                 closeJumpDialog();
@@ -90,9 +105,9 @@ const JumpDialogBase = (props) => {
               }}
               type={"warn"}>
               {props?.yesText}
-            </JumpDialogButton>
+            </JumpDialogButton>}
             {/* 取消按鈕 */}
-            <JumpDialogButton
+            {!props.removeNoButton && <JumpDialogButton
               ref={noButton}
               onClick={() => {
                 closeJumpDialog();
@@ -106,7 +121,7 @@ const JumpDialogBase = (props) => {
               }}
               type>
               {props?.noText}
-            </JumpDialogButton>
+            </JumpDialogButton>}
           </BasicContainer>
         </BasicContainer>
       </Container>
@@ -124,8 +139,10 @@ const JumpDialogBase = (props) => {
                 close : 點擊背景區所要執行的函數
                 backgroundCanClose : Boolean 決定點擊背景區是否可以關閉視窗，預設為true，即可關閉 
                 yes : 確認按鈕函數
+                removeYesButton : Boolean ，是否顯示確認按鈕，預設為false ，即顯示
                 yesText : 確認按鈕文字
                 no : 取消按鈕函數
+                removeNoButton : Boolean ，是否顯示取消按鈕，預設為false ，即顯示
                 noText : 取消按鈕文字
                 theme : {
                   jumpDialog :{} //彈窗樣式 (BasicContainer)
