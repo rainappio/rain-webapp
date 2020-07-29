@@ -344,7 +344,7 @@ export const Percentage = (props) => {
                         colKeys={["ShopName", "ShopCounty", "ReservationCount", "ReservationRate"]} //必傳
                         //haveCheck={true} //是否開啟勾選欄，預設不開啟
                         showHowManyRows={9 * 1.143} //顯示列數 * 3.5rem
-                        turnPageExecute={(executePages) => { execute(executePages, SearchWord) }}//發查翻頁，必傳否則不能翻頁
+                        turnPageExecute={(executePages) => { execute(executePages, SearchDate, SearchWord) }}//發查翻頁，必傳否則不能翻頁
                         theme={{
                             // width:"", //外層容器寬度
                             minWidth: "0", //外層容器最小寬度

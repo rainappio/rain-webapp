@@ -36,7 +36,8 @@ const DispatchPageTitleAddSearchBase = (props) => {
            Author : Arhua Ho
            Content: 後端API並沒有吃狀態欄位，所以無法依狀態塞選訂單，依據下拉選單查詢欄位邏輯待確認
         */
-
+        props?.DateRegionResetValue && props.DateRegionResetValue([dateTrans(), dateTrans(addMonths(new Date(), 3))]);
+        //console.log(dateTrans(), dateTrans(addMonths(new Date(), 3)));
         props.execute(dateTrans(), dateTrans(addMonths(new Date(), 3)), SearchWord);//若沒有Parma查的就是未來三個月
         //DateRegionResetValue([new Date(), addMonths(new Date(), 3)]);
         //props.setDateRange && props.setDateRange([new Date(), addMonths(new Date(), 3)]);
@@ -79,10 +80,18 @@ const DispatchPageTitleAddSearchBase = (props) => {
                                 ]}
                                 onChange={(values) => {
                                     ModeResetValue(values);
-                                    if (values.value === 'past')
+                                    props?.ModeResetValue && props.ModeResetValue(values);
+
+                                    if (values.value === 'past') {
+                                        props?.DateRegionResetValue && props.DateRegionResetValue([dateTrans(addMonths(new Date(), -3)), dateTrans()]);
                                         props.execute(dateTrans(addMonths(new Date(), -3)), dateTrans(), SearchWord);
-                                    else
+                                    }
+
+                                    else {
+                                        props?.DateRegionResetValue && props.DateRegionResetValue([dateTrans(), dateTrans(addMonths(new Date(), 3))]);
                                         props.execute(dateTrans(), dateTrans(addMonths(new Date(), 3)), SearchWord);
+                                    }
+
                                 }}
                                 regExpResult={ModeregExpResult}
                                 theme={dispatchPageTitleAddSearch.modeSelector}

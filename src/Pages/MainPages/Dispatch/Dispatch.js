@@ -46,6 +46,7 @@ export const Dispatch = (props) => {
     const [AllCheck, setAllCheck] = useState({})//儲存已選擇之下拉選單值
     const [Check, setCheck] = useState([])//儲存以勾選之列id
     const [ResetPickerFlag, setResetPickerFlag] = useState(true)//儲存以勾選之列id
+    const [DateRegion, DateRegionhandler, DateRegionregExpResult, DateRegionResetValue] = useForm(['', ''], [""], [""]);//日期區間欄位
 
 
     const filterMaster = (array, order) => {
@@ -136,7 +137,7 @@ export const Dispatch = (props) => {
     }
 
     //#region 查詢列表API
-    const getRoleByPageOrkey = useCallback(async (startDate, endDate, key, ) => {
+    const getRoleByPageOrkey = useCallback(async (startDate, endDate, key, page = 1) => {
         return await fetch(`${APIUrl}api/Orders/GetList?_date=${startDate}&_eDate=${endDate}`,
             {
                 headers: {
@@ -160,7 +161,8 @@ export const Dispatch = (props) => {
                 if (PreResult.success) {
                     //console.log(PreResult.response)
                     let tempData = PreResult.response.filter((item) => { return item.Status === 0 })
-                    setTableData({ data: tempData });
+                    //setTableData({ data: tempData });
+                    setTableData({ data: tempData, page: 1, pageCount: 1 });
                     return "查詢角色表格資訊成功"
                 } else {
                     throw new Error("查詢角色表格資訊失敗");
@@ -254,7 +256,7 @@ export const Dispatch = (props) => {
 
                 if (PreResult.success) {
                     // console.log(PreResult.response)
-                    setTableData((d) => ({ ...d, data: [...(d?.data ?? []), ...PreResult.response.data] }));
+                    setTableData((d) => ({ ...d, data: [...(d?.data ?? []), ...PreResult.response.data], page: 1, pageCount: 1 }));
                     setScrollPage((p) => (p + 1)); // 頁數+1
                     return "查詢角色表格資訊成功"
                 } else {
@@ -341,6 +343,8 @@ export const Dispatch = (props) => {
                     Check={Check}
                     AllCheck={AllCheck}
                     execute={execute}
+                    ModeResetValue={ModeResetValue}
+                    DateRegionResetValue={DateRegionResetValue}
                 />
                 <BasicContainer theme={dispatch.tableBasicContainer}>
                     <TableBasic
@@ -355,7 +359,10 @@ export const Dispatch = (props) => {
                             setCheck(tempArray.filter((item) => { return item !== undefined }))
                         }}
                         showHowManyRows={9 * 1.143} //顯示列數 * 3.5rem
-                        turnPageExecute={(executePages) => { execute(executePages, SearchWord) }}//發查翻頁，必傳否則不能翻頁
+                        turnPageExecute={(executePages) => {
+                            //console.log(DateRegion[0], DateRegion[1], SearchWord, executePages);
+                            execute(DateRegion[0], DateRegion[1], SearchWord, executePages);
+                        }}//發查翻頁，必傳否則不能翻頁
                         theme={{
                             // width:"", //外層容器寬度
                             minWidth: "0px", //外層容器最小寬度

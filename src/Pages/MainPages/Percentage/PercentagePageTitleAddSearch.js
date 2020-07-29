@@ -49,7 +49,7 @@ const PercentagePageTitleAddSearchBase = (props) => {
                             <FormRow theme={percentagePageTitleAddSearch.addAndSearchFormRow}>
                                 <SubContainer theme={percentagePageTitleAddSearch.addButtonSubContainer}>
                                     <DatePicker value={props.searchDate} getDate={props.searchDateeResetValue}
-                                        doThings={(date) => { props.execute(1, date, SearchWord); props.execute2(1, date, SearchWord); props.execute3(1, date, SearchWord); SearchDateeResetValue(date) }}></DatePicker>
+                                        doThings={(date) => { props.execute(1, date, SearchWord); props.execute2(1, date, SearchWord); props.execute3(1, date, SearchWord); SearchDateeResetValue(date); props.searchDateeResetValue(date) }}></DatePicker>
                                 </SubContainer>
                                 <SearchTextInput
                                     value={SearchWord}
@@ -161,7 +161,7 @@ const PercentagePageTitleAddSearchBase = (props) => {
                         {IsExpand && <FormRow>
                             <SubContainer theme={percentagePageTitleAddSearch.addButtonSubContainerLessThan768}>
                                 <DatePicker theme={{ width: "100%" }} value={props.searchDate} getDate={props.searchDateeResetValue}
-                                    doThings={(date) => { props.execute(1, date, SearchWord); props.execute2(1, date, SearchWord); props.execute3(1, date, SearchWord); SearchDateeResetValue(date) }}></DatePicker>
+                                    doThings={(date) => { props.execute(1, date, SearchWord); props.execute2(1, date, SearchWord); props.execute3(1, date, SearchWord); SearchDateeResetValue(date); props.searchDateeResetValue(date) }}></DatePicker>
                             </SubContainer>
                             <SearchTextInput
                                 value={SearchWord}
