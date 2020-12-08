@@ -153,7 +153,7 @@ export const Login = (props) => {
                     <BasicContainer theme={login.imgContainer}>
                         <img alt="sdf" width="200" style={{ userSelect: "none" }} height="42.36" src={"./bdcb328.png"}></img>
                     </BasicContainer>
-                    <Text theme={login.BigTitle}>阿瘦集團足健管理系統</Text>
+                    <Text theme={login.BigTitle}>Rain App 管理系統</Text>
                     <Text theme={login.SubTitle}>管理員登入</Text>
                     <BasicContainer theme={login.loginFormContainer}>
                         <FormControl theme={login.loginForm} sumbit={true} onSubmit={(e) => { e.preventDefault(); execute(); }}>

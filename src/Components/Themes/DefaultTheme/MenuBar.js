@@ -16,7 +16,8 @@ export default {
                 float: "left",
                 //border-right: 1px solid #e5e5e5;
                 height: "100vh",
-                //overflow-y: scroll;
+                overflowY: 'scroll',
+                overflowX: 'scroll',
             }
         },
         // 圖片容器

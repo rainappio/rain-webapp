@@ -21,7 +21,6 @@ export const MenuBar = (props) => {
     return (
         <>
             {/* 大於768的側邊欄 */}
-            {/* 超出大小設置沒做 */}
             <BasicContainer theme={menuBar.leftModeBasicContainer}>
                 {/* 圖片 */}
                 <BasicContainer theme={menuBar.leftModeImgContainer}>
@@ -30,7 +29,7 @@ export const MenuBar = (props) => {
                 {/* 標題 */}
                 <BasicContainer theme={menuBar.leftModeTitleContainer}>
                     <Text theme={menuBar.leftModeTitleText}>
-                        阿瘦集團活動管理系統
+                        Rain App 管理系統
                     </Text>
                 </BasicContainer>
                 {/* 登入者名稱、登出按鈕 */}
@@ -90,7 +89,7 @@ export const MenuBar = (props) => {
                         </Link>
                     </Ul>
                     {/* 任務調度 */}
-                    <Text theme={menuBar.leftModeUlTitle}>任務調度</Text>
+                    {/* <Text theme={menuBar.leftModeUlTitle}>任務調度</Text>
                     <Ul theme={menuBar.leftModeMenuUl}>
                         <Link to={"/DispatchBoard"} style={{ textDecoration: "none", display: "block" }}>
                             <Li theme={(location.pathname === "/DispatchBoard" ? menuBar.leftModeMenuLiClicked : menuBar.leftModeMenuLi)}>
@@ -104,7 +103,7 @@ export const MenuBar = (props) => {
                                 <Text theme={(location.pathname === "/Dispatch" ? menuBar.leftModeMenuLiTtextClicked : menuBar.leftModeMenuLiTtext)}>足健師派遣</Text>
                             </Li>
                         </Link>
-                    </Ul>
+                    </Ul> */}
                     {/* 門市與人員名單 */}
                     <Text theme={menuBar.leftModeUlTitle}>門市與人員名單</Text>
                     <Ul theme={menuBar.leftModeMenuUl}>
