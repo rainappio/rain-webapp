@@ -92,7 +92,7 @@ export const urlMapping = {
    // "/Despatch/DespatchList": <DespatchDespatchList />,
    // "/New/From": <NewFrom />,
    // "/System/My": <SystemMy />,
-   "/Administrators": <Administrators />,// 管理員名單
+   //"/Administrators": <Administrators />,// 管理員名單
    "/Locations": <Locations />,// 門市名單
    "/Experts": <Experts />,// 足健師名單
    "/Customers": <Customers />,// 顧客名單
@@ -100,7 +100,8 @@ export const urlMapping = {
    "/DispatchBoard": <DispatchBoard />,// 派遣單總覽
    "/ReservationList": <ReservationList />,// 預約清單
    "/Percentage": <Percentage />,// 預約率總覽
-   "/": <Home />,// 預約件數
+   //"/": <Home />,// 預約件數
+   "/": <Administrators />,// 管理員名單
    "/Test": <Test />,// 測試組件頁面
    "/404": < Error404 />,
    "/Login": <Login />,

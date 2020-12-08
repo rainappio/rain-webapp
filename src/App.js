@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer, useState,useEffect } from 'react';
 import { Context } from './Store/store'
 import themes from './Components/Themes/Themes';
 import { ContextContainer } from './Components/ContextContainer';
@@ -23,6 +23,10 @@ function App() {
   const [Theme, setTheme] = useReducer(reducer, themes.defaultTheme);
   const [APIUrl, setAPIUrl] = useState("http://aso.1966.org.tw:20020/");
   const [Value, Switch, Open, Close] = useSwitch();//控制重新渲染路由
+
+//   useEffect(() => {
+//     localStorage.setItem('Auth', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9')
+// }, [])
 
   return (
     <>

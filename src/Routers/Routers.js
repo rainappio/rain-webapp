@@ -84,7 +84,7 @@ export const Routers = (props) => {
                    Author : Arhua Ho
                    Content: 固定段，含根、登入、404
                 */}
-                <Route exact path={"/"}
+                {/* <Route exact path={"/"}
                     render={({ location }) => {
                         return (getItemlocalStorage("Auth") !== null) ? (
                             urlMapping["/"]
@@ -97,16 +97,16 @@ export const Routers = (props) => {
                             );
                     }
                     }>
-                </Route>
+                </Route> */}
                 {/* 
                    Date   : 2020-07-08 18:58:41
                    Author : Arhua Ho
                    Content: 寫死的路由
                 */}
-                <Route exact path={"/Administrators"}
+                <Route exact path={"/"}
                     render={({ location }) => {
                         return (getItemlocalStorage("Auth") !== null) ? (
-                            urlMapping["/Administrators"]
+                            urlMapping["/"]
                         ) : (
                                 <Redirect
                                     to={{

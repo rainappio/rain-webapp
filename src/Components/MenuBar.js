@@ -67,7 +67,7 @@ export const MenuBar = (props) => {
                 {/* 功能選單，寫死的 */}
                 <BasicContainer theme={menuBar.leftModeMenuContainer}>
                     {/* 預約狀況 */}
-                    <Text theme={menuBar.leftModeUlTitle}>預約狀況</Text>
+                    {/* <Text theme={menuBar.leftModeUlTitle}>預約狀況</Text>
                     <Ul theme={menuBar.leftModeMenuUl}>
                         <Link to={"/"} style={{ textDecoration: "none", display: "block" }}>
                             <Li theme={(location.pathname === "/" ? menuBar.leftModeMenuLiClicked : menuBar.leftModeMenuLi)}>
@@ -87,7 +87,7 @@ export const MenuBar = (props) => {
                                 <Text theme={(location.pathname === "/ReservationList" ? menuBar.leftModeMenuLiTtextClicked : menuBar.leftModeMenuLiTtext)}>預約清單</Text>
                             </Li>
                         </Link>
-                    </Ul>
+                    </Ul> */}
                     {/* 任務調度 */}
                     {/* <Text theme={menuBar.leftModeUlTitle}>任務調度</Text>
                     <Ul theme={menuBar.leftModeMenuUl}>
@@ -105,7 +105,7 @@ export const MenuBar = (props) => {
                         </Link>
                     </Ul> */}
                     {/* 門市與人員名單 */}
-                    <Text theme={menuBar.leftModeUlTitle}>門市與人員名單</Text>
+                    {/* <Text theme={menuBar.leftModeUlTitle}>門市與人員名單</Text>
                     <Ul theme={menuBar.leftModeMenuUl}>
                         <Link to={"/Customers"} style={{ textDecoration: "none", display: "block" }}>
                             <Li theme={(location.pathname === "/Customers" ? menuBar.leftModeMenuLiClicked : menuBar.leftModeMenuLi)}>
@@ -125,14 +125,14 @@ export const MenuBar = (props) => {
                                 <Text theme={(location.pathname === "/Locations" ? menuBar.leftModeMenuLiTtextClicked : menuBar.leftModeMenuLiTtext)}>門市名單</Text>
                             </Li>
                         </Link>
-                    </Ul>
+                    </Ul> */}
                     {/* 管理設置 */}
                     <Text theme={menuBar.leftModeUlTitle}>管理設置</Text>
                     <Ul theme={menuBar.leftModeMenuUl}>
-                        <Link to={"/Administrators"} style={{ textDecoration: "none", display: "block" }}>
-                            <Li theme={(location.pathname === "/Administrators" ? menuBar.leftModeMenuLiClicked : menuBar.leftModeMenuLi)}>
+                        <Link to={"/"} style={{ textDecoration: "none", display: "block" }}>
+                            <Li theme={(location.pathname === "/" ? menuBar.leftModeMenuLiClicked : menuBar.leftModeMenuLi)}>
                                 {iconMap["管理員名單"]}
-                                <Text theme={(location.pathname === "/Administrators" ? menuBar.leftModeMenuLiTtextClicked : menuBar.leftModeMenuLiTtext)}>管理員名單</Text>
+                                <Text theme={(location.pathname === "/" ? menuBar.leftModeMenuLiTtextClicked : menuBar.leftModeMenuLiTtext)}>管理員名單</Text>
                             </Li>
                         </Link>
                     </Ul>
@@ -207,10 +207,10 @@ export const MenuBar = (props) => {
                         </Ul>
                         {/* 管理設置 */}
                         <Ul theme={menuBar.topModeMenuUl}>
-                            <Link to={"/Administrators"} style={{ textDecoration: "none", display: "block" }}>
-                                <Li onClick={() => { setOpenMenu(false) }} theme={(location.pathname === "/Administrators" ? menuBar.topModeMenuLiClicked : menuBar.topModeMenuLi)}>
+                            <Link to={"/"} style={{ textDecoration: "none", display: "block" }}>
+                                <Li onClick={() => { setOpenMenu(false) }} theme={(location.pathname === "/" ? menuBar.topModeMenuLiClicked : menuBar.topModeMenuLi)}>
                                     {iconMap["管理員名單"]}
-                                    <Text theme={(location.pathname === "/Administrators" ? menuBar.leftModeMenuLiTtextClicked : menuBar.leftModeMenuLiTtext)}>管理員名單</Text>
+                                    <Text theme={(location.pathname === "/" ? menuBar.leftModeMenuLiTtextClicked : menuBar.leftModeMenuLiTtext)}>管理員名單</Text>
                                 </Li>
                             </Link>
                         </Ul>

@@ -10,6 +10,9 @@ $ npm install
 	$ npm cache clean --force
 
 $ npm start
+
+acc:admin
+pwd:1qaz@WSX
 ```
 
 ## 專案資料夾架構分配
