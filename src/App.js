@@ -22,6 +22,8 @@ function App() {
 
   const [Theme, setTheme] = useReducer(reducer, themes.defaultTheme);
   const [APIUrl, setAPIUrl] = useState("http://aso.1966.org.tw:20020/");
+  //const [rainApi, setRainApi] = useState("https://api.rain-app.io");
+  const [rainApi, setRainApi] = useState("http://localhost:8080");
   const [Value, Switch, Open, Close] = useSwitch();//控制重新渲染路由
 
 //   useEffect(() => {
@@ -30,7 +32,7 @@ function App() {
 
   return (
     <>
-      < Context.Provider value={{ APIUrl, Theme, setTheme, Switch }}>
+      < Context.Provider value={{ APIUrl, rainApi, Theme, setTheme, Switch }}>
         <ContextContainer />
       </Context.Provider>
     </>

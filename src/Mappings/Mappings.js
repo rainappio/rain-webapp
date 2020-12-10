@@ -16,6 +16,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import { Error404 } from '../Pages/ErrorPages/Error404';
 import { Home } from '../Pages/MainPages/Home/Home';
 import { Administrators } from "../Pages/MainPages/Administrators/Administrators";
+import { ClientSubscriptions } from "../Pages/MainPages/ClientSubscriptions/ClientSubscriptions";
 import { Locations } from "../Pages/MainPages/Locations/Locations";
 import { Experts } from "../Pages/MainPages/Experts/Experts";
 import { Customers } from "../Pages/MainPages/Customers/Customers";
@@ -102,6 +103,7 @@ export const urlMapping = {
    "/Percentage": <Percentage />,// 預約率總覽
    //"/": <Home />,// 預約件數
    "/": <Administrators />,// 管理員名單
+   "/clientSubscriptions": <ClientSubscriptions />,
    "/Test": <Test />,// 測試組件頁面
    "/404": < Error404 />,
    "/Login": <Login />,

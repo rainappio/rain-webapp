@@ -117,6 +117,22 @@ export const Routers = (props) => {
                     }
                     }>
                 </Route>
+                <Route exact path={"/clientSubscriptions"}
+                       render={({ location }) => {
+                           return urlMapping["/clientSubscriptions"]
+                           // return (getItemlocalStorage("Auth") !== null) ? (
+                           //     urlMapping["/clientSubscriptions"]
+                           // ) : (
+                           //     <Redirect
+                           //         to={{
+                           //             pathname: "/Login",
+                           //         }}
+                           //     />
+                           // );
+                       }
+                       }>
+                </Route>
+
                 <Route exact path={"/Locations"}
                     render={({ location }) => {
                         return (getItemlocalStorage("Auth") !== null) ? (
