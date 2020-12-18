@@ -24,7 +24,7 @@ export const MenuBar = (props) => {
             <BasicContainer theme={menuBar.leftModeBasicContainer}>
                 {/* 圖片 */}
                 <BasicContainer theme={menuBar.leftModeImgContainer}>
-                    <img alt="sdf" width="150" style={{ userSelect: "none" }} height="31.33" src={"/2db8549.png"}></img>
+                    <img alt="sdf" height="48" style={{ userSelect: "none" }}  src={"/2db8549.png"}></img>
                 </BasicContainer>
                 {/* 標題 */}
                 <BasicContainer theme={menuBar.leftModeTitleContainer}>
@@ -126,15 +126,37 @@ export const MenuBar = (props) => {
                             </Li>
                         </Link>
                     </Ul> */}
+                    {/* 會員管理 */}
+                    <Text theme={menuBar.leftModeUlTitle}>會員管理</Text>
+                    <Ul theme={menuBar.leftModeMenuUl}>
+                        <Link to={"/"} style={{ textDecoration: "none", display: "block" }}>
+                            <Li theme={(location.pathname === "/" ? menuBar.leftModeMenuLiClicked : menuBar.leftModeMenuLi)}>
+                                {iconMap["會員名單"]}
+                                <Text theme={(location.pathname === "/s" ? menuBar.leftModeMenuLiTtextClicked : menuBar.leftModeMenuLiTtext)}>會員名單</Text>
+                            </Li>
+                        </Link>
+                        <Link to={"/clientSubscriptions"} style={{ textDecoration: "none", display: "block" }}>
+                            <Li theme={(location.pathname === "/clientSubscriptions" ? menuBar.leftModeMenuLiClicked : menuBar.leftModeMenuLi)}>
+                                {iconMap["會員訂閱"]}
+                                <Text theme={(location.pathname === "/clientSubscriptions" ? menuBar.leftModeMenuLiTtextClicked : menuBar.leftModeMenuLiTtext)}>會員訂閱</Text>
+                            </Li>
+                        </Link>
+                    </Ul>
                     {/* 管理設置 */}
                     <Text theme={menuBar.leftModeUlTitle}>管理設置</Text>
                     <Ul theme={menuBar.leftModeMenuUl}>
-                        <Link to={"/"} style={{ textDecoration: "none", display: "block" }}>
+                        <Link to={"/subscriptionPlans"} style={{ textDecoration: "none", display: "block" }}>
+                            <Li theme={(location.pathname === "/subscriptionPlans" ? menuBar.leftModeMenuLiClicked : menuBar.leftModeMenuLi)}>
+                                {iconMap["訂閱方案"]}
+                                <Text theme={(location.pathname === "/subscriptionPlans" ? menuBar.leftModeMenuLiTtextClicked : menuBar.leftModeMenuLiTtext)}>訂閱方案</Text>
+                            </Li>
+                        </Link>
+                        {/* <Link to={"/"} style={{ textDecoration: "none", display: "block" }}>
                             <Li theme={(location.pathname === "/" ? menuBar.leftModeMenuLiClicked : menuBar.leftModeMenuLi)}>
                                 {iconMap["管理員名單"]}
                                 <Text theme={(location.pathname === "/" ? menuBar.leftModeMenuLiTtextClicked : menuBar.leftModeMenuLiTtext)}>管理員名單</Text>
                             </Li>
-                        </Link>
+                        </Link> */}
                     </Ul>
                 </BasicContainer>
             </BasicContainer>

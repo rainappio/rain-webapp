@@ -22,7 +22,7 @@ export const ContextContainer = (props) => {
               Author : Arhua Ho
               Content: 不隨Router re-render的組件
             */}
-      {(localStorage.getItem("Auth") !== null) &&
+      {
         <>
           <MenuBar />
           <JumpAlert />

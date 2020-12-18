@@ -103,7 +103,7 @@ export const Routers = (props) => {
                    Author : Arhua Ho
                    Content: 寫死的路由
                 */}
-                <Route exact path={"/"}
+                {/* <Route exact path={"/"}
                     render={({ location }) => {
                         return (getItemlocalStorage("Auth") !== null) ? (
                             urlMapping["/"]
@@ -116,11 +116,11 @@ export const Routers = (props) => {
                             );
                     }
                     }>
-                </Route>
+                </Route> */}
 
-                <Route exact path={"/clients"}
+                <Route exact path={"/"}
                        render={({ location }) => {
-                           return urlMapping["/clients"]
+                           return urlMapping["/"]
                            // return (getItemlocalStorage("Auth") !== null) ? (
                            //     urlMapping["/clientSubscriptions"]
                            // ) : (

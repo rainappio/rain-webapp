@@ -40,7 +40,9 @@ import StoreIcon from '@material-ui/icons/Store';
 import SettingsIcon from '@material-ui/icons/Settings';
 import {SubscriptionPlans} from "../Pages/MainPages/SubscriptionPlans/SubscriptionPlans";
 import {Clients} from "../Pages/MainPages/Clients/Clients";
-
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import PaymentIcon from '@material-ui/icons/Payment';
 /* 
    Date   : 2020-06-17 14:08:30
    Author : Arhua Ho
@@ -56,6 +58,9 @@ export const iconMap = {
    "足健師名單": <AssignmentIndIcon />,
    "門市名單": <StoreIcon />,
    "管理員名單": <SettingsIcon />,
+   "會員名單":<AccountCircleIcon />,
+   "會員訂閱":<AddShoppingCartIcon />,
+   "訂閱方案":<PaymentIcon />
 }
 
 /* 
@@ -104,8 +109,8 @@ export const urlMapping = {
    "/ReservationList": <ReservationList />,// 預約清單
    "/Percentage": <Percentage />,// 預約率總覽
    //"/": <Home />,// 預約件數
-   "/": <Administrators />,// 管理員名單
-   "/clients": <Clients />,
+   //"/": <Administrators />,// 管理員名單
+   "/": <Clients />,
    "/subscriptionPlans": <SubscriptionPlans />,
    "/clientSubscriptions": <ClientSubscriptions />,
    "/Test": <Test />,// 測試組件頁面
