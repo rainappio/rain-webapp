@@ -38,6 +38,8 @@ import BusinessCenterOutlinedIcon from '@material-ui/icons/BusinessCenterOutline
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import StoreIcon from '@material-ui/icons/Store';
 import SettingsIcon from '@material-ui/icons/Settings';
+import {SubscriptionPlans} from "../Pages/MainPages/SubscriptionPlans/SubscriptionPlans";
+import {Clients} from "../Pages/MainPages/Clients/Clients";
 
 /* 
    Date   : 2020-06-17 14:08:30
@@ -103,6 +105,8 @@ export const urlMapping = {
    "/Percentage": <Percentage />,// 預約率總覽
    //"/": <Home />,// 預約件數
    "/": <Administrators />,// 管理員名單
+   "/clients": <Clients />,
+   "/subscriptionPlans": <SubscriptionPlans />,
    "/clientSubscriptions": <ClientSubscriptions />,
    "/Test": <Test />,// 測試組件頁面
    "/404": < Error404 />,
