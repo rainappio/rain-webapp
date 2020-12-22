@@ -141,10 +141,22 @@ export const MenuBar = (props) => {
                                 <Text theme={(location.pathname === "/clientSubscriptions" ? menuBar.leftModeMenuLiTtextClicked : menuBar.leftModeMenuLiTtext)}>會員訂閱</Text>
                             </Li>
                         </Link>
+                        <Link to={"/einvoiceReport"} style={{ textDecoration: "none", display: "block" }}>
+                            <Li theme={(location.pathname === "/einvoiceReport" ? menuBar.leftModeMenuLiClicked : menuBar.leftModeMenuLi)}>
+                                {iconMap["電子發票"]}
+                                <Text theme={(location.pathname === "/einvoiceReport" ? menuBar.leftModeMenuLiTtextClicked : menuBar.leftModeMenuLiTtext)}>電子發票</Text>
+                            </Li>
+                        </Link>
                     </Ul>
                     {/* 管理設置 */}
                     <Text theme={menuBar.leftModeUlTitle}>管理設置</Text>
                     <Ul theme={menuBar.leftModeMenuUl}>
+                        <Link to={"/globalAnnouncements"} style={{ textDecoration: "none", display: "block" }}>
+                            <Li theme={(location.pathname === "/globalAnnouncements" ? menuBar.leftModeMenuLiClicked : menuBar.leftModeMenuLi)}>
+                                {iconMap["全域公告"]}
+                                <Text theme={(location.pathname === "/globalAnnouncements" ? menuBar.leftModeMenuLiTtextClicked : menuBar.leftModeMenuLiTtext)}>全域公告</Text>
+                            </Li>
+                        </Link>
                         <Link to={"/subscriptionPlans"} style={{ textDecoration: "none", display: "block" }}>
                             <Li theme={(location.pathname === "/subscriptionPlans" ? menuBar.leftModeMenuLiClicked : menuBar.leftModeMenuLi)}>
                                 {iconMap["訂閱方案"]}

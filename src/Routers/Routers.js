@@ -134,6 +134,22 @@ export const Routers = (props) => {
                        }>
                 </Route>
 
+                <Route exact path={"/globalAnnouncements"}
+                       render={({ location }) => {
+                           return urlMapping["/globalAnnouncements"]
+                           // return (getItemlocalStorage("Auth") !== null) ? (
+                           //     urlMapping["/clientSubscriptions"]
+                           // ) : (
+                           //     <Redirect
+                           //         to={{
+                           //             pathname: "/Login",
+                           //         }}
+                           //     />
+                           // );
+                       }
+                       }>
+                </Route>
+
                 <Route exact path={"/subscriptionPlans"}
                        render={({ location }) => {
                            return urlMapping["/subscriptionPlans"]
@@ -153,6 +169,22 @@ export const Routers = (props) => {
                 <Route exact path={"/clientSubscriptions"}
                        render={({ location }) => {
                            return urlMapping["/clientSubscriptions"]
+                           // return (getItemlocalStorage("Auth") !== null) ? (
+                           //     urlMapping["/clientSubscriptions"]
+                           // ) : (
+                           //     <Redirect
+                           //         to={{
+                           //             pathname: "/Login",
+                           //         }}
+                           //     />
+                           // );
+                       }
+                       }>
+                </Route>
+
+                <Route exact path={"/einvoiceReport"}
+                       render={({ location }) => {
+                           return urlMapping["/einvoiceReport"]
                            // return (getItemlocalStorage("Auth") !== null) ? (
                            //     urlMapping["/clientSubscriptions"]
                            // ) : (

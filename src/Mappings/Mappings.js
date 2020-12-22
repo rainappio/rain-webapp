@@ -13,6 +13,7 @@ import ViewListIcon from '@material-ui/icons/ViewList';
 import FormatLineSpacingIcon from '@material-ui/icons/FormatLineSpacing';
 import ReplayIcon from '@material-ui/icons/Replay';
 import SaveIcon from '@material-ui/icons/Save';
+import AnnouncementIcon from '@material-ui/icons/Announcement';
 import { Error404 } from '../Pages/ErrorPages/Error404';
 import { Home } from '../Pages/MainPages/Home/Home';
 import { Administrators } from "../Pages/MainPages/Administrators/Administrators";
@@ -43,6 +44,9 @@ import {Clients} from "../Pages/MainPages/Clients/Clients";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import PaymentIcon from '@material-ui/icons/Payment';
+import ReceiptIcon from '@material-ui/icons/Receipt';
+import {GlobalAnnouncements} from "../Pages/MainPages/GlobalAnnouncements/GlobalAnnouncements";
+import {ElectronicInvoiceReport} from "../Pages/MainPages/ElectronicInvoices/ElectronicInvoiceReport";
 /* 
    Date   : 2020-06-17 14:08:30
    Author : Arhua Ho
@@ -60,7 +64,9 @@ export const iconMap = {
    "管理員名單": <SettingsIcon />,
    "會員名單":<AccountCircleIcon />,
    "會員訂閱":<AddShoppingCartIcon />,
-   "訂閱方案":<PaymentIcon />
+   "訂閱方案":<PaymentIcon />,
+   "全域公告":<AnnouncementIcon />,
+   "電子發票":<ReceiptIcon />
 }
 
 /* 
@@ -111,8 +117,10 @@ export const urlMapping = {
    //"/": <Home />,// 預約件數
    //"/": <Administrators />,// 管理員名單
    "/": <Clients />,
+   "/globalAnnouncements": <GlobalAnnouncements />,
    "/subscriptionPlans": <SubscriptionPlans />,
    "/clientSubscriptions": <ClientSubscriptions />,
+   "/einvoiceReport": <ElectronicInvoiceReport />,
    "/Test": <Test />,// 測試組件頁面
    "/404": < Error404 />,
    "/Login": <Login />,

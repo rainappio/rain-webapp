@@ -47,8 +47,9 @@ export const ClientSubscriptions = (props) => {
 
     const [fetchClientSubscriptions, pending] = useAsync(getClientSubscriptions, true);
 
-    const cancelClientSubscription = useCallback(async (id) => {
-        return await fetch(`${rainApi}/admin/clientSubscriptions/${id}/cancel`,
+    const actOnClientSubscription = useCallback(async (id, action) => {
+
+        return await fetch(`${rainApi}/admin/clientSubscriptions/${id}/${action}`,
             {
                 method: 'POST',
                 headers: {
@@ -76,7 +77,7 @@ export const ClientSubscriptions = (props) => {
 
     }, [rainApi, history])
 
-    const [fetchCancelClientSubscriptions] = useAsync(cancelClientSubscription, false);
+    const [fetchActOnClientSubscription] = useAsync(actOnClientSubscription, false);
 
     const getClientSubscriptionInvoices = useCallback(async (id) => {
         return await fetch(`${rainApi}/admin/clientSubscriptions/${id}/invoices`,
@@ -180,7 +181,7 @@ export const ClientSubscriptions = (props) => {
                             <Row key={row.id}
                                  row={row}
                                  fetchClientSubscriptions={fetchClientSubscriptions}
-                                 fetchCancelClientSubscriptions={fetchCancelClientSubscriptions}
+                                 fetchActOnClientSubscription={fetchActOnClientSubscription}
                                  fetchClientSubscriptionInvoices={fetchClientSubscriptionInvoices}
                                  fetchSendClientSubscriptionInvoice={fetchSendClientSubscriptionInvoice}
                                  fetchActivateClientSubscription={fetchActivateClientSubscription}
@@ -205,7 +206,7 @@ const Row = (props) => {
         sentInvoice,
         activatedInvoice,
         fetchClientSubscriptions,
-        fetchCancelClientSubscriptions,
+        fetchActOnClientSubscription,
         fetchClientSubscriptionInvoices,
         fetchSendClientSubscriptionInvoice,
         fetchActivateClientSubscription
@@ -221,7 +222,7 @@ const Row = (props) => {
     }, [invoicesData])
 
     useEffect(() => {
-
+        fetchClientSubscriptionInvoices(row.id)
         fetchClientSubscriptions()
 
     }, [activatedInvoice])
@@ -250,11 +251,34 @@ const Row = (props) => {
                 <TableCell>{row.planEndDate}</TableCell>
                 <TableCell>{row.status}</TableCell>
                 <TableCell>
-                    <Button variant="contained" color="primary" onClick={() => {
-                        fetchCancelClientSubscriptions(row.id)
-                    }}>
-                        Cancel
-                    </Button>
+                    {['ACTIVE', 'ACTIVE_LAPSING'].includes(row.status) && (
+                        <>
+                            <Button variant="contained" color="primary" onClick={() => {
+                                fetchActOnClientSubscription(row.id, 'lapse')
+                            }}>
+                                Lapse
+                            </Button>
+                            <Button variant="contained" color="primary" onClick={() => {
+                                fetchActOnClientSubscription(row.id, 'deactivate')
+                            }}>
+                                Deactivate
+                            </Button>
+                        </>
+                    )}
+                    {row.status === 'INACTIVE' && (
+                        <Button variant="contained" color="primary" onClick={() => {
+                            fetchActOnClientSubscription(row.id, 'reactivate')
+                        }}>
+                            Reactivate
+                        </Button>
+                    )}
+                    {row.status !== 'CANCELLED' && (
+                        <Button variant="contained" color="primary" onClick={() => {
+                            fetchActOnClientSubscription(row.id, 'cancel')
+                        }}>
+                            Cancel
+                        </Button>
+                    )}
                 </TableCell>
             </TableRow>
             <TableRow>
