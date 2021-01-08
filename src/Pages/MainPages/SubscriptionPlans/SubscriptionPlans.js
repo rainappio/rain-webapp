@@ -1,16 +1,16 @@
-import React, {useCallback, useContext, useEffect, useReducer, useState} from 'react';
-import {BasicContainer} from "../../../Components/Containers";
-import {useWindowSize} from "../../../SelfHooks/useWindowSize";
-import {Context} from "../../../Store/store";
-import {clearlocalStorage} from "../../../Handlers/LocalStorageHandler";
-import {useAsync} from "../../../SelfHooks/useAsync";
-import {useHistory} from "react-router-dom";
+import React, { useCallback, useContext, useEffect, useReducer, useState } from 'react';
+import { BasicContainer } from "../../../Components/Containers";
+import { useWindowSize } from "../../../SelfHooks/useWindowSize";
+import { Context } from "../../../Store/store";
+import { clearlocalStorage } from "../../../Handlers/LocalStorageHandler";
+import { useAsync } from "../../../SelfHooks/useAsync";
+import { useHistory } from "react-router-dom";
 import {
     Button,
     Dialog,
     DialogActions,
     DialogContent,
-    DialogTitle, FormControl, FormHelperText,
+    DialogTitle, FormControl, FormHelperText, FormGroup, FormLabel, FormControlLabel, Checkbox,
     IconButton, InputLabel, MenuItem, Select,
     Table,
     TableBody,
@@ -21,13 +21,16 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import {PageTitle} from "../../../Components/PageTitle";
+import { PageTitle } from "../../../Components/PageTitle";
+import { portalService } from '../../../Components/Portal';
+import { Text } from '../../../Components/Texts';
+import { makeStyles } from '@material-ui/core/styles';
 
 export const SubscriptionPlans = (props) => {
 
-    const {rainApi, Theme} = useContext(Context);
+    const { rainApi, Theme } = useContext(Context);
     let history = useHistory();
-    const {pages: {administratorsPage: {administrators}}} = Theme;
+    const { pages: { administratorsPage: { administrators } } } = Theme;
     const [width] = useWindowSize();
     const [subscriptionPlans, setSubscriptionPlans] = useState([])
     const [subscriptionPlan, setSubscriptionPlan] = useState({})
@@ -102,6 +105,7 @@ export const SubscriptionPlans = (props) => {
             return result.json()
 
         }).then((data) => {
+            console.log('res', data)
             fetchSubscriptionPlans()
 
         }).catch((Error) => {
@@ -179,23 +183,24 @@ export const SubscriptionPlans = (props) => {
         <>
             {width > 768 && <BasicContainer theme={administrators.basicContainer}>
                 <PageTitle>Client Subscriptions</PageTitle>
-                <Button variant="contained" color="primary" onClick={() => {
-                    setSubscriptionPlan(null)
-                    setOpenDialog(true)
-                }}>
+                <Button variant="contained" color="primary"
+                    style={{ marginLeft: 40 }}
+                    onClick={() => {
+                        setSubscriptionPlan(null)
+                        setOpenDialog(true)
+                    }}>
                     New
                 </Button>
                 <SubscriptionPlanDialog openDialog={openDialog}
-                                        setOpenDialog={setOpenDialog}
-                                        subscriptionPlanData={subscriptionPlan}
-                                        handleCreate={fetchCreateSubscriptionPlan}
-                                        handleUpdate={fetchUpdateSubscriptionPlan}
+                    setOpenDialog={setOpenDialog}
+                    subscriptionPlanData={subscriptionPlan}
+                    handleCreate={fetchCreateSubscriptionPlan}
+                    handleUpdate={fetchUpdateSubscriptionPlan}
                 />
 
-                <Table>
+                <Table style={{ marginLeft: 40 }}>
                     <TableHead>
                         <TableRow>
-                            <TableCell> </TableCell>
                             <TableCell>Id</TableCell>
                             <TableCell>Country Code</TableCell>
                             <TableCell>Plan Group</TableCell>
@@ -207,10 +212,10 @@ export const SubscriptionPlans = (props) => {
                     <TableBody>
                         {subscriptionPlans.map((row) => (
                             <Row key={row.id}
-                                 row={row}
-                                 handleOpenDialog={setOpenDialog}
-                                 handleGetSubscriptionPlan={fetchGetSubscriptionPlan}
-                                 handleDeleteSubscriptionPlan={fetchDeleteSubscriptionPlan}
+                                row={row}
+                                handleOpenDialog={setOpenDialog}
+                                handleGetSubscriptionPlan={fetchGetSubscriptionPlan}
+                                handleDeleteSubscriptionPlan={fetchDeleteSubscriptionPlan}
                             />
                         ))}
                     </TableBody>
@@ -222,14 +227,11 @@ export const SubscriptionPlans = (props) => {
 }
 
 const Row = (props) => {
-    const {row, handleOpenDialog, handleGetSubscriptionPlan, handleDeleteSubscriptionPlan} = props
+    const { row, handleOpenDialog, handleGetSubscriptionPlan, handleDeleteSubscriptionPlan } = props
 
     return (
         <React.Fragment>
             <TableRow>
-                <TableCell>
-
-                </TableCell>
                 <TableCell component="th" scope="row">{row.id}</TableCell>
                 <TableCell>{row.countryCode}</TableCell>
                 <TableCell>{row.planGroup}</TableCell>
@@ -237,16 +239,33 @@ const Row = (props) => {
                 <TableCell>{row.planPrices.MONTHLY}</TableCell>
                 <TableCell>
                     <IconButton color="secondary" aria-label="delete" onClick={() => {
-                        handleDeleteSubscriptionPlan(row.id)
+                        portalService.warn({
+                            autoClose: false,
+                            yes: () => { handleDeleteSubscriptionPlan(row.id) },
+                            yesText: "確定",
+                            noText: "取消",
+                            content: (
+                                <>
+                                    <Text theme={{
+                                        display: "block",
+                                        textAlign: "center",
+                                        color: "#595959",
+                                        fontSize: "1.125em",
+                                        fontWeight: 500
+                                    }}>
+                                        {`確定刪除嗎`}
+                                    </Text>
+                                </>)
+                        })
                     }}>
-                        <DeleteIcon/>
+                        <DeleteIcon />
                     </IconButton>
 
                     <IconButton variant="contained" color="primary" onClick={() => {
                         handleGetSubscriptionPlan(row.id)
                         handleOpenDialog(true)
                     }}>
-                        <EditIcon/>
+                        <EditIcon />
                     </IconButton>
                 </TableCell>
             </TableRow>
@@ -255,32 +274,65 @@ const Row = (props) => {
 }
 
 const SubscriptionPlanDialog = (props) => {
-    const {openDialog, setOpenDialog, subscriptionPlanData, handleCreate, handleUpdate} = props
+    const { openDialog, setOpenDialog, subscriptionPlanData, handleCreate, handleUpdate } = props
+    const classes = useStyles();
     //const [open, setOpen] = React.useState(false);
     const editMode = subscriptionPlanData != null
     const initialState = {
         countryCode: 'TW',
         planGroup: 'DEFAULT',
         planName: '',
+        description: '',
         planPrices: {
             MONTHLY: 0
         }
     }
     const [formInput, setFormInput] = useReducer(
-        (state, newState) => ({...state, ...newState}),
+        (state, newState) => ({ ...state, ...newState }),
         initialState
     );
 
+    const [checkBoxState, setCheckBoxState] = React.useState({
+        timeCard: false,
+        orderDisplay: false,
+        salesReport: false,
+        customerStats: false,
+        timeCardReport: false,
+        membership: false,
+        calendar: false,
+        staff: false,
+        roster: false,
+        einvoice: false,
+    });
+
+    const handleChange = (event) => {
+        setCheckBoxState({ ...checkBoxState, [event.target.name]: event.target.checked });
+    };
+
+    const { gilad, jason, antoine } = checkBoxState;
+    const error = [gilad, jason, antoine].filter((v) => v).length !== 2;
+
     useEffect(() => {
         console.log(subscriptionPlanData)
-
         if (subscriptionPlanData == null) {
             setFormInput(initialState)
         } else {
             setFormInput(subscriptionPlanData)
         }
+        setCheckBoxState({
+            timeCard: !!subscriptionPlanData?.restrictedFeatures?.includes('timeCard'),
+            orderDisplay: !!subscriptionPlanData?.restrictedFeatures?.includes('orderDisplay'),
+            salesReport: !!subscriptionPlanData?.restrictedFeatures?.includes('salesReport'),
+            customerStats: !!subscriptionPlanData?.restrictedFeatures?.includes('customerStats'),
+            timeCardReport: !!subscriptionPlanData?.restrictedFeatures?.includes('timeCardReport'),
+            membership: !!subscriptionPlanData?.restrictedFeatures?.includes('membership'),
+            calendar: !!subscriptionPlanData?.restrictedFeatures?.includes('calendar'),
+            staff: !!subscriptionPlanData?.restrictedFeatures?.includes('staff'),
+            roster: !!subscriptionPlanData?.restrictedFeatures?.includes('roster'),
+            einvoice: !!subscriptionPlanData?.restrictedFeatures?.includes('einvoice'),
+        })
+    }, [subscriptionPlanData, openDialog])
 
-    }, [subscriptionPlanData])
 
     const handleClickOpen = () => {
         setOpenDialog(true);
@@ -294,7 +346,7 @@ const SubscriptionPlanDialog = (props) => {
         const name = evt.target.name;
         const newValue = evt.target.value;
 
-        setFormInput({[name]: newValue});
+        setFormInput({ [name]: newValue });
     };
 
     const handlePlanPrices = evt => {
@@ -310,12 +362,13 @@ const SubscriptionPlanDialog = (props) => {
 
     const handleSubmitForm = (e) => {
         e.preventDefault()
-        console.log(formInput)
+        let keysArr = Object.keys(checkBoxState)?.filter((item) => checkBoxState?.[`${item}`])
+        //console.log(formInput, checkBoxState, keysArr)
 
         if (editMode) {
-            handleUpdate(formInput.id, formInput)
+            handleUpdate(formInput.id, { ...formInput, restrictedFeatures: keysArr })
         } else {
-            handleCreate(formInput)
+            handleCreate({ ...formInput, restrictedFeatures: keysArr })
         }
 
         handleClose()
@@ -357,17 +410,19 @@ const SubscriptionPlanDialog = (props) => {
                             </Select>
                             <FormHelperText>Select plan group</FormHelperText>
                         </FormControl>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="planName"
-                            name="planName"
-                            label="Plan Name"
-                            type="text"
-                            fullWidth
-                            value={formInput.planName}
-                            onChange={handleInput}
-                        />
+                        <FormControl fullWidth>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="planName"
+                                name="planName"
+                                label="Plan Name"
+                                type="text"
+                                fullWidth
+                                value={formInput.planName}
+                                onChange={handleInput}
+                            />
+                        </FormControl>
                         <FormControl>
                             <TextField
                                 margin="dense"
@@ -391,13 +446,59 @@ const SubscriptionPlanDialog = (props) => {
                             value={formInput.planPrices.MONTHLY}
                             onChange={handlePlanPrices}
                         />
+                        <FormControl margin="dense">
+                            <FormLabel >權限鎖定</FormLabel>
+                            <FormGroup>
+                                <FormControlLabel
+                                    control={<Checkbox checked={checkBoxState?.timeCard} onChange={handleChange} name="timeCard" size='small' classes={{ root: classes.root }} />}
+                                    label="打卡"
+                                />
+                                <FormControlLabel
+                                    control={<Checkbox checked={checkBoxState?.orderDisplay} onChange={handleChange} name="orderDisplay" size='small' classes={{ root: classes.root }} />}
+                                    label="訂單顯示"
+                                />
+                                <FormControlLabel
+                                    control={<Checkbox checked={checkBoxState?.salesReport} onChange={handleChange} name="salesReport" size='small' classes={{ root: classes.root }} />}
+                                    label="銷售報表"
+                                />
+                                <FormControlLabel
+                                    control={<Checkbox checked={checkBoxState?.customerStats} onChange={handleChange} name="customerStats" size='small' classes={{ root: classes.root }} />}
+                                    label="來客總覽"
+                                />
+                                <FormControlLabel
+                                    control={<Checkbox checked={checkBoxState?.timeCardReport} onChange={handleChange} name="timeCardReport" size='small' classes={{ root: classes.root }} />}
+                                    label="職員打卡表"
+                                />
+                                <FormControlLabel
+                                    control={<Checkbox checked={checkBoxState?.membership} onChange={handleChange} name="membership" size='small' classes={{ root: classes.root }} />}
+                                    label="會員管理"
+                                />
+                                <FormControlLabel
+                                    control={<Checkbox checked={checkBoxState?.calendar} onChange={handleChange} name="calendar" size='small' classes={{ root: classes.root }} />}
+                                    label="排程管理"
+                                />
+                                <FormControlLabel
+                                    control={<Checkbox checked={checkBoxState?.staff} onChange={handleChange} name="staff" size='small' classes={{ root: classes.root }} />}
+                                    label="員工"
+                                />
+                                <FormControlLabel
+                                    control={<Checkbox checked={checkBoxState?.roster} onChange={handleChange} name="roster" size='small' classes={{ root: classes.root }} />}
+                                    label="排班管理"
+                                />
+                                <FormControlLabel
+                                    control={<Checkbox checked={checkBoxState?.einvoice} onChange={handleChange} name="einvoice" size='small' classes={{ root: classes.root }} />}
+                                    label="電子發票"
+                                />
+                            </FormGroup>
+                        </FormControl>
+
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose} color="primary">
                             Cancel
                         </Button>
                         <Button type="submit"
-                                color="primary">
+                            color="primary">
                             Save
                         </Button>
                     </DialogActions>
@@ -406,3 +507,9 @@ const SubscriptionPlanDialog = (props) => {
         </>
     )
 }
+
+const useStyles = makeStyles({
+    root: {
+        padding: `3px 3px 3px 9px`
+    },
+});
