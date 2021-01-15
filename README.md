@@ -1,6 +1,16 @@
-# {專案名}說明文件
+# Rain Webapp
 
 [toc]
+             
+## Start Server in Docker
+
+`sudo docker build -t joelin/rain-webapp .`
+
+`sudo docker run -it --rm -v ~/IdeaProjects/rain-webapp:/app -v /app/node_modules -p 8081:8081 -e CHOKIDAR_USEPOLLING=true joelin/rain-webapp:latest`
+ 
+### Reference
+
+https://mherman.org/blog/dockerizing-a-react-app/
 
 ## 起專案步驟
 
