@@ -22,6 +22,7 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import {PageTitle} from "../../../Components/PageTitle";
+import moment from "moment";
 
 export const Clients = (props) => {
 
@@ -103,9 +104,11 @@ export const Clients = (props) => {
                             <TableCell>Id</TableCell>
                             <TableCell>Client Name</TableCell>
                             <TableCell>Username</TableCell>
-                            <TableCell>Country</TableCell>
                             <TableCell>Timezone</TableCell>
                             <TableCell>Status</TableCell>
+                            <TableCell>Created Date</TableCell>
+                            <TableCell>Last Order</TableCell>
+                            <TableCell>Order Count</TableCell>
                             <TableCell>Action</TableCell>
                         </TableRow>
                     </TableHead>
@@ -134,9 +137,11 @@ const Row = (props) => {
                 <TableCell component="th" scope="row">{row.id}</TableCell>
                 <TableCell>{row.clientName}</TableCell>
                 <TableCell>{row.username}</TableCell>
-                <TableCell>{row.country}</TableCell>
                 <TableCell>{row.timezone}</TableCell>
                 <TableCell>{row.status}</TableCell>
+                <TableCell>{moment(row.createdDate).format('YYYY-MM-DD')}</TableCell>
+                <TableCell>{row.lastOrderDate}</TableCell>
+                <TableCell>{row.orderCount}</TableCell>
                 <TableCell>
                     <IconButton variant="contained" color="primary" onClick={() => {
                         handleGetClient(row.id)
