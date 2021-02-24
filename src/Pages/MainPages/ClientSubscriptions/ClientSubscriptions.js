@@ -462,7 +462,7 @@ const ClientSubscriptionDialog = (props) => {
         clientId: '',
         subscriptionPlanId: '',
         planPeriod: '',
-        discountAmount: ''
+        discountAmount: 0
     }
 
     const [formInput, setFormInput] = useReducer(

@@ -33,6 +33,8 @@ export const Clients = (props) => {
     const [clients, setClients] = useState([])
     const [client, setClient] = useState({})
     const [openDialog, setOpenDialog] = useState(false)
+    const [openUsernameDialog, setOpenUsernameDialog] = useState(false)
+    const [openClientNameDialog, setOpenClientNameDialog] = useState(false)
 
     const getClients = useCallback(async () => {
         return await fetch(`${rainApi}/admin/clients`,
@@ -89,6 +91,58 @@ export const Clients = (props) => {
 
     const [fetchGetClient] = useAsync(getClient, false);
 
+    const updateClientName = useCallback(async (request) => {
+        return await fetch(`${rainApi}/admin/clients/${request.clientId}/clientName`,
+            {
+                method: 'PATCH',
+                headers: {
+                    'content-type': 'application/json',
+                    //'Authorization': `Basic `
+                },
+                body: JSON.stringify(request)
+            }
+        ).then(result => {
+            fetchGetClients()
+
+        }).catch((Error) => {
+            console.log(Error)
+            clearlocalStorage();
+            //history.push("/Login");
+            throw Error;
+        }).finally(() => {
+
+        });
+
+    }, [rainApi, history])
+
+    const [fetchUpdateClientName] = useAsync(updateClientName, true);
+
+    const updateUsername = useCallback(async (request) => {
+        return await fetch(`${rainApi}/admin/clients/${request.clientId}/username`,
+            {
+                method: 'PATCH',
+                headers: {
+                    'content-type': 'application/json',
+                    //'Authorization': `Basic `
+                },
+                body: JSON.stringify(request)
+            }
+        ).then(result => {
+            fetchGetClients()
+
+        }).catch((Error) => {
+            console.log(Error)
+            clearlocalStorage();
+            //history.push("/Login");
+            throw Error;
+        }).finally(() => {
+
+        });
+
+    }, [rainApi, history])
+
+    const [fetchUpdateUsername] = useAsync(updateUsername, true);
+
     return (
         <>
             {width > 768 && <BasicContainer theme={administrators.basicContainer}>
@@ -97,6 +151,16 @@ export const Clients = (props) => {
                               setOpenDialog={setOpenDialog}
                               clientData={client}
                     //handleUpdate={fetchUpdateSubscriptionPlan}
+                />
+                <ClientNameDialog openDialog={openClientNameDialog}
+                                  setOpenDialog={setOpenClientNameDialog}
+                                  clientData={client}
+                                  handleUpdate={fetchUpdateClientName}
+                />
+                <ClientUsernameDialog openDialog={openUsernameDialog}
+                                      setOpenDialog={setOpenUsernameDialog}
+                                      clientData={client}
+                                      handleUpdate={fetchUpdateUsername}
                 />
                 <Table>
                     <TableHead>
@@ -117,6 +181,8 @@ export const Clients = (props) => {
                             <Row key={row.id}
                                  row={row}
                                  handleOpenDialog={setOpenDialog}
+                                 handleOpenUsernameDialog={setOpenUsernameDialog}
+                                 handleOpenClientNameDialog={setOpenClientNameDialog}
                                  handleGetClient={fetchGetClient}
                             />
                         ))}
@@ -129,14 +195,30 @@ export const Clients = (props) => {
 }
 
 const Row = (props) => {
-    const {row, handleOpenDialog, handleGetClient} = props
+    const {row, handleOpenDialog, handleOpenClientNameDialog, handleOpenUsernameDialog, handleGetClient} = props
 
     return (
         <React.Fragment>
             <TableRow>
                 <TableCell component="th" scope="row">{row.id}</TableCell>
-                <TableCell>{row.clientName}</TableCell>
-                <TableCell>{row.username}</TableCell>
+                <TableCell>
+                    {row.clientName}
+                    <IconButton variant="contained" color="primary" onClick={() => {
+                        handleGetClient(row.id)
+                        handleOpenClientNameDialog(true)
+                    }}>
+                        <EditIcon/>
+                    </IconButton>
+                </TableCell>
+                <TableCell>
+                    {row.username}
+                    <IconButton variant="contained" color="primary" onClick={() => {
+                        handleGetClient(row.id)
+                        handleOpenUsernameDialog(true)
+                    }}>
+                        <EditIcon/>
+                    </IconButton>
+                </TableCell>
                 <TableCell>{row.timezone}</TableCell>
                 <TableCell>{row.status}</TableCell>
                 <TableCell>{moment(row.createdDate).format('YYYY-MM-DD')}</TableCell>
@@ -152,6 +234,206 @@ const Row = (props) => {
                 </TableCell>
             </TableRow>
         </React.Fragment>
+    )
+}
+
+const ClientNameDialog = (props) => {
+
+    const {openDialog, setOpenDialog, clientData, handleUpdate} = props
+
+    const initialState = {
+        clientId: clientData.id,
+        clientName: clientData.clientName,
+    }
+
+    const [formInput, setFormInput] = useReducer(
+        (state, newState) => ({...state, ...newState}),
+        initialState
+    )
+
+    useEffect(() => {
+        setFormInput(initialState)
+
+    }, [clientData])
+
+    const handleInput = evt => {
+        const name = evt.target.name;
+        const newValue = evt.target.value;
+
+        setFormInput({[name]: newValue});
+    };
+
+    const handleClose = () => {
+        setOpenDialog(false);
+    }
+
+    const handleSubmitForm = (e) => {
+        e.preventDefault()
+
+        handleUpdate({...formInput})
+        handleClose()
+    }
+
+    return (
+        <>
+            <Dialog open={openDialog} onClose={handleClose} aria-labelledby="form-dialog-title">
+                <form onSubmit={handleSubmitForm}>
+                    <DialogTitle id="form-dialog-title">Change Client Name</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            margin="dense"
+                            id="clientId"
+                            name="clientId"
+                            label="Client ID"
+                            type="text"
+                            fullWidth
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                            value={formInput.clientId}
+                            onChange={handleInput}
+                        />
+                    </DialogContent>
+
+                    <DialogContent>
+                        <TextField
+                            margin="dense"
+                            id="clientName"
+                            name="clientName"
+                            label="New Client Name"
+                            type="text"
+                            fullWidth
+                            value={formInput.clientName}
+                            onChange={handleInput}
+                        />
+                    </DialogContent>
+
+                    <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                            Cancel
+                        </Button>
+                        <Button type="submit"
+                                color="primary">
+                            Update
+                        </Button>
+                    </DialogActions>
+                </form>
+            </Dialog>
+        </>
+    )
+}
+
+const ClientUsernameDialog = (props) => {
+
+    const {openDialog, setOpenDialog, clientData, handleUpdate} = props
+
+    const initialState = {
+        clientId: clientData.id,
+        newClientName: clientData.clientName,
+        newUsername: '',
+        password: ''
+    }
+
+    const [formInput, setFormInput] = useReducer(
+        (state, newState) => ({...state, ...newState}),
+        initialState
+    )
+
+    useEffect(() => {
+        setFormInput(initialState)
+
+    }, [clientData])
+
+    const handleInput = evt => {
+        const name = evt.target.name;
+        const newValue = evt.target.value;
+
+        setFormInput({[name]: newValue});
+    };
+
+    const handleClose = () => {
+        setOpenDialog(false);
+    }
+
+    const handleSubmitForm = (e) => {
+        e.preventDefault()
+
+        handleUpdate({...formInput})
+        handleClose()
+    }
+
+    return (
+        <>
+            <Dialog open={openDialog} onClose={handleClose} aria-labelledby="form-dialog-title">
+                <form onSubmit={handleSubmitForm}>
+                    <DialogTitle id="form-dialog-title">Change Client Username</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            margin="dense"
+                            id="clientId"
+                            name="clientId"
+                            label="Client ID"
+                            type="text"
+                            fullWidth
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                            value={formInput.clientId}
+                            onChange={handleInput}
+                        />
+                    </DialogContent>
+
+                    <DialogContent>
+                        <TextField
+                            margin="dense"
+                            id="newClientName"
+                            name="newClientName"
+                            label="New Client Name"
+                            type="text"
+                            fullWidth
+                            value={formInput.newClientName}
+                            onChange={handleInput}
+                        />
+                    </DialogContent>
+
+                    <DialogContent>
+                        <TextField
+                            margin="dense"
+                            id="newUsername"
+                            name="newUsername"
+                            label="New Username"
+                            type="text"
+                            fullWidth
+                            value={formInput.newUsername}
+                            onChange={handleInput}
+                        />
+                    </DialogContent>
+
+                    <DialogContent>
+                        <TextField
+                            margin="dense"
+                            id="password"
+                            name="password"
+                            label="Password"
+                            type="text"
+                            fullWidth
+                            value={formInput.password}
+                            onChange={handleInput}
+                        />
+                    </DialogContent>
+
+                    <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                            Cancel
+                        </Button>
+                        <Button type="submit"
+                                color="primary">
+                            Update
+                        </Button>
+                    </DialogActions>
+                </form>
+            </Dialog>
+        </>
     )
 }
 
@@ -216,7 +498,6 @@ const ClientDialog = (props) => {
 
     const handleSubmitForm = (e) => {
         e.preventDefault()
-        console.log(formInput)
 
         handleClose()
     }
